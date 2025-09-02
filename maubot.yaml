@@ -1,0 +1,13 @@
+id: de.awesome-it.maubot-alerts
+maubot: 0.5.1
+version: 0.1.8
+license: MIT
+modules:
+  - alertbot
+main_class: AlertBot
+database: true
+database_type: asyncpg
+webapp: true
+config: false
+dependencies: []
+soft_dependencies: []
