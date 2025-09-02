@@ -5,9 +5,10 @@ from typing import Callable, Awaitable, Optional
 from aiohttp.web import Request, Response
 from aiohttp.web_response import json_response
 from maubot import Plugin
-from maubot.handlers import command, web
+from maubot.handlers import command, web, event
 from mautrix.errors import MForbidden, MNotFound
-from mautrix.types import MessageEvent, RoomID, EventID, RelatesTo, TextMessageEventContent, MessageType, Format
+from mautrix.types import MessageEvent, RoomID, EventID, RelatesTo, TextMessageEventContent, MessageType, Format, \
+    EventType, StateEvent
 from mautrix.util.async_db import UpgradeTable, Connection
 
 upgrade_table = UpgradeTable()
@@ -35,6 +36,16 @@ class AlertBot(Plugin):
         event_id = await self.database.fetchval(query, fingerprint)
         self.log.debug(f"fingerprint: {fingerprint} -> event_id: {event_id}")
         return event_id
+
+    async def get_fingerprint_from_event_id(self, event_id: str) -> str:
+        query = """
+                SELECT fingerprint
+                FROM alerts
+                WHERE event_id = $1 \
+                """
+        fingerprint = await self.database.fetchval(query, event_id)
+        self.log.debug(f"event_id: {event_id} -> fingerprint: {fingerprint}")
+        return fingerprint
 
     async def update_alert(self, alert, event_id):
         query = """
@@ -132,6 +143,25 @@ class AlertBot(Plugin):
     async def post_prom_alerts(self, req: Request) -> Response:
         return await self.call_and_handle_error(self.alert_message, req)
 
+    @event.on(EventType.REACTION)
+    async def handle_event_reaction(self, evt: StateEvent) -> None:
+        if evt.sender != self.client.mxid:
+            room_id = evt.room_id
+            related_event_id = evt.content.relates_to.event_id
+            reaction_key = evt.content.relates_to.key.replace('\uFE0F', '').replace('\uFE0E', '')
+            fingerprint = await self.get_fingerprint_from_event_id(related_event_id)
+            if fingerprint and reaction_key == "👍":
+                alert = Alert(fingerprint=fingerprint, status="acknowledged", event_id=related_event_id)
+                await self.update_alert(alert, related_event_id)
+                alert.generate_message()
+                await self.edit_message(room_id, related_event_id, html=alert.message)
+                await self.react_to_message(room_id, related_event_id, "👍")
+            elif fingerprint and reaction_key == "✅":
+                alert = Alert(fingerprint=fingerprint, status="resolved", event_id=related_event_id)
+                alert.generate_message()
+                await self.edit_message(room_id, related_event_id, html=alert.message)
+                await self.remove_alert_from_db(alert.fingerprint)
+
     @classmethod
     def get_db_upgrade_table(cls) -> UpgradeTable:
         return upgrade_table
@@ -153,6 +183,8 @@ class Alert:
     def generate_message(self) -> None:
         if self.status == "firing":
             color = "red"
+        elif self.status == "acknowledged":
+            color = "orange"
         else:
             color = "green"
         self.message = (
