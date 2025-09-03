@@ -71,7 +71,7 @@ class AlertBot(Plugin):
                 WHERE fingerprint = $1 \
                 """
         event_id = await self.database.fetchval(query, fingerprint)
-        self.log.debug(f"fingerprint: {fingerprint} -> event_id: {event_id}")
+        self.log.debug(f"get_event_id_from_fingerprint: {fingerprint} -> {event_id}")
         return event_id
 
     async def get_alert_from_event_id(self, event_id: str) -> Optional[Alert]:
@@ -81,9 +81,9 @@ class AlertBot(Plugin):
                 WHERE event_id = $1
                 """
         row = await self.database.fetchrow(query, event_id)
+        self.log.debug(f"get_alert_from_event_id: {event_id} -> {row}")
         if row:
             alertmanager_data = json.loads(row["data"])
-            self.log.debug(f"alertmanager_data: {row["data"]}")
             return Alert(fingerprint=row["fingerprint"], status=row["status"], alertmanager_data=alertmanager_data)
         return None
 
@@ -94,7 +94,7 @@ class AlertBot(Plugin):
                 VALUES ($1, $2, $3, $4, $5) ON CONFLICT (fingerprint) DO
                 UPDATE SET event_id = $2, status = $3, data = $4, last_actor = $5
                 """
-        self.log.debug(f"Upserting {alert.fingerprint}, event_id: {event_id}, status: {alert.status}")
+        self.log.debug(f"upsert_alert: {alert}, event_id: {event_id}")
         await self.database.execute(query, alert.fingerprint, event_id, alert.status, json_data, alert.last_actor)
 
     async def delete_alert(self, fingerprint) -> None:
@@ -103,7 +103,7 @@ class AlertBot(Plugin):
                 FROM alerts
                 WHERE fingerprint = $1
                 """
-        self.log.debug(f"Deleting alert with fingerprint: {fingerprint}")
+        self.log.debug(f"delete_alert: {fingerprint}")
         await self.database.execute(query, fingerprint)
 
     async def send_message(self, room_id: RoomID, markdown: Optional[str] = None, html: Optional[str] = None,
@@ -173,7 +173,7 @@ class AlertBot(Plugin):
                     self.log.warning(f"Received resolve for unknown alert: {alert}")
             elif alert.status == "firing":
                 if alert.event_id is None:
-                    self.log.debug(f"New alert: {alert}")
+                    self.log.debug(f"Creating new alert: {alert}")
                     event_id = await self.send_message(room_id, html=alert.message)
                     await self.upsert_alert(alert, event_id)
                 else:
@@ -191,7 +191,7 @@ class AlertBot(Plugin):
             related_event_id = evt.content.relates_to.event_id
             reaction_key = evt.content.relates_to.key
             alert = await self.get_alert_from_event_id(related_event_id)
-            self.log.debug(f"Found alert: {reaction_key}")
+            self.log.debug(f"Received reaction {reaction_key} to alert: {alert}")
             if alert and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿", ]:
                 alert.status = "acknowledged"
                 alert.last_actor = evt.sender
