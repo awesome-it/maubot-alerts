@@ -59,6 +59,7 @@ class Alert:
             actor_annotation = ""
         self.message = (
             f"<strong><font color={color}>{self.status.upper()}{actor_annotation}: </font></strong>"
+            f"{self.alertmanager_data['labels']['alertname']}<br/>"
             f"{self.alertmanager_data['annotations']['description']}"
         )
 
