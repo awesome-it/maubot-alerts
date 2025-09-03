@@ -176,15 +176,15 @@ class AlertBot(Plugin):
         if evt.sender != self.client.mxid:
             room_id = evt.room_id
             related_event_id = evt.content.relates_to.event_id
-            reaction_key = evt.content.relates_to.key.replace('\uFE0F', '').replace('\uFE0E', '')
+            reaction_key = evt.content.relates_to.key
             alert = await self.get_alert_from_event_id(related_event_id)
-            self.log.debug(f"Found alert: {alert}")
-            if alert and reaction_key == "👍":
+            self.log.debug(f"Found alert: {reaction_key}")
+            if alert and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿",]:
                 alert.status = "acknowledged"
                 await self.upsert_alert(alert, related_event_id)
                 alert.generate_message()
                 await self.edit_message(room_id, related_event_id, html=alert.message)
-                await self.react_to_message(room_id, related_event_id, "👍")
+                await self.react_to_message(room_id, related_event_id, reaction_key)
             elif alert and reaction_key == "✅":
                 alert.status = "manually resolved"
                 alert.generate_message()
