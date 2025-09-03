@@ -74,7 +74,7 @@ class AlertBot(Plugin):
             return Alert(fingerprint=row["fingerprint"], status=row["status"], alertmanager_data=alertmanager_data)
         return None
 
-    async def update_alert(self, alert: Alert, event_id):
+    async def upsert_alert(self, alert: Alert, event_id):
         json_data = json.dumps(alert.alertmanager_data)
         self.log.debug(f"json_data: {json_data}")
         query = """
@@ -162,7 +162,7 @@ class AlertBot(Plugin):
                 if alert.event_id is None:
                     self.log.debug(f"New alert: {alert}")
                     event_id = await self.send_message(room_id, html=alert.message)
-                    await self.update_alert(alert, event_id)
+                    await self.upsert_alert(alert, event_id)
                 else:
                     # TODO: notify about further firings
                     pass
@@ -181,7 +181,7 @@ class AlertBot(Plugin):
             self.log.debug(f"Found alert: {alert}")
             if alert and reaction_key == "👍":
                 alert.status = "acknowledged"
-                await self.update_alert(alert, related_event_id)
+                await self.upsert_alert(alert, related_event_id)
                 alert.generate_message()
                 await self.edit_message(room_id, related_event_id, html=alert.message)
                 await self.react_to_message(room_id, related_event_id, "👍")
