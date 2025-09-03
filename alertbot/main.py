@@ -85,13 +85,13 @@ class AlertBot(Plugin):
         self.log.debug(f"Upserting {alert.fingerprint}, event_id: {event_id}, status: {alert.status}")
         await self.database.execute(query, alert.fingerprint, event_id, alert.status, json_data)
 
-    async def remove_alert_from_db(self, fingerprint) -> None:
+    async def delete_alert(self, fingerprint) -> None:
         query = """
                 DELETE
                 FROM alerts
                 WHERE fingerprint = $1
                 """
-        self.log.debug(f"Removing alert with fingerprint: {fingerprint}")
+        self.log.debug(f"Deleting alert with fingerprint: {fingerprint}")
         await self.database.execute(query, fingerprint)
 
     async def send_message(self, room_id: RoomID, markdown: Optional[str] = None, html: Optional[str] = None,
@@ -155,7 +155,7 @@ class AlertBot(Plugin):
                     self.log.debug(f"Found existing alert: {alert}")
                     await self.edit_message(room_id, alert.event_id, html=alert.message)
                     await self.react_to_message(room_id, alert.event_id, "✅️")
-                    await self.remove_alert_from_db(alert.fingerprint)
+                    await self.delete_alert(alert.fingerprint)
                 else:
                     self.log.warning(f"Received resolve for unknown alert: {alert}")
             elif alert.status == "firing":
@@ -189,7 +189,7 @@ class AlertBot(Plugin):
                 alert.status = "manually resolved"
                 alert.generate_message()
                 await self.edit_message(room_id, related_event_id, html=alert.message)
-                await self.remove_alert_from_db(alert.fingerprint)
+                await self.delete_alert(alert.fingerprint)
 
     @classmethod
     def get_db_upgrade_table(cls) -> UpgradeTable:
