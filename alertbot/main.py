@@ -26,9 +26,11 @@ async def upgrade_v1(conn: Connection) -> None:
            )"""
     )
 
+
 @upgrade_table.register(description="Add JSON data")
 async def upgrade_v2(conn: Connection) -> None:
     await conn.execute("ALTER TABLE alerts ADD COLUMN data TEXT")
+
 
 @dataclass
 class Alert:
@@ -49,6 +51,7 @@ class Alert:
             f"<strong><font color={color}>{self.status.upper()}: </font></strong>"
             f"{self.alertmanager_data['annotations']['description']}"
         )
+
 
 class AlertBot(Plugin):
     async def get_event_id_from_fingerprint(self, fingerprint: str) -> str:
@@ -142,7 +145,6 @@ class AlertBot(Plugin):
 
     async def alert_message(self, req: Request, room_id: RoomID):
         data_json = await req.json()
-        self.log.debug(data_json)
         received_alerts = []
         for alert in data_json['alerts']:
             received_alerts.append(
@@ -179,7 +181,7 @@ class AlertBot(Plugin):
             reaction_key = evt.content.relates_to.key
             alert = await self.get_alert_from_event_id(related_event_id)
             self.log.debug(f"Found alert: {reaction_key}")
-            if alert and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿",]:
+            if alert and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿", ]:
                 alert.status = "acknowledged"
                 await self.upsert_alert(alert, related_event_id)
                 alert.generate_message()
