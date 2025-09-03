@@ -7,7 +7,7 @@ from aiohttp.web import Request, Response
 from aiohttp.web_response import json_response
 from maubot import Plugin
 from maubot.handlers import command, web, event
-from mautrix.errors import MForbidden, MNotFound
+from mautrix.errors import MForbidden, MNotFound, MatrixUnknownRequestError
 from mautrix.types import MessageEvent, RoomID, EventID, RelatesTo, TextMessageEventContent, MessageType, Format, \
     EventType, StateEvent
 from mautrix.util.async_db import UpgradeTable, Connection
@@ -121,6 +121,8 @@ class AlertBot(Plugin):
             await event.react(reaction)
         except MNotFound:
             self.log.error(f"Could not find message to react to (MNotFound) in room {room_id}: {event_id}")
+        except MatrixUnknownRequestError as e:
+            self.log.error(f"Error while reacting to message {event_id} in room {room_id}: {e}")
 
     async def call_and_handle_error(self, fn: Callable[[Request, RoomID], Awaitable[Optional[Response]]],
                                     req: Request) -> Response:
