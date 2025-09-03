@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from json import JSONDecodeError
 from typing import Callable, Awaitable, Optional
@@ -25,6 +26,29 @@ async def upgrade_v1(conn: Connection) -> None:
            )"""
     )
 
+@upgrade_table.register(description="Add JSON data")
+async def upgrade_v2(conn: Connection) -> None:
+    await conn.execute("ALTER TABLE alerts ADD COLUMN data TEXT")
+
+@dataclass
+class Alert:
+    fingerprint: str
+    status: str
+    alertmanager_data: dict
+    event_id: Optional[str] = None
+    message: Optional[str] = None
+
+    def generate_message(self) -> None:
+        if self.status == "firing":
+            color = "red"
+        elif self.status == "acknowledged":
+            color = "orange"
+        else:
+            color = "green"
+        self.message = (
+            f"<strong><font color={color}>{self.status.upper()}: </font></strong>"
+            f"{self.alertmanager_data['annotations']['description']}"
+        )
 
 class AlertBot(Plugin):
     async def get_event_id_from_fingerprint(self, fingerprint: str) -> str:
@@ -37,24 +61,29 @@ class AlertBot(Plugin):
         self.log.debug(f"fingerprint: {fingerprint} -> event_id: {event_id}")
         return event_id
 
-    async def get_fingerprint_from_event_id(self, event_id: str) -> str:
+    async def get_alert_from_event_id(self, event_id: str) -> Optional[Alert]:
         query = """
-                SELECT fingerprint
+                SELECT *
                 FROM alerts
-                WHERE event_id = $1 \
+                WHERE event_id = $1
                 """
-        fingerprint = await self.database.fetchval(query, event_id)
-        self.log.debug(f"event_id: {event_id} -> fingerprint: {fingerprint}")
-        return fingerprint
+        row = await self.database.fetchrow(query, event_id)
+        if row:
+            alertmanager_data = json.loads(row["data"])
+            self.log.debug(f"alertmanager_data: {row["data"]}")
+            return Alert(fingerprint=row["fingerprint"], status=row["status"], alertmanager_data=alertmanager_data)
+        return None
 
-    async def update_alert(self, alert, event_id):
+    async def update_alert(self, alert: Alert, event_id):
+        json_data = json.dumps(alert.alertmanager_data)
+        self.log.debug(f"json_data: {json_data}")
         query = """
-                INSERT INTO alerts (fingerprint, event_id, status)
-                VALUES ($1, $2, $3) ON CONFLICT (fingerprint) DO
-                UPDATE SET event_id = $2, status = $3 \
+                INSERT INTO alerts (fingerprint, event_id, status, data)
+                VALUES ($1, $2, $3, $4) ON CONFLICT (fingerprint) DO
+                UPDATE SET event_id = $2, status = $3, data = $4
                 """
-        self.log.debug(f"Inserting {alert.fingerprint}, event_id: {event_id}, status: {alert.status}")
-        await self.database.execute(query, alert.fingerprint, event_id, alert.status)
+        self.log.debug(f"Upserting {alert.fingerprint}, event_id: {event_id}, status: {alert.status}")
+        await self.database.execute(query, alert.fingerprint, event_id, alert.status, json_data)
 
     async def remove_alert_from_db(self, fingerprint) -> None:
         query = """
@@ -117,8 +146,7 @@ class AlertBot(Plugin):
         received_alerts = []
         for alert in data_json['alerts']:
             received_alerts.append(
-                Alert(alert['fingerprint'], status=alert['status'], summary=alert['annotations']['summary'],
-                      description=alert['annotations']['description']))
+                Alert(alert['fingerprint'], status=alert['status'], alertmanager_data=alert))
         for alert in received_alerts:
             alert.event_id = await self.get_event_id_from_fingerprint(alert.fingerprint)
             alert.generate_message()
@@ -149,15 +177,16 @@ class AlertBot(Plugin):
             room_id = evt.room_id
             related_event_id = evt.content.relates_to.event_id
             reaction_key = evt.content.relates_to.key.replace('\uFE0F', '').replace('\uFE0E', '')
-            fingerprint = await self.get_fingerprint_from_event_id(related_event_id)
-            if fingerprint and reaction_key == "👍":
-                alert = Alert(fingerprint=fingerprint, status="acknowledged", event_id=related_event_id)
+            alert = await self.get_alert_from_event_id(related_event_id)
+            self.log.debug(f"Found alert: {alert}")
+            if alert and reaction_key == "👍":
+                alert.status = "acknowledged"
                 await self.update_alert(alert, related_event_id)
                 alert.generate_message()
                 await self.edit_message(room_id, related_event_id, html=alert.message)
                 await self.react_to_message(room_id, related_event_id, "👍")
-            elif fingerprint and reaction_key == "✅":
-                alert = Alert(fingerprint=fingerprint, status="resolved", event_id=related_event_id)
+            elif alert and reaction_key == "✅":
+                alert.status = "manually resolved"
                 alert.generate_message()
                 await self.edit_message(room_id, related_event_id, html=alert.message)
                 await self.remove_alert_from_db(alert.fingerprint)
@@ -169,25 +198,3 @@ class AlertBot(Plugin):
     @command.new()
     async def ping(self, evt: MessageEvent) -> None:
         await evt.reply("pong")
-
-
-@dataclass
-class Alert:
-    fingerprint: str
-    status: str
-    summary: Optional[str] = None
-    description: Optional[str] = None
-    event_id: Optional[str] = None
-    message: Optional[str] = None
-
-    def generate_message(self) -> None:
-        if self.status == "firing":
-            color = "red"
-        elif self.status == "acknowledged":
-            color = "orange"
-        else:
-            color = "green"
-        self.message = (
-            f'<strong><font color={color}>{self.status.upper()}: </font></strong>'
-            f'{self.description}'
-        )
