@@ -32,6 +32,11 @@ async def upgrade_v2(conn: Connection) -> None:
     await conn.execute("ALTER TABLE alerts ADD COLUMN data TEXT")
 
 
+@upgrade_table.register(description="Add last_actor column")
+async def upgrade_v3(conn: Connection) -> None:
+    await conn.execute("ALTER TABLE alerts ADD COLUMN last_actor TEXT")
+
+
 @dataclass
 class Alert:
     fingerprint: str
@@ -39,6 +44,7 @@ class Alert:
     alertmanager_data: dict
     event_id: Optional[str] = None
     message: Optional[str] = None
+    last_actor: Optional[str] = None
 
     def generate_message(self) -> None:
         if self.status == "firing":
@@ -47,8 +53,12 @@ class Alert:
             color = "orange"
         else:
             color = "green"
+        if self.last_actor:
+            actor_annotation = f" by {self.last_actor}"
+        else:
+            actor_annotation = ""
         self.message = (
-            f"<strong><font color={color}>{self.status.upper()}: </font></strong>"
+            f"<strong><font color={color}>{self.status.upper()}{actor_annotation}: </font></strong>"
             f"{self.alertmanager_data['annotations']['description']}"
         )
 
@@ -79,14 +89,13 @@ class AlertBot(Plugin):
 
     async def upsert_alert(self, alert: Alert, event_id):
         json_data = json.dumps(alert.alertmanager_data)
-        self.log.debug(f"json_data: {json_data}")
         query = """
-                INSERT INTO alerts (fingerprint, event_id, status, data)
-                VALUES ($1, $2, $3, $4) ON CONFLICT (fingerprint) DO
-                UPDATE SET event_id = $2, status = $3, data = $4
+                INSERT INTO alerts (fingerprint, event_id, status, data, last_actor)
+                VALUES ($1, $2, $3, $4, $5) ON CONFLICT (fingerprint) DO
+                UPDATE SET event_id = $2, status = $3, data = $4, last_actor = $5
                 """
         self.log.debug(f"Upserting {alert.fingerprint}, event_id: {event_id}, status: {alert.status}")
-        await self.database.execute(query, alert.fingerprint, event_id, alert.status, json_data)
+        await self.database.execute(query, alert.fingerprint, event_id, alert.status, json_data, alert.last_actor)
 
     async def delete_alert(self, fingerprint) -> None:
         query = """
@@ -185,12 +194,14 @@ class AlertBot(Plugin):
             self.log.debug(f"Found alert: {reaction_key}")
             if alert and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿", ]:
                 alert.status = "acknowledged"
+                alert.last_actor = evt.sender
                 await self.upsert_alert(alert, related_event_id)
                 alert.generate_message()
                 await self.edit_message(room_id, related_event_id, html=alert.message)
                 await self.react_to_message(room_id, related_event_id, reaction_key)
             elif alert and reaction_key in ["✅", "✅️"]:
                 alert.status = "manually resolved"
+                alert.last_actor = evt.sender
                 alert.generate_message()
                 await self.edit_message(room_id, related_event_id, html=alert.message)
                 await self.react_to_message(room_id, related_event_id, reaction_key)
