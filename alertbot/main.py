@@ -59,7 +59,7 @@ class Alert:
             actor_annotation = ""
         self.message = (
             f"<strong><font color={color}>{self.status.upper()}{actor_annotation}: </font></strong>"
-            f"{self.alertmanager_data['labels']['alertname']}<br/>"
+            f"<a href={self.alertmanager_data['generatorURL'].replace(" ", "")}>{self.alertmanager_data['labels']['alertname']}</a><br/>"
             f"{self.alertmanager_data['annotations']['description']}"
         )
 
@@ -121,7 +121,9 @@ class AlertBot(Plugin):
     async def edit_message(self, room_id, event_id, html):
         try:
             event = await self.client.get_event(room_id, event_id)
-            await event.edit(content=html, allow_html=True)
+            content = TextMessageEventContent(msgtype=MessageType.TEXT, format=Format.HTML)
+            content.formatted_body = html
+            await event.edit(content=content, allow_html=True)
         except MNotFound:
             self.log.error(f"Could not find message to edit (MNotFound) in room {room_id}: {event_id}")
 
