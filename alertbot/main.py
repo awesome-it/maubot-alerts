@@ -198,10 +198,10 @@ class AlertBot(Plugin):
             if alert and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿", ]:
                 alert.status = "acknowledged"
                 alert.last_actor = evt.sender
-                await self.upsert_alert(alert, related_event_id)
                 alert.generate_message()
                 await self.edit_message(room_id, related_event_id, html=alert.message)
                 await self.react_to_message(room_id, related_event_id, reaction_key)
+                await self.upsert_alert(alert, related_event_id)
             elif alert and reaction_key in ["✅", "✅️"]:
                 alert.status = "manually resolved"
                 alert.last_actor = evt.sender
