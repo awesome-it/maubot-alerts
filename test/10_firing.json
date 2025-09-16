@@ -1,0 +1,1405 @@
+{
+  "receiver": "grafana_oncall",
+  "status": "firing",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab-slo.yaml",
+        "group": "GitLab Component Saturation Max SLOs",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "slo:max:hard:gitlab_sli:gitlab_component_saturation:ratio",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Component Saturation Max SLOs",
+        "description": "Recording rule \"slo:max:hard:gitlab_sli:gitlab_component_saturation:ratio\" from group \"GitLab Component Saturation Max SLOs\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule slo:max:hard:gitlab_sli:gitlab_component_saturation:ratio ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "f28b9e2590bba008"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab-slo.yaml",
+        "group": "GitLab Component Saturation Max SLOs",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "slo:max:soft:gitlab_sli:gitlab_component_saturation:ratio",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Component Saturation Max SLOs",
+        "description": "Recording rule \"slo:max:soft:gitlab_sli:gitlab_component_saturation:ratio\" from group \"GitLab Component Saturation Max SLOs\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule slo:max:soft:gitlab_sli:gitlab_component_saturation:ratio ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "5ce7e02120204005"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "instance:puma_utilization:ratio",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab",
+        "description": "Recording rule \"instance:puma_utilization:ratio\" from group \"GitLab\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule instance:puma_utilization:ratio ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "52e8571d9d137301"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "job_route_method_code:gitlab_workhorse_http_request_duration_seconds_count:rate5m",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab",
+        "description": "Recording rule \"job_route_method_code:gitlab_workhorse_http_request_duration_seconds_count:rate5m\" from group \"GitLab\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule job_route_method_code:gitlab_workhorse_http_request_duration_seconds_count:rate5m ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "e7a76f973574daea"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:gitaly_apdex:ratio_avg_over_time_5m",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:gitaly_apdex:ratio_avg_over_time_5m\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:gitaly_apdex:ratio_avg_over_time_5m ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "26fd95948b7e7f97"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:node_cpu_utilization:avg",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:node_cpu_utilization:avg\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:node_cpu_utilization:avg ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "1430df8d493afa40"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:node_cpus:count",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:node_cpus:count\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:node_cpus:count ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "bfca6b9c147af8bd"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:node_memory_total_bytes:max",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:node_memory_total_bytes:max\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:node_memory_total_bytes:max ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "6fd961206424ae11"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:node_memory_utilization:avg",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:node_memory_utilization:avg\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:node_memory_utilization:avg ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "0796ffc0e3415c35"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:node_service_app_server_workers:sum",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:node_service_app_server_workers:sum\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:node_service_app_server_workers:sum ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "1d8c3445d539f8b5"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:node_service_process:count",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:node_service_process:count\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:node_service_process:count ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "36b647927e76ce1d"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:node_service_process_proportional_memory_bytes:avg",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:node_service_process_proportional_memory_bytes:avg\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:node_service_process_proportional_memory_bytes:avg ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "8ac7e66c3f3aba88"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:node_service_process_resident_memory_bytes:avg",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:node_service_process_resident_memory_bytes:avg\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:node_service_process_resident_memory_bytes:avg ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "2c3c6d3bce211ddf"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:node_service_process_unique_memory_bytes:avg",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:node_service_process_unique_memory_bytes:avg\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:node_service_process_unique_memory_bytes:avg ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "0f3645034048abd0"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:ops:rate5m",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:ops:rate5m\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:ops:rate5m ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "11b5bca27c92a5e6"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/gitlab.yaml",
+        "group": "GitLab Usage Ping",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "gitlab_usage_ping:sql_duration_apdex:ratio_rate5m",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
+        "description": "Recording rule \"gitlab_usage_ping:sql_duration_apdex:ratio_rate5m\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule gitlab_usage_ping:sql_duration_apdex:ratio_rate5m ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "6a6ced0a10bded72"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/host-available.yaml",
+        "group": "HostAvailability",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "host_absent:total",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=HostAvailability",
+        "description": "Recording rule \"host_absent:total\" from group \"HostAvailability\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule host_absent:total ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "fda41e816a96e9d0"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-k8s.yaml",
+        "group": "k8s.rules.container_memory_cache",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "node_namespace_pod_container:container_memory_cache",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_memory_cache",
+        "description": "Recording rule \"node_namespace_pod_container:container_memory_cache\" from group \"k8s.rules.container_memory_cache\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule node_namespace_pod_container:container_memory_cache ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "8d2b7e1b6c3174b3"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-k8s.yaml",
+        "group": "k8s.rules.container_resource",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
+        "description": "Recording rule \"cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "343445aa0dcd7ea7"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-k8s.yaml",
+        "group": "k8s.rules.container_resource",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
+        "description": "Recording rule \"cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "03daad1158f90765"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-k8s.yaml",
+        "group": "k8s.rules.container_resource",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster:namespace:pod_memory:active:kube_pod_container_resource_limits",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
+        "description": "Recording rule \"cluster:namespace:pod_memory:active:kube_pod_container_resource_limits\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster:namespace:pod_memory:active:kube_pod_container_resource_limits ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "3245d88d86be4314"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-k8s.yaml",
+        "group": "k8s.rules.container_resource",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster:namespace:pod_memory:active:kube_pod_container_resource_requests",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
+        "description": "Recording rule \"cluster:namespace:pod_memory:active:kube_pod_container_resource_requests\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster:namespace:pod_memory:active:kube_pod_container_resource_requests ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "488379f41d7395b2"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-k8s.yaml",
+        "group": "k8s.rules.container_resource",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "namespace_cpu:kube_pod_container_resource_limits:sum",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
+        "description": "Recording rule \"namespace_cpu:kube_pod_container_resource_limits:sum\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule namespace_cpu:kube_pod_container_resource_limits:sum ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "4b2ad017a4e6df25"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-k8s.yaml",
+        "group": "k8s.rules.container_resource",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "namespace_cpu:kube_pod_container_resource_requests:sum",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
+        "description": "Recording rule \"namespace_cpu:kube_pod_container_resource_requests:sum\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule namespace_cpu:kube_pod_container_resource_requests:sum ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "e03983d01b69a4e3"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-k8s.yaml",
+        "group": "k8s.rules.container_resource",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "namespace_memory:kube_pod_container_resource_limits:sum",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
+        "description": "Recording rule \"namespace_memory:kube_pod_container_resource_limits:sum\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule namespace_memory:kube_pod_container_resource_limits:sum ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "86902bf66e706086"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-k8s.yaml",
+        "group": "k8s.rules.container_resource",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "namespace_memory:kube_pod_container_resource_requests:sum",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
+        "description": "Recording rule \"namespace_memory:kube_pod_container_resource_requests:sum\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule namespace_memory:kube_pod_container_resource_requests:sum ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "6a05273582424e2c"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-availability.yaml",
+        "group": "kube-apiserver-availability.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "apiserver_request:availability30d",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
+        "description": "Recording rule \"apiserver_request:availability30d\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule apiserver_request:availability30d ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T12:23:30+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "61a3886acac999e4"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-availability.yaml",
+        "group": "kube-apiserver-availability.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
+        "description": "Recording rule \"cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "8db4623598aa5b1c"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-availability.yaml",
+        "group": "kube-apiserver-availability.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
+        "description": "Recording rule \"cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "6cbce5d4903e6176"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-availability.yaml",
+        "group": "kube-apiserver-availability.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
+        "description": "Recording rule \"cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "c0b2f1fc1692d877"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-availability.yaml",
+        "group": "kube-apiserver-availability.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
+        "description": "Recording rule \"cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "599dcec12970694b"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-availability.yaml",
+        "group": "kube-apiserver-availability.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "code:apiserver_request_total:increase30d",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
+        "description": "Recording rule \"code:apiserver_request_total:increase30d\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule code:apiserver_request_total:increase30d ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "b72a7576b08f623f"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-availability.yaml",
+        "group": "kube-apiserver-availability.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "code_resource:apiserver_request_total:rate5m",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
+        "description": "Recording rule \"code_resource:apiserver_request_total:rate5m\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule code_resource:apiserver_request_total:rate5m ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "b943c1a4fb768c29"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-availability.yaml",
+        "group": "kube-apiserver-availability.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "code_verb:apiserver_request_total:increase1h",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
+        "description": "Recording rule \"code_verb:apiserver_request_total:increase1h\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule code_verb:apiserver_request_total:increase1h ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "2236c37bbcd2fc93"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-availability.yaml",
+        "group": "kube-apiserver-availability.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "code_verb:apiserver_request_total:increase30d",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
+        "description": "Recording rule \"code_verb:apiserver_request_total:increase30d\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule code_verb:apiserver_request_total:increase30d ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "f75dda3ee4559707"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-burnrate.yaml",
+        "group": "kube-apiserver-burnrate.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "apiserver_request:burnrate1d",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
+        "description": "Recording rule \"apiserver_request:burnrate1d\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule apiserver_request:burnrate1d ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T12:23:30+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "314531596a1752e2"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-burnrate.yaml",
+        "group": "kube-apiserver-burnrate.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "apiserver_request:burnrate1h",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
+        "description": "Recording rule \"apiserver_request:burnrate1h\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule apiserver_request:burnrate1h ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T12:23:30+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "b0d08840668df03e"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-burnrate.yaml",
+        "group": "kube-apiserver-burnrate.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "apiserver_request:burnrate2h",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
+        "description": "Recording rule \"apiserver_request:burnrate2h\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule apiserver_request:burnrate2h ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T12:23:30+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "a2ac32344913059b"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-burnrate.yaml",
+        "group": "kube-apiserver-burnrate.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "apiserver_request:burnrate30m",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
+        "description": "Recording rule \"apiserver_request:burnrate30m\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule apiserver_request:burnrate30m ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T12:23:30+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "19a628c56bae36b1"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-burnrate.yaml",
+        "group": "kube-apiserver-burnrate.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "apiserver_request:burnrate3d",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
+        "description": "Recording rule \"apiserver_request:burnrate3d\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule apiserver_request:burnrate3d ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T12:23:30+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "f3ed709925ea7bc8"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-burnrate.yaml",
+        "group": "kube-apiserver-burnrate.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "apiserver_request:burnrate5m",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
+        "description": "Recording rule \"apiserver_request:burnrate5m\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule apiserver_request:burnrate5m ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T12:23:30+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "5e6f4d3e06c3b2bf"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-burnrate.yaml",
+        "group": "kube-apiserver-burnrate.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "apiserver_request:burnrate6h",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
+        "description": "Recording rule \"apiserver_request:burnrate6h\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule apiserver_request:burnrate6h ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T12:23:30+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "568188b9986dc697"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-apiserver-histogram.yaml",
+        "group": "kube-apiserver-histogram.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-histogram.rules",
+        "description": "Recording rule \"cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile\" from group \"kube-apiserver-histogram.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "e01fe2ddb838aec6"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-prometheus-node-recording.yaml",
+        "group": "kube-prometheus-node-recording.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster:node_cpu:ratio",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
+        "description": "Recording rule \"cluster:node_cpu:ratio\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster:node_cpu:ratio ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "94e30d08a673b729"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-prometheus-node-recording.yaml",
+        "group": "kube-prometheus-node-recording.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster:node_cpu:sum_rate5m",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
+        "description": "Recording rule \"cluster:node_cpu:sum_rate5m\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster:node_cpu:sum_rate5m ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "452f4862bf615994"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-prometheus-node-recording.yaml",
+        "group": "kube-prometheus-node-recording.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "instance:node_cpu:rate:sum",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
+        "description": "Recording rule \"instance:node_cpu:rate:sum\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule instance:node_cpu:rate:sum ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "50702181ecb20c18"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-prometheus-node-recording.yaml",
+        "group": "kube-prometheus-node-recording.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "instance:node_cpu:ratio",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
+        "description": "Recording rule \"instance:node_cpu:ratio\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule instance:node_cpu:ratio ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "cc464546a64528ca"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-prometheus-node-recording.yaml",
+        "group": "kube-prometheus-node-recording.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "instance:node_network_receive_bytes:rate:sum",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
+        "description": "Recording rule \"instance:node_network_receive_bytes:rate:sum\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule instance:node_network_receive_bytes:rate:sum ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "7df1b1ed9b053216"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-kube-prometheus-node-recording.yaml",
+        "group": "kube-prometheus-node-recording.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "instance:node_network_transmit_bytes:rate:sum",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
+        "description": "Recording rule \"instance:node_network_transmit_bytes:rate:sum\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule instance:node_network_transmit_bytes:rate:sum ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "2147a4944b46602b"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-node.yaml",
+        "group": "node.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": ":node_memory_MemAvailable_bytes:sum",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=node.rules",
+        "description": "Recording rule \":node_memory_MemAvailable_bytes:sum\" from group \"node.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule :node_memory_MemAvailable_bytes:sum ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "e971de0dbd64701b"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-node.yaml",
+        "group": "node.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "cluster:node_cpu:ratio_rate5m",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=node.rules",
+        "description": "Recording rule \"cluster:node_cpu:ratio_rate5m\" from group \"node.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule cluster:node_cpu:ratio_rate5m ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "6a826014acb286f4"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-node.yaml",
+        "group": "node.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "node:node_cpu_utilization:ratio_rate5m",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=node.rules",
+        "description": "Recording rule \"node:node_cpu_utilization:ratio_rate5m\" from group \"node.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule node:node_cpu_utilization:ratio_rate5m ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "b793f98ebb1a32c7"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-node.yaml",
+        "group": "node.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "node:node_num_cpu:sum",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=node.rules",
+        "description": "Recording rule \"node:node_num_cpu:sum\" from group \"node.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule node:node_num_cpu:sum ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "84c77c49c6737e6c"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/kube-prometheus-node.yaml",
+        "group": "node.rules",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "node_namespace_pod:kube_pod_info:",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=node.rules",
+        "description": "Recording rule \"node_namespace_pod:kube_pod_info:\" from group \"node.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule node_namespace_pod:kube_pod_info: ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "fadb65e884dab659"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/synapse.yaml",
+        "group": "synapse",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "synapse_federation_client_sent",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
+        "description": "Recording rule \"synapse_federation_client_sent\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule synapse_federation_client_sent ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "9e0cfc4d167eca6d"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/synapse.yaml",
+        "group": "synapse",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "synapse_federation_server_received",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
+        "description": "Recording rule \"synapse_federation_server_received\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule synapse_federation_server_received ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "9d63cbcdb708ffa6"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/synapse.yaml",
+        "group": "synapse",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "synapse_federation_transaction_queue_pending",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
+        "description": "Recording rule \"synapse_federation_transaction_queue_pending\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule synapse_federation_transaction_queue_pending ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "65e39834f15a938f"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/synapse.yaml",
+        "group": "synapse",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "synapse_storage_events_persisted_by_event_type",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
+        "description": "Recording rule \"synapse_storage_events_persisted_by_event_type\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule synapse_storage_events_persisted_by_event_type ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "f05b56b2b84b0c9a"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/synapse.yaml",
+        "group": "synapse",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "synapse_storage_events_persisted_by_origin",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
+        "description": "Recording rule \"synapse_storage_events_persisted_by_origin\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule synapse_storage_events_persisted_by_origin ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "af17101ee40b2423"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "vmalert",
+        "alertname": "RecordingRulesNoData",
+        "customer": "awesome",
+        "file": "/etc/victoriametrics/alerts/synapse.yaml",
+        "group": "synapse",
+        "instance": "monitoring.example.org",
+        "job": "prometheus.scrape.victoriametrics",
+        "recording": "synapse_storage_events_persisted_by_source_type",
+        "severity": "info"
+      },
+      "annotations": {
+        "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
+        "description": "Recording rule \"synapse_storage_events_persisted_by_source_type\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
+        "summary": "Recording rule synapse_storage_events_persisted_by_source_type ({ $labels.group }}) produces no data"
+      },
+      "startsAt": "2025-09-04T13:28:00+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "e86be7606cafa259"
+    }
+  ],
+  "groupLabels": {
+    "alertname": "RecordingRulesNoData",
+    "customer": "awesome",
+    "instance": "monitoring.example.org",
+    "job": "prometheus.scrape.victoriametrics"
+  },
+  "commonLabels": {
+    "alertgroup": "vmalert",
+    "alertname": "RecordingRulesNoData",
+    "customer": "awesome",
+    "instance": "monitoring.example.org",
+    "job": "prometheus.scrape.victoriametrics",
+    "severity": "info"
+  },
+  "commonAnnotations": {},
+  "externalURL": "https://alertmanager.example.org",
+  "version": "4",
+  "groupKey": "{}:{alertname=\"RecordingRulesNoData\", customer=\"awesome\", instance=\"monitoring.example.org\", job=\"prometheus.scrape.victoriametrics\"}",
+  "truncatedAlerts": 0
+}
