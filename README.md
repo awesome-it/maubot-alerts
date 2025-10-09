@@ -1,4 +1,4 @@
-# Maubot Alertbot
+# Maubot Alerts
 
 This is a plugin for [maubot](https://mau.bot/) that receives alerts from
 [Prometheus Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) and sends them to a Matrix room.
