@@ -27,7 +27,7 @@ This is a plugin for [maubot](https://mau.bot/) that receives alerts from
 
 ## Installation
 
-1. Download the .mbp file from releases
+1. Build the mbp-file as described below
 2. Go to the webinterface of your maubot instance
 3. Click on the plus sign next to "Plugins"
 4. Upload the .mbp file
