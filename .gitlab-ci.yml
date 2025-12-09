@@ -1,0 +1,14 @@
+---
+variables:
+  DEPENDENCY_TRACK_PROJECT_ID: c8aedcb8-ad3a-4977-865e-e9ec8a6cd921
+
+include:
+  - project: awesome/cicd
+    file: common.yml
+    ref: v1.0
+  - project: awesome/cicd
+    file: dependency-track/python.yml
+    ref: v1.0
+
+dependency_track:
+  allow_failure: true
