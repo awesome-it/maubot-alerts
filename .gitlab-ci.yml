@@ -12,3 +12,22 @@ include:
 
 dependency-track-checks:
   allow_failure: true
+
+test:
+  image: registry.awesome-it.de/upstream-dockerhub/library/python:3.12-slim
+  stage: test
+  script:
+    - pip install .[dev]
+    - pytest test/ -v
+
+build-maubot-plugin:
+  image: registry.awesome-it.de/upstream-dockerhub/library/python:3.12-slim
+  stage: build
+  script:
+    - pip install .
+    - python -m py_compile alertbot/*.py
+    - mbc build
+  artifacts:
+    paths:
+      - de.awesome-it.maubot-alerts-v*
+    expire_in: 1 hour

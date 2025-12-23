@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "maubot-alerts"
+version = "0.1.9"
+description = "A Maubot plugin for alerting via Matrix"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["maubot==0.5.2"]
+
+[project.optional-dependencies]
+dev = ["pytest==8.3.0", "pytest-asyncio==0.24.0"]
+
+[tool.setuptools]
+packages = ["alertbot"]
