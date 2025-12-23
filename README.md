@@ -79,3 +79,7 @@ You can use `curl` to send test alerts to the plugin endpoint:
 curl 'https://maubot.example.org/plugin/<plugin_instance_id>/prom-alerts/<room_id>' \
 --json @./test/<filename>.json
 ```
+
+### Important Notes
+
+> **Note:** Python module names in maubot (such as 'alertbot') must be unique across all maubot plugins.

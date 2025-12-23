@@ -1,6 +1,6 @@
 id: de.awesome-it.maubot-alerts
 maubot: 0.5.1
-version: 0.1.8
+version: 0.1.9
 license: MIT
 modules:
   - alertbot
