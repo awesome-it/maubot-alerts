@@ -51,11 +51,13 @@ Clone the project, create a venv and install dependencies, log in to your maubot
 ```bash
 python -m venv ./.venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install .
 mbc login --server https://maubot.example.org/
 ```
 
-To build and upload run
+
+For the plugin binary, it is recommended to download the artifact from the CI/CD pipeline.
+Alternatively, you can build and upload locally using:
 
 ```bash
 mbc build --upload
