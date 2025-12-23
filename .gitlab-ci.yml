@@ -10,5 +10,5 @@ include:
     file: dependency-track/python.yml
     ref: v1.0
 
-dependency_track:
+dependency-track-checks:
   allow_failure: true
