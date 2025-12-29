@@ -11,6 +11,7 @@ from mautrix.errors import MForbidden, MNotFound, MatrixUnknownRequestError
 from mautrix.types import MessageEvent, RoomID, EventID, RelatesTo, TextMessageEventContent, MessageType, Format, \
     EventType, StateEvent
 from mautrix.util.async_db import UpgradeTable, Connection
+from html.parser import HTMLParser
 
 upgrade_table = UpgradeTable()
 
@@ -35,6 +36,24 @@ async def upgrade_v2(conn: Connection) -> None:
 @upgrade_table.register(description="Add last_actor column")
 async def upgrade_v3(conn: Connection) -> None:
     await conn.execute("ALTER TABLE alerts ADD COLUMN last_actor TEXT")
+
+
+
+class MLStripper(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.text = []
+
+    def handle_data(self, data):
+        self.text.append(data)
+
+    def get_data(self):
+        return ''.join(self.text)
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
 
 
 @dataclass
@@ -114,6 +133,7 @@ class AlertBot(Plugin):
 
         # HTML
         content = TextMessageEventContent(msgtype=MessageType.TEXT, format=Format.HTML)
+        content.body = strip_tags(html)
         content.formatted_body = html
         content.relates_to = relates_to
         return await self.client.send_message(room_id, content)
@@ -122,6 +142,7 @@ class AlertBot(Plugin):
         try:
             event = await self.client.get_event(room_id, event_id)
             content = TextMessageEventContent(msgtype=MessageType.TEXT, format=Format.HTML)
+            content.body = strip_tags(html)
             content.formatted_body = html
             await event.edit(content=content, allow_html=True)
         except MNotFound:
