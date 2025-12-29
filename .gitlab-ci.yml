@@ -1,6 +1,11 @@
 ---
 variables:
   DEPENDENCY_TRACK_PROJECT_ID: c8aedcb8-ad3a-4977-865e-e9ec8a6cd921
+  PYTHON_IMAGE: registry.awesome-it.de/upstream-dockerhub/library/python:3.12-slim
+  MODULE_NAME: alertbot
+  MODULE_NAME_TEST: alertbot_test
+  PLUGIN_ID: de.awesome-it.maubot-alerts
+  PLUGIN_ID_TEST: de.awesome-it.maubot-alerts-test
 
 include:
   - project: awesome/cicd
@@ -14,20 +19,35 @@ dependency-track-checks:
   allow_failure: true
 
 test:
-  image: registry.awesome-it.de/upstream-dockerhub/library/python:3.12-slim
+  image: ${PYTHON_IMAGE}
   stage: test
   script:
     - pip install .[dev]
     - pytest test/ -v
 
-build-maubot-plugin:
-  image: registry.awesome-it.de/upstream-dockerhub/library/python:3.12-slim
-  stage: build
+maubot-plugin-test-mbp:
+  image: ${PYTHON_IMAGE}
+  stage: package
   script:
+    - mv ${MODULE_NAME} ${MODULE_NAME_TEST}
+    - sed -i "s/${MODULE_NAME}/${MODULE_NAME_TEST}/g" pyproject.toml
+    - sed -i "s/${PLUGIN_ID}/${PLUGIN_ID_TEST}/g" maubot.yaml
+    - sed -i "s/${MODULE_NAME}/${MODULE_NAME_TEST}/g" maubot.yaml
+    - "sed -i \"s/^version: \\(.*\\)$/version: \\1.dev0+$(date +%Y%m%d).${CI_COMMIT_SHORT_SHA}/\" maubot.yaml"
     - pip install .
-    - python -m py_compile alertbot/*.py
     - mbc build
   artifacts:
     paths:
-      - de.awesome-it.maubot-alerts-v*
+      - ${PLUGIN_ID_TEST}-v*
+    expire_in: 1 hour
+
+maubot-plugin-mbp:
+  image: ${PYTHON_IMAGE}
+  stage: package
+  script:
+    - pip install .
+    - mbc build
+  artifacts:
+    paths:
+      - ${PLUGIN_ID}-v*
     expire_in: 1 hour
