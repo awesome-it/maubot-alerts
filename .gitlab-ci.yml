@@ -20,12 +20,28 @@ test:
     - pip install .[dev]
     - pytest test/ -v
 
-build-maubot-plugin:
+maubot-plugin-test-mbp:
   image: registry.awesome-it.de/upstream-dockerhub/library/python:3.12-slim
-  stage: build
+  stage: package
+  script:
+    - mv alertbot alertbot_test
+    - sed -i 's/alertbot/alertbot_test/g' pyproject.toml
+    - sed -i 's/de.awesome-it.maubot-alerts/de.awesome-it.maubot-alerts-test/g' maubot.yaml
+    - sed -i 's/alertbot/alertbot_test/g' maubot.yaml
+    - "sed -i 's/^version: \\(.*\\)$/version: \\1dev1/' maubot.yaml"
+    - pip install .
+    - mbc build
+    - mv alertbot_test alertbot
+  artifacts:
+    paths:
+      - de.awesome-it.maubot-alerts-test-v*
+    expire_in: 1 hour
+
+maubot-plugin-mbp:
+  image: registry.awesome-it.de/upstream-dockerhub/library/python:3.12-slim
+  stage: package
   script:
     - pip install .
-    - python -m py_compile alertbot/*.py
     - mbc build
   artifacts:
     paths:
