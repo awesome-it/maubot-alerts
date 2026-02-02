@@ -9,6 +9,8 @@ description = "A Maubot plugin for alerting via Matrix"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = ["maubot==0.5.2"]
+license = "AGPL-3.0-only"
+license-files = ["LICENSE"]
 
 [project.optional-dependencies]
 dev = ["pytest==8.3.0", "pytest-asyncio==0.24.0"]
