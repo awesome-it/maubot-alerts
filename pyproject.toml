@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=45", "wheel"]
+requires = ["setuptools==81.*", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,12 +8,17 @@ version = "0.1.10"
 description = "A Maubot plugin for alerting via Matrix"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["maubot==0.5.2"]
+dependencies = ["maubot==0.5.2", "setuptools==81.*"]
 license = "AGPL-3.0-only"
 license-files = ["LICENSE"]
 
-[project.optional-dependencies]
-dev = ["pytest==8.3.0", "pytest-asyncio==0.24.0"]
-
 [tool.setuptools]
 packages = ["alertbot"]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-asyncio>=0.24.0",
+  "pytest-cov>=7.0.0",
+  "pytest-mock>=3.15.1",
+]
