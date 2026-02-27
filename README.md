@@ -68,6 +68,21 @@ through the maubot webinterface.
 
 > IMPORTANT: maubot versions <0.5.2 don't update the webhook receivers on plugin updates.
 
+### Deploy new version
+
+1. Test new version:
+    1. Bump plugin version to [NEW_VERSION] in `pyproject.toml` and `maubot.yaml`
+    2. Download artifact from `maubot-plugin-test-mbp`
+    3. Upload `*.mbp` file to https://maubot.local.awesome-it.de/#/plugin/de.awesome-it.maubot-alerts-test (You should see the new version in the `Version` field [NEW_VERSION].dev0+[DATE][HASH])
+    4. Execute `curl -X POST 'https://maubot.local.awesome-it.de/plugin/awe-alerts-test/prom-alerts/!W5z1xQZXbwl76hkXQUGfF7gz1fokec1osRfQLqwFvAY' --json @./test/10_firing.json`
+    5. You should see alerts in the `alert-bot-test` room
+2. Release in prod:
+    1. Merge your branch into main
+    2. Create a new version tag
+    3. Download artifact from `maubot-plugin-test-mbp`
+    4. Upload `*.mbp` file to https://maubot.local.awesome-it.de/#/plugin/de.awesome-it.maubot-alerts (You should see the new version in the `Version` field [NEW_VERSION])
+
+
 ### Test
 
 After uploading the plugin for the first time, use the maubot webinterface to create a new

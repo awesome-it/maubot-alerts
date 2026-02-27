@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "maubot-alerts"
-version = "0.1.10"
+version = "0.1.11"
 description = "A Maubot plugin for alerting via Matrix"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 dependencies = ["maubot==0.5.2", "setuptools==81.*"]
 license = "AGPL-3.0-only"
 license-files = ["LICENSE"]
@@ -22,3 +22,6 @@ dev = [
   "pytest-cov>=7.0.0",
   "pytest-mock>=3.15.1",
 ]
+[tool.ruff]
+line-length = 110
+target-version = "py310"
