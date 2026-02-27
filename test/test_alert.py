@@ -1,4 +1,3 @@
-import pytest
 from alertbot.main import Alert
 
 
