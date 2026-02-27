@@ -8,8 +8,17 @@ from aiohttp.web_response import json_response
 from maubot import Plugin
 from maubot.handlers import command, web, event
 from mautrix.errors import MForbidden, MNotFound, MatrixUnknownRequestError
-from mautrix.types import MessageEvent, RoomID, EventID, RelatesTo, TextMessageEventContent, MessageType, Format, \
-    EventType, StateEvent
+from mautrix.types import (
+    MessageEvent,
+    RoomID,
+    EventID,
+    RelatesTo,
+    TextMessageEventContent,
+    MessageType,
+    Format,
+    EventType,
+    StateEvent,
+)
 from mautrix.util.async_db import UpgradeTable, Connection
 from html.parser import HTMLParser
 
@@ -38,7 +47,6 @@ async def upgrade_v3(conn: Connection) -> None:
     await conn.execute("ALTER TABLE alerts ADD COLUMN last_actor TEXT")
 
 
-
 class MLStripper(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -48,7 +56,8 @@ class MLStripper(HTMLParser):
         self.text.append(data)
 
     def get_data(self):
-        return ''.join(self.text)
+        return "".join(self.text)
+
 
 def strip_tags(html):
     s = MLStripper()
@@ -104,7 +113,11 @@ class AlertBot(Plugin):
         self.log.debug(f"get_alert_from_event_id: {event_id} -> {row}")
         if row:
             alertmanager_data = json.loads(row["data"])
-            return Alert(fingerprint=row["fingerprint"], status=row["status"], alertmanager_data=alertmanager_data)
+            return Alert(
+                fingerprint=row["fingerprint"],
+                status=row["status"],
+                alertmanager_data=alertmanager_data,
+            )
         return None
 
     async def upsert_alert(self, alert: Alert, event_id):
@@ -115,7 +128,14 @@ class AlertBot(Plugin):
                 UPDATE SET event_id = $2, status = $3, data = $4, last_actor = $5
                 """
         self.log.debug(f"upsert_alert: {alert}, event_id: {event_id}")
-        await self.database.execute(query, alert.fingerprint, event_id, alert.status, json_data, alert.last_actor)
+        await self.database.execute(
+            query,
+            alert.fingerprint,
+            event_id,
+            alert.status,
+            json_data,
+            alert.last_actor,
+        )
 
     async def delete_alert(self, fingerprint) -> None:
         query = """
@@ -126,8 +146,13 @@ class AlertBot(Plugin):
         self.log.debug(f"delete_alert: {fingerprint}")
         await self.database.execute(query, fingerprint)
 
-    async def send_message(self, room_id: RoomID, markdown: Optional[str] = None, html: Optional[str] = None,
-                           relates_to: Optional[RelatesTo] = None) -> EventID:
+    async def send_message(
+        self,
+        room_id: RoomID,
+        markdown: Optional[str] = None,
+        html: Optional[str] = None,
+        relates_to: Optional[RelatesTo] = None,
+    ) -> EventID:
         if markdown:
             return await self.client.send_markdown(room_id, markdown, allow_html=True, relates_to=relates_to)
 
@@ -157,8 +182,11 @@ class AlertBot(Plugin):
         except MatrixUnknownRequestError as e:
             self.log.error(f"Error while reacting to message {event_id} in room {room_id}: {e}")
 
-    async def call_and_handle_error(self, fn: Callable[[Request, RoomID], Awaitable[Optional[Response]]],
-                                    req: Request) -> Response:
+    async def call_and_handle_error(
+        self,
+        fn: Callable[[Request, RoomID], Awaitable[Optional[Response]]],
+        req: Request,
+    ) -> Response:
         room_id = req.match_info["room_id"].strip()
 
         try:
@@ -168,11 +196,13 @@ class AlertBot(Plugin):
                 return json_response({"status": "ok"})
 
         except JSONDecodeError as e:
-            self.log.error(f'Could not parse JSON: {e}')
+            self.log.error(f"Could not parse JSON: {e}")
             return json_response({"error": str(e)}, status=400)
 
         except MForbidden as e:
-            self.log.error(f'Not allowed to send to "{room_id}" (Most likely the bot is not invited in the room): {e}')
+            self.log.error(
+                f'Not allowed to send to "{room_id}" (Most likely the bot is not invited in the room): {e}'
+            )
             return json_response({"error": str(e)}, status=403)
 
     def authenticate(self, req: Request) -> None:
@@ -181,9 +211,14 @@ class AlertBot(Plugin):
     async def alert_message(self, req: Request, room_id: RoomID):
         data_json = await req.json()
         received_alerts = []
-        for alert in data_json['alerts']:
+        for alert in data_json["alerts"]:
             received_alerts.append(
-                Alert(alert['fingerprint'], status=alert['status'], alertmanager_data=alert))
+                Alert(
+                    alert["fingerprint"],
+                    status=alert["status"],
+                    alertmanager_data=alert,
+                )
+            )
         for alert in received_alerts:
             alert.event_id = await self.get_event_id_from_fingerprint(alert.fingerprint)
             alert.generate_message()
@@ -216,7 +251,14 @@ class AlertBot(Plugin):
             reaction_key = evt.content.relates_to.key
             alert = await self.get_alert_from_event_id(related_event_id)
             self.log.debug(f"Received reaction {reaction_key} to alert: {alert}")
-            if alert and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿", ]:
+            if alert and reaction_key in [
+                "👍",
+                "👍️",
+                "👍🏻",
+                "👍🏽",
+                "👍🏾",
+                "👍🏿",
+            ]:
                 alert.status = "acknowledged"
                 alert.last_actor = evt.sender
                 alert.generate_message()
