@@ -47,6 +47,11 @@ async def upgrade_v3(conn: Connection) -> None:
     await conn.execute("ALTER TABLE alerts ADD COLUMN last_actor TEXT")
 
 
+@upgrade_table.register(description="Add per-room feature table")
+async def upgrade_v4(conn: Connection) -> None:
+    await conn.execute("CREATE TABLE features (feature TEXT, room_id TEXT, PRIMARY KEY(feature, room_id))")
+
+
 class MLStripper(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -87,7 +92,7 @@ class Alert:
             actor_annotation = ""
         self.message = (
             f"<strong><font color={color}>{self.status.upper()}{actor_annotation}: </font></strong>"
-            f"<a href='{self.alertmanager_data['generatorURL'].replace(' ', '')}'>{self.alertmanager_data['labels']['alertname']}</a><br/>"
+            f"<a href='{self.alertmanager_data['generatorURL']}'>{self.alertmanager_data['labels']['alertname']}</a><br/>"
             f"{self.alertmanager_data['annotations']['description']}"
         )
 
@@ -97,7 +102,7 @@ class AlertBot(Plugin):
         query = """
                 SELECT event_id
                 FROM alerts
-                WHERE fingerprint = $1 \
+                WHERE fingerprint = $1
                 """
         event_id = await self.database.fetchval(query, fingerprint)
         self.log.debug(f"get_event_id_from_fingerprint: {fingerprint} -> {event_id}")
@@ -182,6 +187,51 @@ class AlertBot(Plugin):
         except MatrixUnknownRequestError as e:
             self.log.error(f"Error while reacting to message {event_id} in room {room_id}: {e}")
 
+    async def pin_unpin_messages(
+        self, room_id: RoomID, to_pin: list[EventID] = None, to_unpin: list[EventID] = None
+    ) -> None:
+        if to_pin is None:
+            to_pin = []
+        if to_unpin is None:
+            to_unpin = []
+        query = """
+                SELECT *
+                FROM features
+                WHERE feature = $1
+                  AND room_id = $2
+                """
+        row = await self.database.fetchrow(query, "pinning", room_id)
+        if not row:
+            return
+
+        # self.log.debug(f"To pin: {to_pin}; To unpin: {to_unpin}")
+        try:
+            pinned_events = await self.client.get_state_event(room_id, EventType.ROOM_PINNED_EVENTS)
+        except MNotFound:
+            pinned_events = []
+        # self.log.debug(f"Currently pinned events: {pinned_events}")
+        for event_id in to_pin:
+            if event_id not in pinned_events.pinned:
+                pinned_events.pinned.append(event_id)
+        for event_id in to_unpin:
+            try:
+                pinned_events.pinned.remove(event_id)
+            except ValueError:
+                self.log.warning(f"Tried to unpin event {event_id} but it was not pinned in room {room_id}")
+                pass
+
+        try:
+            await self.client.send_state_event(room_id, EventType.ROOM_PINNED_EVENTS, pinned_events)
+        except MForbidden:
+            message = (
+                "Pinning is enabled but failed. "
+                "To fix this increase powerlevel of bot user to 50 (default for Moderator) "
+                "or disable pinning by sending `!feature disable pinning`."
+            )
+            self.log.error(message)
+            await self.send_message(room_id, markdown=message)
+            raise
+
     async def call_and_handle_error(
         self,
         fn: Callable[[Request, RoomID], Awaitable[Optional[Response]]],
@@ -198,7 +248,6 @@ class AlertBot(Plugin):
         except JSONDecodeError as e:
             self.log.error(f"Could not parse JSON: {e}")
             return json_response({"error": str(e)}, status=400)
-
         except MForbidden as e:
             self.log.error(
                 f'Not allowed to send to "{room_id}" (Most likely the bot is not invited in the room): {e}'
@@ -219,6 +268,9 @@ class AlertBot(Plugin):
                     alertmanager_data=alert,
                 )
             )
+
+        events_to_pin = []
+        events_to_unpin = []
         for alert in received_alerts:
             alert.event_id = await self.get_event_id_from_fingerprint(alert.fingerprint)
             alert.generate_message()
@@ -227,6 +279,7 @@ class AlertBot(Plugin):
                     self.log.debug(f"Found existing alert: {alert}")
                     await self.edit_message(room_id, alert.event_id, html=alert.message)
                     await self.react_to_message(room_id, alert.event_id, "✅️")
+                    events_to_unpin.append(alert.event_id)
                     await self.delete_alert(alert.fingerprint)
                 else:
                     self.log.warning(f"Received resolve for unknown alert: {alert}")
@@ -234,10 +287,12 @@ class AlertBot(Plugin):
                 if alert.event_id is None:
                     self.log.debug(f"Creating new alert: {alert}")
                     event_id = await self.send_message(room_id, html=alert.message)
+                    events_to_pin.append(event_id)
                     await self.upsert_alert(alert, event_id)
                 else:
+                    events_to_pin.append(alert.event_id)
                     # TODO: notify about further firings
-                    pass
+        await self.pin_unpin_messages(room_id, events_to_pin, events_to_unpin)
 
     @web.post("/prom-alerts/{room_id}")
     async def post_prom_alerts(self, req: Request) -> Response:
@@ -280,3 +335,37 @@ class AlertBot(Plugin):
     @command.new()
     async def ping(self, evt: MessageEvent) -> None:
         await evt.reply("pong")
+
+    @command.new(name="feature", help="Enable or disable a feature in this room")
+    @command.argument("action", pass_raw=True, required=True, matches="enable|disable")
+    @command.argument("name", pass_raw=True, required=True)
+    async def feature_toggle(self, evt: MessageEvent, action: str, name: str) -> None:
+        self.log.debug(f"Received {action}: {evt}")
+        room_id = evt.room_id
+        action = action.lower().strip()
+        name = name.lower().strip()
+        enabled = action == "enable"
+
+        if name not in ["pinning"]:
+            await evt.reply(f"Unsupported feature: {name}. Supported features: `pinning`.")
+            return
+
+        if enabled:
+            query = """
+                    INSERT INTO features (feature, room_id)
+                    VALUES ($1, $2) ON CONFLICT (feature, room_id) DO NOTHING
+                    """
+        else:
+            query = """
+                    DELETE
+                    FROM features
+                    WHERE feature = $1
+                      AND room_id = $2
+                    """
+        self.log.debug(f"feature {name}: {action}")
+        await self.database.execute(
+            query,
+            name,
+            room_id,
+        )
+        await evt.reply(f"Feature: {name}: {action}d")
