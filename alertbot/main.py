@@ -92,7 +92,7 @@ class Alert:
             actor_annotation = ""
         self.message = (
             f"<strong><font color={color}>{self.status.upper()}{actor_annotation}: </font></strong>"
-            f"<a href='{self.alertmanager_data['generatorURL'].replace(' ', '')}'>{self.alertmanager_data['labels']['alertname']}</a><br/>"
+            f"<a href='{self.alertmanager_data['generatorURL']}'>{self.alertmanager_data['labels']['alertname']}</a><br/>"
             f"{self.alertmanager_data['annotations']['description']}"
         )
 
