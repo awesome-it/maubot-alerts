@@ -1,5 +1,5 @@
 id: de.awesome-it.maubot-alerts
-maubot: 0.5.2
+maubot: 0.6.0
 version: 0.1.11
 license: MIT
 modules:
