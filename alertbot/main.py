@@ -18,6 +18,7 @@ from mautrix.types import (
     Format,
     EventType,
     StateEvent,
+    RoomPinnedEventsStateEventContent
 )
 from mautrix.util.async_db import UpgradeTable, Connection
 from html.parser import HTMLParser
@@ -208,7 +209,7 @@ class AlertBot(Plugin):
         try:
             pinned_events = await self.client.get_state_event(room_id, EventType.ROOM_PINNED_EVENTS)
         except MNotFound:
-            pinned_events = []
+            pinned_events = RoomPinnedEventsStateEventContent(pinned=[])
         # self.log.debug(f"Currently pinned events: {pinned_events}")
         for event_id in to_pin:
             if event_id not in pinned_events.pinned:
