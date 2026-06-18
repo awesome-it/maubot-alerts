@@ -317,14 +317,7 @@ class AlertBot(Plugin):
             reaction_key = evt.content.relates_to.key
             alert = await self.get_alert_from_event_id(related_event_id)
             self.log.debug(f"Received reaction {reaction_key} to alert: {alert}")
-            if alert and reaction_key in [
-                "👍",
-                "👍️",
-                "👍🏻",
-                "👍🏽",
-                "👍🏾",
-                "👍🏿",
-            ]:
+            if alert and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿"]:
                 alert.status = "acknowledged"
                 alert.last_actor = evt.sender
                 alert.generate_message()
@@ -339,6 +332,18 @@ class AlertBot(Plugin):
                 await self.react_to_message(room_id, related_event_id, reaction_key)
                 await self.pin_unpin_messages(room_id, to_unpin=[related_event_id])
                 await self.delete_alert(alert.fingerprint)
+            elif (
+                alert
+                and alert.status == "acknowledged"
+                and reaction_key in ["👎", "👎️", "👎🏻", "👎🏽", "👎🏾", "👎🏿"]
+            ):
+                alert.status = "firing"
+                alert.last_actor = evt.sender
+                alert.generate_message()
+                await self.edit_message(room_id, related_event_id, html=alert.message)
+                await self.react_to_message(room_id, related_event_id, reaction_key)
+                await self.pin_unpin_messages(room_id, to_unpin=[related_event_id])
+                await self.upsert_alert(alert, related_event_id)
 
     @classmethod
     def get_db_upgrade_table(cls) -> UpgradeTable:
