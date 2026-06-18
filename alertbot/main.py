@@ -1,4 +1,5 @@
 import json
+import asyncio
 from dataclasses import dataclass
 from json import JSONDecodeError
 from typing import Callable, Awaitable, Optional
@@ -99,6 +100,12 @@ class Alert:
 
 
 class AlertBot(Plugin):
+    pinned_messages_lock: asyncio.Lock
+
+    async def start(self) -> None:
+        await super().start()
+        self.pinned_messages_lock = asyncio.Lock()
+
     async def get_event_id_from_fingerprint(self, fingerprint: str) -> str:
         query = """
                 SELECT event_id
@@ -206,6 +213,7 @@ class AlertBot(Plugin):
             return
 
         # self.log.debug(f"To pin: {to_pin}; To unpin: {to_unpin}")
+        await self.pinned_messages_lock.acquire()
         try:
             pinned_events = await self.client.get_state_event(room_id, EventType.ROOM_PINNED_EVENTS)
         except MNotFound:
@@ -232,6 +240,8 @@ class AlertBot(Plugin):
             self.log.error(message)
             await self.send_message(room_id, markdown=message)
             raise
+        finally:
+            self.pinned_messages_lock.release()
 
     async def call_and_handle_error(
         self,
