@@ -19,7 +19,7 @@ from mautrix.types import (
     Format,
     EventType,
     StateEvent,
-    RoomPinnedEventsStateEventContent
+    RoomPinnedEventsStateEventContent,
 )
 from mautrix.util.async_db import UpgradeTable, Connection
 from html.parser import HTMLParser
@@ -337,6 +337,7 @@ class AlertBot(Plugin):
                 alert.generate_message()
                 await self.edit_message(room_id, related_event_id, html=alert.message)
                 await self.react_to_message(room_id, related_event_id, reaction_key)
+                await self.pin_unpin_messages(room_id, to_unpin=[related_event_id])
                 await self.delete_alert(alert.fingerprint)
 
     @classmethod
