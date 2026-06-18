@@ -1,5 +1,6 @@
 import json
 import asyncio
+import datetime as dt
 from dataclasses import dataclass
 from json import JSONDecodeError
 from typing import Callable, Awaitable, Optional
@@ -54,6 +55,13 @@ async def upgrade_v4(conn: Connection) -> None:
     await conn.execute("CREATE TABLE features (feature TEXT, room_id TEXT, PRIMARY KEY(feature, room_id))")
 
 
+@upgrade_table.register(description="Add per-room canaries")
+async def upgrade_v5(conn: Connection) -> None:
+    await conn.execute(
+        "CREATE TABLE canaries (room_id TEXT, interval INTERVAL, last_successful_post TIMESTAMPTZ NOT NULL, PRIMARY KEY(room_id))"
+    )
+
+
 class MLStripper(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -101,10 +109,30 @@ class Alert:
 
 class AlertBot(Plugin):
     pinned_messages_lock: asyncio.Lock
+    canary_tasks: list[asyncio.Future]
 
     async def start(self) -> None:
         await super().start()
         self.pinned_messages_lock = asyncio.Lock()
+        self.canary_tasks = []
+        await self.schedule_canary_tasks()
+
+    async def stop(self):
+        await super().stop()
+        for task in self.canary_tasks:
+            task.cancel()
+
+    async def schedule_canary_tasks(self) -> None:
+        for task in self.canary_tasks:
+            task.cancel()
+        self.canary_tasks = []
+        query = """
+                SELECT room_id, interval FROM canaries
+                """
+        canaries = await self.database.fetch(query)
+        for room_id, interval in canaries:
+            task = asyncio.create_task(self.check_canary(room_id, interval))
+            self.canary_tasks.append(task)
 
     async def get_event_id_from_fingerprint(self, fingerprint: str) -> str:
         query = """
@@ -213,35 +241,34 @@ class AlertBot(Plugin):
             return
 
         # self.log.debug(f"To pin: {to_pin}; To unpin: {to_unpin}")
-        await self.pinned_messages_lock.acquire()
-        try:
-            pinned_events = await self.client.get_state_event(room_id, EventType.ROOM_PINNED_EVENTS)
-        except MNotFound:
-            pinned_events = RoomPinnedEventsStateEventContent(pinned=[])
-        # self.log.debug(f"Currently pinned events: {pinned_events}")
-        for event_id in to_pin:
-            if event_id not in pinned_events.pinned:
-                pinned_events.pinned.append(event_id)
-        for event_id in to_unpin:
+        async with self.pinned_messages_lock:
             try:
-                pinned_events.pinned.remove(event_id)
-            except ValueError:
-                self.log.warning(f"Tried to unpin event {event_id} but it was not pinned in room {room_id}")
-                pass
+                pinned_events = await self.client.get_state_event(room_id, EventType.ROOM_PINNED_EVENTS)
+            except MNotFound:
+                pinned_events = RoomPinnedEventsStateEventContent(pinned=[])
+            # self.log.debug(f"Currently pinned events: {pinned_events}")
+            for event_id in to_pin:
+                if event_id not in pinned_events.pinned:
+                    pinned_events.pinned.append(event_id)
+            for event_id in to_unpin:
+                try:
+                    pinned_events.pinned.remove(event_id)
+                except ValueError:
+                    self.log.warning(
+                        f"Tried to unpin event {event_id} but it was not pinned in room {room_id}"
+                    )
+                    pass
 
-        try:
-            await self.client.send_state_event(room_id, EventType.ROOM_PINNED_EVENTS, pinned_events)
-        except MForbidden:
-            message = (
-                "Pinning is enabled but failed. "
-                "To fix this increase powerlevel of bot user to 50 (default for Moderator) "
-                "or disable pinning by sending `!feature disable pinning`."
-            )
-            self.log.error(message)
-            await self.send_message(room_id, markdown=message)
-            raise
-        finally:
-            self.pinned_messages_lock.release()
+            try:
+                await self.client.send_state_event(room_id, EventType.ROOM_PINNED_EVENTS, pinned_events)
+            except MForbidden:
+                message = (
+                    "Pinning is enabled but failed. "
+                    "To fix this increase powerlevel of bot user to 50 (default for Moderator) "
+                    "or disable pinning by sending `!feature disable pinning`."
+                )
+                self.log.error(message)
+                await self.send_message(room_id, markdown=message)
 
     async def call_and_handle_error(
         self,
@@ -304,6 +331,10 @@ class AlertBot(Plugin):
                     events_to_pin.append(alert.event_id)
                     # TODO: notify about further firings
         await self.pin_unpin_messages(room_id, events_to_pin, events_to_unpin)
+        query = """
+                UPDATE canaries SET last_successful_post = $2 WHERE room_id = $1
+                """
+        await self.database.execute(query, room_id, dt.datetime.now(dt.timezone.utc))
 
     @web.post("/prom-alerts/{room_id}")
     async def post_prom_alerts(self, req: Request) -> Response:
@@ -342,7 +373,7 @@ class AlertBot(Plugin):
                 alert.generate_message()
                 await self.edit_message(room_id, related_event_id, html=alert.message)
                 await self.react_to_message(room_id, related_event_id, reaction_key)
-                await self.pin_unpin_messages(room_id, to_unpin=[related_event_id])
+                await self.pin_unpin_messages(room_id, to_pin=[related_event_id])
                 await self.upsert_alert(alert, related_event_id)
 
     @classmethod
@@ -355,17 +386,14 @@ class AlertBot(Plugin):
 
     @command.new(name="feature", help="Enable or disable a feature in this room")
     @command.argument("action", pass_raw=True, required=True, matches="enable|disable")
-    @command.argument("name", pass_raw=True, required=True)
-    async def feature_toggle(self, evt: MessageEvent, action: str, name: str) -> None:
+    @command.argument("name", pass_raw=True, required=True, matches="pinning|canary")
+    @command.argument("interval", pass_raw=True, matches=r"\d*")
+    async def feature_toggle(self, evt: MessageEvent, action: str, name: str, interval: str) -> None:
         self.log.debug(f"Received {action}: {evt}")
         room_id = evt.room_id
         action = action.lower().strip()
         name = name.lower().strip()
         enabled = action == "enable"
-
-        if name not in ["pinning"]:
-            await evt.reply(f"Unsupported feature: {name}. Supported features: `pinning`.")
-            return
 
         if enabled:
             query = """
@@ -385,4 +413,65 @@ class AlertBot(Plugin):
             name,
             room_id,
         )
-        await evt.reply(f"Feature: {name}: {action}d")
+
+        if name == "canary" and enabled:
+            if interval is None or interval == "":
+                interval = dt.timedelta(minutes=5)
+            else:
+                interval = dt.timedelta(seconds=int(interval))
+            query = """
+                    INSERT INTO canaries (room_id, interval, last_successful_post)
+                    VALUES ($1, $2, $3) ON CONFLICT (room_id) DO
+                    UPDATE SET room_id = $1, interval = $2, last_successful_post = $3
+                    """
+            await self.database.execute(
+                query,
+                room_id,
+                interval,
+                dt.datetime.fromtimestamp(0, dt.timezone.utc),
+            )
+            await self.schedule_canary_tasks()
+        elif name == "canary" and not enabled:
+            query = """
+                    DELETE
+                    FROM canaries
+                    WHERE room_id = $1
+                    """
+            await self.database.execute(query, room_id)
+            await self.schedule_canary_tasks()
+
+        await evt.reply(f"Feature {name}: {action}d")
+
+    async def check_canary(self, room_id: RoomID, interval: dt.timedelta) -> None:
+        try:
+            await self._check_canary(room_id, interval)
+        except asyncio.CancelledError:
+            self.log.debug("Canary checking stopped")
+            pass
+        except Exception:
+            self.log.exception("Failed to check canary")
+
+    async def _check_canary(self, room_id: RoomID, interval: dt.timedelta) -> None:
+        self.log.debug(f"Starting canary loop for {room_id}")
+        while True:
+            self.log.debug(f"Checking canary for {room_id}")
+            query = """
+                    SELECT last_successful_post
+                    FROM canaries
+                    WHERE room_id = $1
+                    """
+            last_successful_post = await self.database.fetchval(query, room_id)
+            if not last_successful_post:
+                # TODO: fix database out of sync
+                return
+            if dt.datetime.now(dt.timezone.utc) - last_successful_post > interval:
+                self.log.error(f"CANARY IS DEAD in room {room_id}")
+                message = (
+                    f"<h1><font color=red>CANARY IS DEAD. </font></h1>"
+                    f"The canary alert has not been received within the last {interval.total_seconds()} seconds. "
+                    "Check your alertmanager instances."
+                )
+                await self.send_message(room_id, html=message)
+            else:
+                self.log.debug(f"Canary is alive in room {room_id}")
+            await asyncio.sleep(interval.total_seconds())
