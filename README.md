@@ -8,22 +8,18 @@ This is a plugin for [maubot](https://mau.bot/) that receives alerts from
 - Receiving alerts from Prometheus Alertmanager by webhook
 - Message sending for each alert in an alert group to a Matrix room
 - Message editing for alerts when they have been resolved or acknowledged
-- Alert acknowledgement by reacting with 👍
+- Alert acknowledgement by reacting with 👍 (and un-acknowledgement with 👎)
 - Manual alert resolution by reacting with ✅
+- Message pinning for firing alerts (optional, per room)
+- Canary: post a warning when no alert is received within a configured interval (optional, per room)
 
 ### Possible future features
 
 - [ ] Alert grouping: send only one message per alert group, 
       list the alerts in the message, ideally with their unique labels only
-- [ ] Message pinning: pin messages for alerts that are firing so you don't
-      overlook unresolved alerts that are old
-- [ ] Message preview: currently only an HTML message is sent which clients don't render in
-      notifications and room lists
 - [ ] Message templating: currently the contents of alert messages are hardcoded, they should be made configurable
 - [ ] Authentication: currently there is no authentication for the webhook that receives the alerts.
       The URL includes the room ID so you're already quite safe as long as you don't publicly list the room
-- [ ] Heartbeat / Canary: an endpoint which is expected to repeatedly get a firing alert
-      and send a message when it does not
 
 ## Installation
 
@@ -43,6 +39,74 @@ This is a plugin for [maubot](https://mau.bot/) that receives alerts from
          - url: https://<maubot_instance_hostname>/plugin/<instance_id>/prom-alerts/<room_id>
            send_resolved: true
    ```
+
+## Usage
+
+Once the plugin instance is created, the bot's primary user is invited to a room, and
+Alertmanager is pointed at the webhook URL (see [Installation](#installation)), the bot
+works automatically. The target room is encoded in the webhook URL via `<room_id>`, so you
+can send alerts to different rooms by creating multiple `webhook_configs` entries.
+
+> **Note:** There is no authentication on the webhook. Security relies on keeping the room ID
+> in the URL secret, so don't publicly list the room.
+
+### Receiving alerts
+
+- When an alert starts **firing**, the bot posts a colored HTML message to the room:
+  - 🔴 red = firing
+  - 🟠 orange = acknowledged
+  - 🟢 green = resolved / manually resolved
+
+  Each message links to the alert's Prometheus `generatorURL` and shows the alert name and
+  its description.
+- When an alert is **resolved** by Alertmanager (requires `send_resolved: true`), the bot
+  edits the original message to green and reacts to it with ✅.
+- There is one message per alert (keyed by the Alertmanager `fingerprint`); status changes
+  edit the existing message in place rather than posting a new one.
+
+### Interacting with alerts (reactions)
+
+React to an alert message to change its state. The acting user's Matrix ID is shown in the
+edited message.
+
+| Reaction | Action                                                         |
+|----------|----------------------------------------------------------------|
+| 👍       | Acknowledge the alert (turns orange, annotated with your user) |
+| 👎       | Un-acknowledge an acknowledged alert (back to firing/red)      |
+| ✅        | Manually resolve the alert (turns green)                       |
+
+### Commands
+
+The bot responds to the following commands in the room:
+
+- `!ping` — replies with `pong` (liveness check).
+- `!feature <enable|disable> <pinning|canary> [interval]` — enable or disable an optional
+  feature for the current room.
+
+#### Pinning
+
+```
+!feature enable pinning
+!feature disable pinning
+```
+
+When enabled, firing alert messages are pinned in the room and unpinned once they are
+resolved, so old unresolved alerts stay visible. The bot needs a power level of at least 50
+(Moderator) in the room to pin messages; otherwise it will post an error asking you to raise
+its power level or disable pinning.
+
+#### Canary (heartbeat / dead man's switch)
+
+```
+!feature enable canary           # default interval: 300 seconds (5 minutes)
+!feature enable canary 600        # custom interval in seconds
+!feature disable canary
+```
+
+When enabled, the bot expects to receive at least one alert webhook within the configured
+interval. If no alert arrives in time, it posts a prominent **"CANARY IS DEAD"** message so
+you know your Alertmanager pipeline may be broken. Configure Alertmanager (or a separate
+recurring alert) to repeatedly send a firing alert to keep the canary alive.
 
 ## Development
 
