@@ -1,4 +1,4 @@
-from alertbot.main import Alert
+from alertbot import Alert
 
 
 class TestAlert:

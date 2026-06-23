@@ -1,0 +1,182 @@
+from __future__ import annotations
+
+import datetime as dt
+import json
+
+# import logging as log
+from typing import Any, Optional
+
+from mautrix.util.async_db import Connection, Database, UpgradeTable
+
+from .alerts import Alert
+
+
+class AlertBotDatabase:
+    def __init__(self, db: Database):
+        self._db = db
+
+    # --- alerts ---
+
+    async def get_event_id_from_fingerprint(self, fingerprint: str) -> Optional[str]:
+        return await self._db.fetchval("SELECT event_id FROM alerts WHERE fingerprint = $1", fingerprint)
+
+    async def get_alert_row(self, event_id: str) -> Optional[Any]:
+        return await self._db.fetchrow(
+            "SELECT * FROM alerts WHERE event_id = $1",
+            event_id,
+        )
+
+    async def get_alert_from_event_id(self, event_id: str) -> Optional[Alert]:
+        row = await self.get_alert_row(event_id)
+        # log.debug(f"get_alert_from_event_id: {event_id} -> {row}")
+        if row:
+            alertmanager_data = json.loads(row["data"])
+            return Alert(
+                fingerprint=row["fingerprint"],
+                status=row["status"],
+                alertmanager_data=alertmanager_data,
+            )
+        return None
+
+    async def upsert_alert(self, alert: Alert, event_id: Optional[str]) -> None:
+        # log.debug(f"upsert_alert: {alert}, event_id: {event_id}")
+        json_data = json.dumps(alert.alertmanager_data)
+        await self._db.execute(
+            """
+            INSERT INTO alerts (fingerprint, event_id, status, data, last_actor)
+            VALUES ($1, $2, $3, $4, $5)
+            ON CONFLICT (fingerprint) DO UPDATE SET event_id   = $2,
+                                                    status     = $3,
+                                                    data       = $4,
+                                                    last_actor = $5
+
+            """,
+            alert.fingerprint,
+            event_id,
+            alert.status,
+            json_data,
+            alert.last_actor,
+        )
+
+    async def delete_alert(self, fingerprint: str) -> None:
+        # log.debug(f"delete_alert: {fingerprint}")
+        await self._db.execute("DELETE FROM alerts WHERE fingerprint = $1", fingerprint)
+
+    # --- features ---
+
+    async def is_feature_enabled(self, feature: str, room_id: str) -> bool:
+        row = await self._db.fetchrow(
+            "SELECT feature FROM features WHERE feature = $1 AND room_id = $2",
+            feature,
+            room_id,
+        )
+        return row is not None
+
+    async def enable_feature(self, feature: str, room_id: str) -> None:
+        await self._db.execute(
+            """
+            INSERT INTO features (feature, room_id)
+            VALUES ($1, $2)
+            ON CONFLICT (feature, room_id) DO NOTHING
+            """,
+            feature,
+            room_id,
+        )
+
+    async def disable_feature(self, feature: str, room_id: str) -> None:
+        await self._db.execute(
+            "DELETE FROM features WHERE feature = $1 AND room_id = $2",
+            feature,
+            room_id,
+        )
+
+    # --- canaries ---
+
+    async def get_canaries(self) -> list[tuple[str, dt.timedelta]]:
+        rows = await self._db.fetch("SELECT room_id, interval FROM canaries")
+        return [(row["room_id"], row["interval"]) for row in rows]
+
+    async def upsert_canary(
+        self, room_id: str, interval: dt.timedelta, last_successful_post: dt.datetime
+    ) -> None:
+        await self._db.execute(
+            """
+            INSERT INTO canaries (room_id, interval, last_successful_post)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (room_id) DO UPDATE SET room_id              = $1,
+                                                interval             = $2,
+                                                last_successful_post = $3
+            """,
+            room_id,
+            interval,
+            last_successful_post,
+        )
+
+    async def delete_canary(self, room_id: str) -> None:
+        await self._db.execute("DELETE FROM canaries WHERE room_id = $1", room_id)
+
+    async def touch_canary(self, room_id: str, last_successful_post: dt.datetime) -> None:
+        await self._db.execute(
+            "UPDATE canaries SET last_successful_post = $1 WHERE room_id = $2",
+            last_successful_post,
+            room_id,
+        )
+
+    async def get_canary_last_post(self, room_id: str) -> Optional[dt.datetime]:
+        return await self._db.fetchval(
+            "SELECT last_successful_post FROM canaries WHERE room_id = $1", room_id
+        )
+
+
+upgrade_table = UpgradeTable()
+
+
+@upgrade_table.register(description="Initial revision")
+async def upgrade_v1(conn: Connection) -> None:
+    await conn.execute(
+        """
+        CREATE TABLE alerts
+        (
+            fingerprint TEXT PRIMARY KEY,
+            event_id    TEXT,
+            status      TEXT
+        )
+        """
+    )
+
+
+@upgrade_table.register(description="Add JSON data")
+async def upgrade_v2(conn: Connection) -> None:
+    await conn.execute("ALTER TABLE alerts ADD COLUMN data TEXT")
+
+
+@upgrade_table.register(description="Add last_actor column")
+async def upgrade_v3(conn: Connection) -> None:
+    await conn.execute("ALTER TABLE alerts ADD COLUMN last_actor TEXT")
+
+
+@upgrade_table.register(description="Add per-room feature table")
+async def upgrade_v4(conn: Connection) -> None:
+    await conn.execute("""
+                       CREATE TABLE features
+                       (
+                           feature TEXT,
+                           room_id TEXT,
+                           PRIMARY KEY (feature, room_id)
+                       )
+                       """)
+
+
+@upgrade_table.register(description="Add per-room canaries")
+async def upgrade_v5(conn: Connection) -> None:
+    await conn.execute(
+        """
+        CREATE TABLE canaries
+        (
+            room_id              TEXT,
+            interval             INTERVAL,
+            last_successful_post TIMESTAMPTZ NOT NULL,
+            PRIMARY KEY (room_id)
+        )
+        """
+    )

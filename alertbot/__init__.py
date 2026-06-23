@@ -1,3 +1,2 @@
-from .main import AlertBot
-
-__all__ = ["AlertBot"]
+from .alerts import Alert as Alert
+from .main import AlertBot as AlertBot
