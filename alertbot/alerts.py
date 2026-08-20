@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
+from jinja2 import Environment, PackageLoader, select_autoescape
+
 
 @dataclass
 class Alert:
@@ -14,18 +16,8 @@ class Alert:
     last_actor: Optional[str] = None
 
     def generate_message(self) -> None:
-        if self.status == "firing":
-            color = "red"
-        elif self.status == "acknowledged":
-            color = "orange"
-        else:
-            color = "green"
-        if self.last_actor:
-            actor_annotation = f" by {self.last_actor}"
-        else:
-            actor_annotation = ""
-        self.message = (
-            f"<strong><font color={color}>{self.status.upper()}{actor_annotation}: </font></strong>"
-            f"<a href='{self.alertmanager_data['generatorURL']}'>{self.alertmanager_data['labels']['alertname']}</a><br/>"
-            f"{self.alertmanager_data['annotations']['description']}"
+        env = Environment(loader=PackageLoader("alertbot", "templates"), autoescape=select_autoescape())
+        template = env.get_template("alert.jinja")
+        self.message = template.render(
+            status=self.status, last_actor=self.last_actor, data=self.alertmanager_data
         )
