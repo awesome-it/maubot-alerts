@@ -4,13 +4,14 @@
 {%- elif alertgroup.status == "acknowledged" -%}
 {%- set color = "#ed6c02" -%}
 {%- endif -%}
-<strong>
+<h3>
     <span data-mx-color="{{ color }}">
         {% if alertgroup.status == "firing" %}🔥{% else %}✅{% endif %}
         {{ alertgroup.status | upper }}:
     </span>
-    {{ alertgroup.group_labels.get("alertname", "Alert") }}<br/>
-</strong>
+    <a href='{{ alertgroup.external_url }}'>{{ alertgroup.group_labels.get("alertname", "Alert") }}</a>&#8195;
+(Total number of alerts: TODO)
+</h3>
 {%- if alertgroup.common_annotations.get("summary") %}
 <i>{{ alertgroup.common_annotations["summary"] }}</i><br/>
 {%- endif %}
@@ -22,14 +23,19 @@
 <span data-mx-bg-color="#eaeaea" data-mx-color="#333333">&nbsp;{{ value }}&nbsp;</span>&#8195;
 {%- endfor %}<br/>
 {%- endif %}
-{%- if alertgroup.common_annotations %}
-<b>Annotations</b>
+{%- if alertgroup.firing_alerts %}
+<b>🔥 Firing Alerts:</b>
 <ul>
-{%- for key, value in alertgroup.common_annotations.items() %}
-<li><b>{{ key }}</b>: {{ value }}</li>
+{%- for alert in alertgroup.firing_alerts %}
+<li>{{ alert.message }}</li>
 {%- endfor %}
 </ul>
 {%- endif %}
-{%- if alertgroup.external_url %}
-<a href="{{ alertgroup.external_url }}">Open Alertmanager</a>
+{%- if alertgroup.resolved_alerts %}
+<b>✅ Resolved Alerts:</b>
+<ul>
+{%- for alert in alertgroup.resolved_alerts %}
+<li>{{ alert.message }}</li>
+{%- endfor %}
+</ul>
 {%- endif %}

@@ -3,7 +3,7 @@ from __future__ import annotations
 import colorsys
 import hashlib
 import pkgutil
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cache
 from typing import Any
 
@@ -54,6 +54,8 @@ class AlertGroup:
     external_url: str | None = None
     notification_reason: str | None = None
     id: int | None = None
+    firing_alerts: list[Alert] = field(default_factory=list)
+    resolved_alerts: list[Alert] = field(default_factory=list)
 
     @classmethod
     def from_json(cls, json: dict[str, Any]) -> AlertGroup:
@@ -73,6 +75,12 @@ class AlertGroup:
         template = _env.get_template("alertgroup.jinja")
         self.message = template.render(alertgroup=self)
 
+    def add_alert(self, alert: Alert) -> None:
+        if alert.status == "resolved":
+            self.resolved_alerts.append(alert)
+        else:
+            self.firing_alerts.append(alert)
+
 
 @dataclass
 class Alert:
@@ -83,6 +91,7 @@ class Alert:
     message: str | None = None
     last_actor: str | None = None
     alertgroup_id: int | None = None
+    unique_labels: dict[str, str] | None = None
 
     @classmethod
     def from_json(cls, json: dict[str, Any]) -> Alert:
@@ -90,6 +99,8 @@ class Alert:
 
     def generate_message(self) -> None:
         template = _env.get_template("alert.jinja")
-        self.message = template.render(
-            status=self.status, last_actor=self.last_actor, data=self.alertmanager_data
-        )
+        self.message = template.render(unique_labels=self.unique_labels, data=self.alertmanager_data)
+
+    def generate_unique_labels(self, common_labels: dict[str, str]) -> None:
+        all_labels = self.alertmanager_data["labels"]
+        self.unique_labels = {k: v for k, v in all_labels.items() if k not in common_labels}

@@ -24,7 +24,7 @@ class AlertBot(Plugin):
 
     async def start(self) -> None:
         await super().start()
-        self.db = AlertBotDatabase(self.database)
+        self.db = AlertBotDatabase(self, self.database)
         self.pinned_messages_lock = asyncio.Lock()
         self.messages = AlertBotMessageManager(self)
         self.reactions = AlertBotReactionManager(self)

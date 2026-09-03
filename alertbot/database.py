@@ -2,26 +2,58 @@ from __future__ import annotations
 
 import datetime as dt
 import json
-
-# import logging as log
 from typing import Any
 
 from mautrix.util.async_db import Connection, Database, UpgradeTable
+
+import alertbot
 
 from .alerts import Alert, AlertGroup
 
 
 class AlertBotDatabase:
-    def __init__(self, db: Database):
+    bot: alertbot.AlertBot
+
+    def __init__(self, bot: alertbot.AlertBot, db: Database):
+        self.bot = bot
         self._db = db
 
     # --- alertgroups ---
 
+    async def get_event_id_from_group_key(self, group_key: str):
+        self.bot.log.debug(f"Getting event id from group key {group_key}")
+        return await self._db.fetchval("SELECT event_id FROM alertgroups WHERE group_key = $1", group_key)
+
+    async def get_alertgroup_row(self, event_id: str) -> Any | None:
+        return await self._db.fetchrow(
+            "SELECT * FROM alertgroups WHERE event_id = $1",
+            event_id,
+        )
+
+    async def get_alertgroup_from_event_id(self, event_id: str) -> AlertGroup | None:
+        row = await self.get_alertgroup_row(event_id)
+        # self.bot.log.debug(f"get_alertgroup_from_event_id: {event_id} -> {row}")
+        if row:
+            return AlertGroup(
+                group_key=row["group_key"],
+                status=row["status"],
+                receiver=row["receiver"],
+                group_labels=json.loads(row["group_labels"]),
+                common_labels=json.loads(row["common_labels"]),
+                common_annotations=json.loads(row["common_annotations"]),
+                truncated_alerts=row["truncated_alerts"],
+                event_id=row["event_id"],
+                external_url=row["external_url"],
+                notification_reason=row["notification_reason"],
+                id=row["id"],
+            )
+        return None
+
     async def upsert_alertgroup(
         self,
         alertgroup: AlertGroup,
-    ) -> AlertGroup:
-        row = await self._db.execute(
+    ) -> None:
+        new_id = await self._db.fetchval(
             """
             INSERT INTO alertgroups (event_id,
                                      group_key,
@@ -57,9 +89,10 @@ class AlertBotDatabase:
             alertgroup.external_url,
             alertgroup.notification_reason,
         )
-        print(row)
-        # alertgroup.id = int(row[0])
-        return alertgroup
+        alertgroup.id = int(new_id)
+
+    async def delete_alertgroup(self, alertgroup: AlertGroup) -> None:
+        await self._db.execute("DELETE FROM alertgroups WHERE id = $1", alertgroup.id)
 
     # --- alerts ---
 
@@ -74,7 +107,7 @@ class AlertBotDatabase:
 
     async def get_alert_from_event_id(self, event_id: str) -> Alert | None:
         row = await self.get_alert_row(event_id)
-        # log.debug(f"get_alert_from_event_id: {event_id} -> {row}")
+        # self.bot.log.debug(f"get_alert_from_event_id: {event_id} -> {row}")
         if row:
             alertmanager_data = json.loads(row["data"])
             return Alert(
@@ -89,12 +122,13 @@ class AlertBotDatabase:
         json_data = json.dumps(alert.alertmanager_data)
         await self._db.execute(
             """
-            INSERT INTO alerts (fingerprint, event_id, status, data, last_actor)
-            VALUES ($1, $2, $3, $4, $5)
-            ON CONFLICT (fingerprint) DO UPDATE SET event_id   = $2,
-                                                    status     = $3,
-                                                    data       = $4,
-                                                    last_actor = $5
+            INSERT INTO alerts (fingerprint, event_id, status, data, last_actor, alertgroup_id)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            ON CONFLICT (fingerprint) DO UPDATE SET event_id      = $2,
+                                                    status        = $3,
+                                                    data          = $4,
+                                                    last_actor    = $5,
+                                                    alertgroup_id = $6
 
             """,
             alert.fingerprint,
@@ -102,10 +136,11 @@ class AlertBotDatabase:
             alert.status,
             json_data,
             alert.last_actor,
+            alert.alertgroup_id,
         )
 
     async def delete_alert(self, fingerprint: str) -> None:
-        # log.debug(f"delete_alert: {fingerprint}")
+        # self.bot.log.debug(f"delete_alert: {fingerprint}")
         await self._db.execute("DELETE FROM alerts WHERE fingerprint = $1", fingerprint)
 
     # --- features ---

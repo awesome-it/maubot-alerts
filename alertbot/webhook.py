@@ -34,39 +34,48 @@ class AlertBotWebhookManager:
         # This has nothing to do with alertgroups you define in prometheus / vmalert
         # This grouping is done by route.group_by in alertmanager configuration
         alertgroup = AlertGroup.from_json(data_json)
+        alertgroup.event_id = await self.bot.db.get_event_id_from_group_key(alertgroup.group_key)
         await self.bot.db.upsert_alertgroup(alertgroup)
 
-        received_alerts = []
-        for alert in data_json["alerts"]:
-            received_alerts.append(Alert.from_json(alert))
+        alerts_json = data_json["alerts"]
+        firing_json = [a for a in alerts_json if a.get("status") == "firing"]
+        resolved_json = [a for a in alerts_json if a.get("status") == "resolved"]
+        if firing_json and resolved_json:
+            # Both types present: guarantee at least one of each, cap at 5 total.
+            selected_json = [firing_json[0], resolved_json[0]]
+            selected_json += (firing_json[1:] + resolved_json[1:])[:3]
+        else:
+            selected_json = alerts_json[:5]
+
+        for alert_json in selected_json:
+            alert = Alert.from_json(alert_json)
+            alert.alertgroup_id = alertgroup.id
+            alert.generate_unique_labels(alertgroup.common_labels)
+            alert.generate_message()
+            alertgroup.add_alert(alert)
+            await self.bot.db.upsert_alert(alert, None)
 
         events_to_pin = []
         events_to_unpin = []
-        # for alert in received_alerts:
-        #     alert.event_id = await self.bot.db.get_event_id_from_fingerprint(alert.fingerprint)
-        #     alert.generate_message()
-        #     if alert.status == "resolved":
-        #         if alert.event_id is not None:
-        #             self.bot.log.debug(f"Found existing alert: {alert}")
-        #             await self.bot.messages.edit_message(room_id, alert.event_id, html=alert.message)
-        #             await self.bot.reactions.react_to_message(room_id, alert.event_id, "✅️")
-        #             events_to_unpin.append(alert.event_id)
-        #             await self.bot.db.delete_alert(alert.fingerprint)
-        #         else:
-        #             self.bot.log.warning(f"Received resolve for unknown alert: {alert}")
-        #     elif alert.status == "firing":
-        #         if alert.event_id is None:
-        #             self.bot.log.debug(f"Creating new alert: {alert}")
-        #             event_id = await self.bot.messages.send_message(room_id, html=alert.message)
-        #             events_to_pin.append(event_id)
-        #             await self.bot.db.upsert_alert(alert, event_id)
-        #         else:
-        #             events_to_pin.append(alert.event_id)
-        #             # TODO: notify about further firings
-
-        # alertgroup.event_id = await self.bot.db.get_event_id_from_group_key(alertgroup.group_key)
         alertgroup.generate_message()
-        await self.bot.messages.send_message(room_id, html=alertgroup.message)
+        if alertgroup.status == "firing":
+            if alertgroup.event_id is None:
+                self.bot.log.debug(f"Creating new alertgroup: {alertgroup}")
+                alertgroup.event_id = await self.bot.messages.send_message(room_id, html=alertgroup.message)
+                events_to_pin.append(alertgroup.event_id)
+                await self.bot.db.upsert_alertgroup(alertgroup)
+            else:
+                events_to_pin.append(alertgroup.event_id)
+                await self.bot.messages.edit_message(room_id, alertgroup.event_id, html=alertgroup.message)
+        elif alertgroup.status == "resolved":
+            if alertgroup.event_id is not None:
+                self.bot.log.debug(f"Resolved alertgroup: {alertgroup}")
+                await self.bot.messages.edit_message(room_id, alertgroup.event_id, html=alertgroup.message)
+                await self.bot.reactions.react_to_message(room_id, alertgroup.event_id, "✅️")
+                events_to_unpin.append(alertgroup.event_id)
+                await self.bot.db.delete_alertgroup(alertgroup)
+            else:
+                self.bot.log.warning(f"Received resolve for unknown alertgroup: {alertgroup}")
 
         await self.bot.messages.pin_unpin_messages(room_id, events_to_pin, events_to_unpin)
         await self.bot.db.touch_canary(room_id, dt.datetime.now(dt.timezone.utc))
