@@ -1,0 +1,33 @@
+{% if alertgroup.status == "firing" %}
+<b>🔥 {{ alertgroup.status | upper }}</b>
+{% else %}
+<b>✅ {{ alertgroup.status | upper }}</b>
+{% endif %}
+
+<b>{{ alertgroup.group_labels.get("alertname", "Alert") }}</b>
+
+{% if alertgroup.common_annotations.get("summary") %}
+<i>{{ alertgroup.common_annotations["summary"] }}</i>
+{% endif %}
+
+{% if alertgroup.group_labels %}
+<b>Labels</b>
+{% for key, value in alertgroup.group_labels.items() %}
+• <b>{{ key }}</b>: <code>{{ value }}</code>
+{% endfor %}
+{% endif %}
+
+{% if alertgroup.common_annotations %}
+<b>Annotations</b>
+{% for key, value in alertgroup.common_annotations.items() %}
+• <b>{{ key }}</b>: {{ value }}
+{% endfor %}
+{% endif %}
+
+{% if alertgroup.receiver %}
+Receiver: <code>{{ alertgroup.receiver }}</code>
+{% endif %}
+
+{% if alertgroup.external_url %}
+<a href="{{ alertgroup.external_url }}">Open Alertmanager</a>
+{% endif %}

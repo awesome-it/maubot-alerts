@@ -15,6 +15,9 @@ license-files = ["LICENSE"]
 [tool.setuptools]
 packages = ["alertbot"]
 
+[tool.setuptools.package-data]
+alertbot = ["templates/*.jinja"]
+
 [dependency-groups]
 dev = [
   "pytest>=8.3.0",
