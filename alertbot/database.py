@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+
 # import logging as log
-from typing import Any, Optional
+from typing import Any
 
 from mautrix.util.async_db import Connection, Database, UpgradeTable
 
@@ -17,8 +18,8 @@ class AlertBotDatabase:
     # --- alertgroups ---
 
     async def upsert_alertgroup(
-            self,
-            alertgroup: AlertGroup,
+        self,
+        alertgroup: AlertGroup,
     ) -> AlertGroup:
         row = await self._db.execute(
             """
@@ -60,16 +61,16 @@ class AlertBotDatabase:
 
     # --- alerts ---
 
-    async def get_event_id_from_fingerprint(self, fingerprint: str) -> Optional[str]:
+    async def get_event_id_from_fingerprint(self, fingerprint: str) -> str | None:
         return await self._db.fetchval("SELECT event_id FROM alerts WHERE fingerprint = $1", fingerprint)
 
-    async def get_alert_row(self, event_id: str) -> Optional[Any]:
+    async def get_alert_row(self, event_id: str) -> Any | None:
         return await self._db.fetchrow(
             "SELECT * FROM alerts WHERE event_id = $1",
             event_id,
         )
 
-    async def get_alert_from_event_id(self, event_id: str) -> Optional[Alert]:
+    async def get_alert_from_event_id(self, event_id: str) -> Alert | None:
         row = await self.get_alert_row(event_id)
         # log.debug(f"get_alert_from_event_id: {event_id} -> {row}")
         if row:
@@ -81,7 +82,7 @@ class AlertBotDatabase:
             )
         return None
 
-    async def upsert_alert(self, alert: Alert, event_id: Optional[str]) -> None:
+    async def upsert_alert(self, alert: Alert, event_id: str | None) -> None:
         # log.debug(f"upsert_alert: {alert}, event_id: {event_id}")
         json_data = json.dumps(alert.alertmanager_data)
         await self._db.execute(
@@ -165,7 +166,7 @@ class AlertBotDatabase:
             room_id,
         )
 
-    async def get_canary_last_post(self, room_id: str) -> Optional[dt.datetime]:
+    async def get_canary_last_post(self, room_id: str) -> dt.datetime | None:
         return await self._db.fetchval(
             "SELECT last_successful_post FROM canaries WHERE room_id = $1", room_id
         )

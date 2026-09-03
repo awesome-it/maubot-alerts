@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Any
+from typing import Any
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
@@ -15,8 +15,8 @@ class AlertGroup:
     common_labels: dict[str, str]
     common_annotations: dict[str, str]
     truncated_alerts: int
-    event_id: Optional[str] = None
-    message: Optional[str] = None
+    event_id: str | None = None
+    message: str | None = None
     external_url: str | None = None
     notification_reason: str | None = None
     id: int | None = None
@@ -46,10 +46,10 @@ class Alert:
     fingerprint: str
     status: str
     alertmanager_data: dict
-    event_id: Optional[str] = None
-    message: Optional[str] = None
-    last_actor: Optional[str] = None
-    alertgroup_id: Optional[int] = None
+    event_id: str | None = None
+    message: str | None = None
+    last_actor: str | None = None
+    alertgroup_id: int | None = None
 
     @classmethod
     def from_json(cls, json: dict[str, Any]) -> Alert:

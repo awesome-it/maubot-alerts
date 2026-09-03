@@ -41,7 +41,6 @@ class AlertBotCanaryManager:
             await self._check_canary(room_id, interval)
         except asyncio.CancelledError:
             self.bot.log.debug("Canary checking stopped")
-            pass
         except Exception:
             self.bot.log.exception("Failed to check canary")
 

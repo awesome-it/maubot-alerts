@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from maubot.handlers import event
-from mautrix.errors import MNotFound, MatrixUnknownRequestError
+from mautrix.errors import MatrixUnknownRequestError, MNotFound
 from mautrix.types import EventType, StateEvent
 
 import alertbot

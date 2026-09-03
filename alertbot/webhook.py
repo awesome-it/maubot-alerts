@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import datetime as dt
+from collections.abc import Awaitable, Callable
 from json import JSONDecodeError
-from typing import Awaitable, Callable, Optional
 
 from aiohttp.web import Request, Response
 from aiohttp.web_response import json_response
@@ -11,6 +11,7 @@ from mautrix.errors import MForbidden
 from mautrix.types import RoomID
 
 import alertbot
+
 from .alerts import Alert, AlertGroup
 
 
@@ -67,13 +68,12 @@ class AlertBotWebhookManager:
         alertgroup.generate_message()
         await self.bot.messages.send_message(room_id, html=alertgroup.message)
 
-
         await self.bot.messages.pin_unpin_messages(room_id, events_to_pin, events_to_unpin)
         await self.bot.db.touch_canary(room_id, dt.datetime.now(dt.timezone.utc))
 
     async def _call_and_handle_error(
         self,
-        fn: Callable[[Request, RoomID], Awaitable[Optional[Response]]],
+        fn: Callable[[Request, RoomID], Awaitable[Response | None]],
         req: Request,
     ) -> Response:
         room_id = req.match_info["room_id"].strip()

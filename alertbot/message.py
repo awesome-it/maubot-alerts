@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
-
 from mautrix.errors import MForbidden, MNotFound
 from mautrix.types import (
     EventID,
@@ -15,6 +13,7 @@ from mautrix.types import (
 )
 
 import alertbot
+
 from .util.mlstrip import strip_tags
 
 
@@ -27,9 +26,9 @@ class AlertBotMessageManager:
     async def send_message(
         self,
         room_id: RoomID,
-        markdown: Optional[str] = None,
-        html: Optional[str] = None,
-        relates_to: Optional[RelatesTo] = None,
+        markdown: str | None = None,
+        html: str | None = None,
+        relates_to: RelatesTo | None = None,
     ) -> EventID:
         if markdown:
             return await self.bot.client.send_markdown(
@@ -54,7 +53,7 @@ class AlertBotMessageManager:
             self.bot.log.error(f"Could not find message to edit (MNotFound) in room {room_id}: {event_id}")
 
     async def pin_unpin_messages(
-        self, room_id: RoomID, to_pin: list[EventID] = None, to_unpin: list[EventID] = None
+        self, room_id: RoomID, to_pin: list[EventID] | None = None, to_unpin: list[EventID] | None = None
     ) -> None:
         if not await self.bot.db.is_feature_enabled("pinning", room_id):
             return
@@ -80,7 +79,6 @@ class AlertBotMessageManager:
                     self.bot.log.warning(
                         f"Tried to unpin event {event_id} but it was not pinned in room {room_id}"
                     )
-                    pass
             try:
                 await self.bot.client.send_state_event(room_id, EventType.ROOM_PINNED_EVENTS, pinned_events)
             except MForbidden:
