@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import colorsys
+import hashlib
 import pkgutil
 from dataclasses import dataclass
 from functools import cache
@@ -19,7 +21,23 @@ def _load_template_source(name: str) -> str:
     return data.decode("utf-8")
 
 
+@cache
+def label_color(key: str) -> dict[str, str]:
+    # Deterministic pill color from label key. md5 (not builtin hash(), which is
+    # per-process salted) spreads keys across the full hue spectrum. Fixed
+    # saturation/lightness keep pills readable; fg is black/white by luminance.
+    digest = hashlib.md5(key.encode("utf-8")).digest()
+    hue = digest[0] / 255.0
+    r, g, b = colorsys.hls_to_rgb(hue, 0.45, 0.65)
+    bg = f"#{round(r * 255):02x}{round(g * 255):02x}{round(b * 255):02x}"
+    # Relative luminance (sRGB coefficients) picks a readable text color.
+    luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    fg = "#000000" if luminance > 0.6 else "#ffffff"
+    return {"bg": bg, "fg": fg}
+
+
 _env = Environment(loader=FunctionLoader(_load_template_source), autoescape=select_autoescape())
+_env.filters["label_color"] = label_color
 
 
 @dataclass
