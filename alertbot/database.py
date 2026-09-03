@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import datetime as dt
 import json
-
 # import logging as log
 from typing import Any, Optional
 
@@ -178,5 +177,28 @@ async def upgrade_v5(conn: Connection) -> None:
             last_successful_post TIMESTAMPTZ NOT NULL,
             PRIMARY KEY (room_id)
         )
+        """
+    )
+
+
+@upgrade_table.register(description="Add alert groups")
+async def upgrade_v6(conn: Connection) -> None:
+    await conn.execute(
+        """
+        CREATE TABLE alertgroups
+        (
+            id                  INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+            group_key           TEXT    NOT NULL UNIQUE,
+            status              TEXT    NOT NULL,
+            receiver            TEXT    NOT NULL,
+            group_labels        JSONB   NOT NULL,
+            common_labels       JSONB   NOT NULL,
+            common_annotations  JSONB   NOT NULL,
+            truncated_alerts    INTEGER NOT NULL,
+            external_url        TEXT,
+            notification_reason TEXT
+        );
+        ALTER TABLE alerts
+            ADD COLUMN alertgroup_id INTEGER REFERENCES alertgroups ON DELETE CASCADE ON UPDATE CASCADE;
         """
     )
