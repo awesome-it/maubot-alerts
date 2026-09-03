@@ -1,9 +1,25 @@
 from __future__ import annotations
 
+import pkgutil
 from dataclasses import dataclass
+from functools import cache
 from typing import Any
 
-from jinja2 import Environment, PackageLoader, select_autoescape
+from jinja2 import Environment, FunctionLoader, select_autoescape
+
+
+@cache
+def _load_template_source(name: str) -> str:
+    # Read via the module loader's get_data so it works both from a plain
+    # filesystem install and from inside a maubot .mbp zip (whose custom
+    # zipimporter jinja2's PackageLoader does not recognize).
+    data = pkgutil.get_data(__package__, f"templates/{name}")
+    if data is None:
+        raise FileNotFoundError(f"template {name!r} not found in package {__package__!r}")
+    return data.decode("utf-8")
+
+
+_env = Environment(loader=FunctionLoader(_load_template_source), autoescape=select_autoescape())
 
 
 @dataclass
@@ -36,8 +52,7 @@ class AlertGroup:
         )
 
     def generate_message(self) -> None:
-        env = Environment(loader=PackageLoader("alertbot", "templates"), autoescape=select_autoescape())
-        template = env.get_template("alertgroup.jinja")
+        template = _env.get_template("alertgroup.jinja")
         self.message = template.render(alertgroup=self)
 
 
@@ -56,8 +71,7 @@ class Alert:
         return cls(fingerprint=json["fingerprint"], status=json["status"], alertmanager_data=json)
 
     def generate_message(self) -> None:
-        env = Environment(loader=PackageLoader("alertbot", "templates"), autoescape=select_autoescape())
-        template = env.get_template("alert.jinja")
+        template = _env.get_template("alert.jinja")
         self.message = template.render(
             status=self.status, last_actor=self.last_actor, data=self.alertmanager_data
         )
