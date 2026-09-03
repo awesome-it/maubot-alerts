@@ -34,14 +34,14 @@ class AlertBotReactionManager:
             self.bot.log.debug(f"Received reaction {reaction_key} to alert: {alertgroup}")
             if alertgroup and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿"]:
                 alertgroup.status = "acknowledged"
-                # alertgroup.last_actor = evt.sender
+                alertgroup.last_actor = evt.sender
                 alertgroup.generate_message()
                 await self.bot.messages.edit_message(room_id, related_event_id, html=alertgroup.message)
                 await self.react_to_message(room_id, related_event_id, reaction_key)
                 await self.bot.db.upsert_alertgroup(alertgroup)
             elif alertgroup and reaction_key in ["✅", "✅️"]:
                 alertgroup.status = "manually resolved"
-                # alertgroup.last_actor = evt.sender
+                alertgroup.last_actor = evt.sender
                 alertgroup.generate_message()
                 await self.bot.messages.edit_message(room_id, related_event_id, html=alertgroup.message)
                 await self.react_to_message(room_id, related_event_id, reaction_key)
@@ -53,7 +53,7 @@ class AlertBotReactionManager:
                 and reaction_key in ["👎", "👎️", "👎🏻", "👎🏽", "👎🏾", "👎🏿"]
             ):
                 alertgroup.status = "firing"
-                # alertgroup.last_actor = evt.sender
+                alertgroup.last_actor = evt.sender
                 alertgroup.generate_message()
                 await self.bot.messages.edit_message(room_id, related_event_id, html=alertgroup.message)
                 await self.react_to_message(room_id, related_event_id, reaction_key)

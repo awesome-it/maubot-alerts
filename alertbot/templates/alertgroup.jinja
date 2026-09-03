@@ -4,10 +4,15 @@
 {%- elif alertgroup.status == "acknowledged" -%}
 {%- set color = "#ed6c02" -%}
 {%- endif -%}
+{%- if alertgroup.last_actor -%}
+{%- set actor_annotation = " by " + alertgroup.last_actor -%}
+{%- else -%}
+{%- set actor_annotation = "" -%}
+{%- endif -%}
 <h3>
     <span data-mx-color="{{ color }}">
         {% if alertgroup.status == "firing" %}🔥{% else %}✅{% endif %}
-        {{ alertgroup.status | upper }}:
+        {{ alertgroup.status | upper }}{{ actor_annotation }}:
     </span>
     <a href='{{ alertgroup.external_url }}'>{{ alertgroup.group_labels.get("alertname", "Alert") }}</a>&#8195;
 (Total number of alerts: TODO)

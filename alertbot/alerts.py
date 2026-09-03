@@ -54,6 +54,7 @@ class AlertGroup:
     external_url: str | None = None
     notification_reason: str | None = None
     id: int | None = None
+    last_actor: str | None = None
     firing_alerts: list[Alert] = field(default_factory=list)
     resolved_alerts: list[Alert] = field(default_factory=list)
 
@@ -89,7 +90,6 @@ class Alert:
     alertmanager_data: dict
     event_id: str | None = None
     message: str | None = None
-    last_actor: str | None = None
     alertgroup_id: int | None = None
     unique_labels: dict[str, str] | None = None
 

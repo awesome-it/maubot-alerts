@@ -46,6 +46,7 @@ class AlertBotDatabase:
                 external_url=row["external_url"],
                 notification_reason=row["notification_reason"],
                 id=row["id"],
+                last_actor=row["last_actor"],
             )
         return None
 
@@ -64,8 +65,9 @@ class AlertBotDatabase:
                                      common_annotations,
                                      truncated_alerts,
                                      external_url,
-                                     notification_reason)
-            VALUES ($1, $2, $3, $4, $5::jsonb, $6::jsonb, $7::jsonb, $8, $9, $10)
+                                     notification_reason,
+                                     last_actor)
+            VALUES ($1, $2, $3, $4, $5::jsonb, $6::jsonb, $7::jsonb, $8, $9, $10, $11)
             ON CONFLICT (group_key)
                 DO UPDATE SET event_id            = EXCLUDED.event_id,
                               status              = EXCLUDED.status,
@@ -75,7 +77,8 @@ class AlertBotDatabase:
                               common_annotations  = EXCLUDED.common_annotations,
                               truncated_alerts    = EXCLUDED.truncated_alerts,
                               external_url        = EXCLUDED.external_url,
-                              notification_reason = EXCLUDED.notification_reason
+                              notification_reason = EXCLUDED.notification_reason,
+                              last_actor          = EXCLUDED.last_actor
             RETURNING id
             """,
             alertgroup.event_id,
@@ -88,6 +91,7 @@ class AlertBotDatabase:
             alertgroup.truncated_alerts,
             alertgroup.external_url,
             alertgroup.notification_reason,
+            alertgroup.last_actor,
         )
         alertgroup.id = int(new_id)
 
@@ -122,20 +126,18 @@ class AlertBotDatabase:
         json_data = json.dumps(alert.alertmanager_data)
         await self._db.execute(
             """
-            INSERT INTO alerts (fingerprint, event_id, status, data, last_actor, alertgroup_id)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            INSERT INTO alerts (fingerprint, event_id, status, data, alertgroup_id)
+            VALUES ($1, $2, $3, $4, $5)
             ON CONFLICT (fingerprint) DO UPDATE SET event_id      = $2,
                                                     status        = $3,
                                                     data          = $4,
-                                                    last_actor    = $5,
-                                                    alertgroup_id = $6
+                                                    alertgroup_id = $5
 
             """,
             alert.fingerprint,
             event_id,
             alert.status,
             json_data,
-            alert.last_actor,
             alert.alertgroup_id,
         )
 
@@ -285,3 +287,9 @@ async def upgrade_v6(conn: Connection) -> None:
             ADD COLUMN alertgroup_id INTEGER REFERENCES alertgroups ON DELETE CASCADE ON UPDATE CASCADE;
         """
     )
+
+
+@upgrade_table.register(description="Move last_actor from alerts to alertgroups")
+async def upgrade_v7(conn: Connection) -> None:
+    await conn.execute("ALTER TABLE alertgroups ADD COLUMN last_actor TEXT")
+    await conn.execute("ALTER TABLE alerts DROP COLUMN last_actor")
