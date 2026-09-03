@@ -57,7 +57,8 @@ class AlertBotDatabase:
             alertgroup.external_url,
             alertgroup.notification_reason,
         )
-        alertgroup.id = row["id"]
+        print(row)
+        # alertgroup.id = int(row[0])
         return alertgroup
 
     # --- alerts ---
