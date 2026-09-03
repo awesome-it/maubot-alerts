@@ -23,7 +23,8 @@ class AlertBotDatabase:
     ) -> AlertGroup:
         row = await self._db.execute(
             """
-            INSERT INTO alertgroups (event_id, group_key,
+            INSERT INTO alertgroups (event_id,
+                                     group_key,
                                      status,
                                      receiver,
                                      group_labels,
@@ -32,9 +33,9 @@ class AlertBotDatabase:
                                      truncated_alerts,
                                      external_url,
                                      notification_reason)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             ON CONFLICT (group_key)
-                DO UPDATE SET event_id = EXCLUDED.event_id,
+                DO UPDATE SET event_id            = EXCLUDED.event_id,
                               status              = EXCLUDED.status,
                               receiver            = EXCLUDED.receiver,
                               group_labels        = EXCLUDED.group_labels,
