@@ -33,7 +33,7 @@ class AlertBotDatabase:
                                      truncated_alerts,
                                      external_url,
                                      notification_reason)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            VALUES ($1, $2, $3, $4, $5::jsonb, $6::jsonb, $7::jsonb, $8, $9, $10)
             ON CONFLICT (group_key)
                 DO UPDATE SET event_id            = EXCLUDED.event_id,
                               status              = EXCLUDED.status,
@@ -50,9 +50,9 @@ class AlertBotDatabase:
             alertgroup.group_key,
             alertgroup.status,
             alertgroup.receiver,
-            alertgroup.group_labels,
-            alertgroup.common_labels,
-            alertgroup.common_annotations,
+            json.dumps(alertgroup.group_labels),
+            json.dumps(alertgroup.common_labels),
+            json.dumps(alertgroup.common_annotations),
             alertgroup.truncated_alerts,
             alertgroup.external_url,
             alertgroup.notification_reason,
