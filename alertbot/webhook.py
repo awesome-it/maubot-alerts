@@ -11,7 +11,7 @@ from mautrix.errors import MForbidden
 from mautrix.types import RoomID
 
 import alertbot
-from .alerts import Alert
+from .alerts import Alert, AlertGroup
 
 
 class AlertBotWebhookManager:
@@ -29,15 +29,15 @@ class AlertBotWebhookManager:
 
     async def alert_message(self, req: Request, room_id: RoomID):
         data_json = await req.json()
+
+        # This has nothing to do with alertgroups you define in prometheus / vmalert
+        # This grouping is done by route.group_by in alertmanager configuration
+        alertgroup = AlertGroup.from_json(data_json)
+        await self.bot.db.upsert_alertgroup(alertgroup)
+
         received_alerts = []
         for alert in data_json["alerts"]:
-            received_alerts.append(
-                Alert(
-                    fingerprint=alert["fingerprint"],
-                    status=alert["status"],
-                    alertmanager_data=alert,
-                )
-            )
+            received_alerts.append(Alert.from_json(alert))
 
         events_to_pin = []
         events_to_unpin = []

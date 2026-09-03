@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
@@ -14,6 +14,11 @@ class Alert:
     event_id: Optional[str] = None
     message: Optional[str] = None
     last_actor: Optional[str] = None
+    alertgroup_id: Optional[int] = None
+
+    @classmethod
+    def from_json(cls, json: dict[str, Any]) -> Alert:
+        return cls(fingerprint=json["fingerprint"], status=json["status"], alertmanager_data=json)
 
     def generate_message(self) -> None:
         env = Environment(loader=PackageLoader("alertbot", "templates"), autoescape=select_autoescape())
