@@ -7,12 +7,56 @@ from typing import Any, Optional
 
 from mautrix.util.async_db import Connection, Database, UpgradeTable
 
-from .alerts import Alert
+from .alerts import Alert, AlertGroup
 
 
 class AlertBotDatabase:
     def __init__(self, db: Database):
         self._db = db
+
+    # --- alertgroups ---
+
+    async def upsert_alertgroup(
+            self,
+            alertgroup: AlertGroup,
+    ) -> AlertGroup:
+        row = await self._db.execute(
+            """
+            INSERT INTO alertgroups (event_id, group_key,
+                                     status,
+                                     receiver,
+                                     group_labels,
+                                     common_labels,
+                                     common_annotations,
+                                     truncated_alerts,
+                                     external_url,
+                                     notification_reason)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            ON CONFLICT (group_key)
+                DO UPDATE SET event_id = EXCLUDED.event_id,
+                              status              = EXCLUDED.status,
+                              receiver            = EXCLUDED.receiver,
+                              group_labels        = EXCLUDED.group_labels,
+                              common_labels       = EXCLUDED.common_labels,
+                              common_annotations  = EXCLUDED.common_annotations,
+                              truncated_alerts    = EXCLUDED.truncated_alerts,
+                              external_url        = EXCLUDED.external_url,
+                              notification_reason = EXCLUDED.notification_reason
+            RETURNING id
+            """,
+            alertgroup.event_id,
+            alertgroup.group_key,
+            alertgroup.status,
+            alertgroup.receiver,
+            alertgroup.group_labels,
+            alertgroup.common_labels,
+            alertgroup.common_annotations,
+            alertgroup.truncated_alerts,
+            alertgroup.external_url,
+            alertgroup.notification_reason,
+        )
+        alertgroup.id = row["id"]
+        return alertgroup
 
     # --- alerts ---
 
@@ -188,6 +232,7 @@ async def upgrade_v6(conn: Connection) -> None:
         CREATE TABLE alertgroups
         (
             id                  INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+            event_id            TEXT,
             group_key           TEXT    NOT NULL UNIQUE,
             status              TEXT    NOT NULL,
             receiver            TEXT    NOT NULL,

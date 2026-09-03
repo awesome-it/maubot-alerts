@@ -41,27 +41,33 @@ class AlertBotWebhookManager:
 
         events_to_pin = []
         events_to_unpin = []
-        for alert in received_alerts:
-            alert.event_id = await self.bot.db.get_event_id_from_fingerprint(alert.fingerprint)
-            alert.generate_message()
-            if alert.status == "resolved":
-                if alert.event_id is not None:
-                    self.bot.log.debug(f"Found existing alert: {alert}")
-                    await self.bot.messages.edit_message(room_id, alert.event_id, html=alert.message)
-                    await self.bot.reactions.react_to_message(room_id, alert.event_id, "✅️")
-                    events_to_unpin.append(alert.event_id)
-                    await self.bot.db.delete_alert(alert.fingerprint)
-                else:
-                    self.bot.log.warning(f"Received resolve for unknown alert: {alert}")
-            elif alert.status == "firing":
-                if alert.event_id is None:
-                    self.bot.log.debug(f"Creating new alert: {alert}")
-                    event_id = await self.bot.messages.send_message(room_id, html=alert.message)
-                    events_to_pin.append(event_id)
-                    await self.bot.db.upsert_alert(alert, event_id)
-                else:
-                    events_to_pin.append(alert.event_id)
-                    # TODO: notify about further firings
+        # for alert in received_alerts:
+        #     alert.event_id = await self.bot.db.get_event_id_from_fingerprint(alert.fingerprint)
+        #     alert.generate_message()
+        #     if alert.status == "resolved":
+        #         if alert.event_id is not None:
+        #             self.bot.log.debug(f"Found existing alert: {alert}")
+        #             await self.bot.messages.edit_message(room_id, alert.event_id, html=alert.message)
+        #             await self.bot.reactions.react_to_message(room_id, alert.event_id, "✅️")
+        #             events_to_unpin.append(alert.event_id)
+        #             await self.bot.db.delete_alert(alert.fingerprint)
+        #         else:
+        #             self.bot.log.warning(f"Received resolve for unknown alert: {alert}")
+        #     elif alert.status == "firing":
+        #         if alert.event_id is None:
+        #             self.bot.log.debug(f"Creating new alert: {alert}")
+        #             event_id = await self.bot.messages.send_message(room_id, html=alert.message)
+        #             events_to_pin.append(event_id)
+        #             await self.bot.db.upsert_alert(alert, event_id)
+        #         else:
+        #             events_to_pin.append(alert.event_id)
+        #             # TODO: notify about further firings
+
+        # alertgroup.event_id = await self.bot.db.get_event_id_from_group_key(alertgroup.group_key)
+        alertgroup.generate_message()
+        await self.bot.messages.send_message(room_id, html=alertgroup.message)
+
+
         await self.bot.messages.pin_unpin_messages(room_id, events_to_pin, events_to_unpin)
         await self.bot.db.touch_canary(room_id, dt.datetime.now(dt.timezone.utc))
 
