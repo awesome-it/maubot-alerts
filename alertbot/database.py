@@ -293,3 +293,8 @@ async def upgrade_v6(conn: Connection) -> None:
 async def upgrade_v7(conn: Connection) -> None:
     await conn.execute("ALTER TABLE alertgroups ADD COLUMN last_actor TEXT")
     await conn.execute("ALTER TABLE alerts DROP COLUMN last_actor")
+
+
+@upgrade_table.register(description="Clean up alerts without alertgroup")
+async def upgrade_v8(conn: Connection) -> None:
+    await conn.execute("DELETE FROM alerts where alertgroup_id IS NULL")
