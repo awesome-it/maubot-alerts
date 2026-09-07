@@ -101,6 +101,7 @@ class AlertBotDatabase:
 
     async def delete_alertgroup(self, alertgroup: AlertGroup) -> None:
         await self._db.execute("DELETE FROM alertgroups WHERE id = $1", alertgroup.id)
+        await self._db.execute("DELETE FROM alertgroups WHERE event_id = $1", alertgroup.event_id)
 
     # --- alerts ---
 
