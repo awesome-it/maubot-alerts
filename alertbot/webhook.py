@@ -36,6 +36,13 @@ class AlertBotWebhookManager:
         alertgroup = AlertGroup.from_json(data_json)
         alertgroup.event_id = await self.bot.db.get_event_id_from_group_key(alertgroup.group_key)
 
+        # awesome-it special
+        alertgroup.external_url = (
+            f"https://monitoring.awesome-it.de/alerting/groups?groupBy=alertname,instance"
+            f"&alertState=active"
+            f"&queryString=alertname%3D{alertgroup.common_labels['alertname']}"
+        )
+
         alerts_json = data_json["alerts"]
         firing_json = [a for a in alerts_json if a.get("status") == "firing"]
         resolved_json = [a for a in alerts_json if a.get("status") == "resolved"]
