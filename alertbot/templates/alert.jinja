@@ -1,8 +1,8 @@
-<a href='{{ data['generatorURL'] }}'>{{ data['labels']['alertname'] }}</a>.&#8195;
+<a href='{{ data['generatorURL'] }}'>{{ data['labels']['alertname'] }}</a>;
 Unique Labels:&nbsp;
 {% for key, value in unique_labels.items() -%}
-    {%- set c = key | label_color -%}
-    <span data-mx-bg-color="{{ c.bg }}" data-mx-color="{{ c.fg }}">&nbsp;{{ key }}&nbsp;</span>
-    <span data-mx-bg-color="#eaeaea" data-mx-color="#333333">&nbsp;{{ value }}&nbsp;</span>&#8195;
+{%- set c = key | label_color -%}
+<span data-mx-bg-color="{{ c.bg }}" data-mx-color="{{ c.fg }}">&nbsp;{{ key }}&nbsp;</span>&nbsp;{{- '' -}}
+<span data-mx-bg-color="#eaeaea" data-mx-color="#333333">&nbsp;{{ value }}&nbsp;</span>&#8195;
 {%- endfor %}<br/>
 {{ data['annotations']['summary'] }}

@@ -10,11 +10,11 @@
 {%- set actor_annotation = "" -%}
 {%- endif -%}
 <h3>
-    <span data-mx-color="{{ color }}">
-        {% if alertgroup.status == "firing" %}🔥{% else %}✅{% endif %}
-        {{ alertgroup.status | upper }}{{ actor_annotation }}:
-    </span>
-    <a href='{{ alertgroup.external_url }}'>{{ alertgroup.group_labels.get("alertname", "Alert") }}</a>&#8195;
+<span data-mx-color="{{ color }}">
+{% if alertgroup.status == "firing" %}🔥{% else %}✅{% endif %}
+{{ alertgroup.status | upper }}{{ actor_annotation }}:
+</span>
+<a href='{{ alertgroup.external_url }}'>{{ alertgroup.group_labels.get("alertname", "Alert") }}</a>&nbsp;
 (Total number of alerts: TODO)
 </h3>
 {%- if alertgroup.common_annotations.get("summary") %}
@@ -24,7 +24,7 @@
 <b>Common Labels:</b>
 {% for key, value in alertgroup.group_labels.items() -%}
 {%- set c = key | label_color -%}
-<span data-mx-bg-color="{{ c.bg }}" data-mx-color="{{ c.fg }}">&nbsp;{{ key }}&nbsp;</span>
+<span data-mx-bg-color="{{ c.bg }}" data-mx-color="{{ c.fg }}">&nbsp;{{ key }}&nbsp;</span>&nbsp;{{- '' -}}
 <span data-mx-bg-color="#eaeaea" data-mx-color="#333333">&nbsp;{{ value }}&nbsp;</span>&#8195;
 {%- endfor %}<br/>
 {%- endif %}
