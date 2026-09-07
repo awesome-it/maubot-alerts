@@ -11,8 +11,8 @@
 {%- endif -%}
 <h3>
 <span data-mx-color="{{ color }}">
-{%- if alertgroup.status == "firing" %}🔥{% elif alertgroup.status == "acknowledged" %}
-👀{% else %}✅{% endif -%}
+{%- if alertgroup.status == "firing" %}🔥 {% elif alertgroup.status == "acknowledged" %}
+👀 {% else %}✅ {% endif -%}
 {{ alertgroup.status | upper }}{{ actor_annotation }}:
 </span>
 <a href='{{ alertgroup.external_url }}'>{{ alertgroup.group_labels.get("alertname", "Alert") }}</a>&nbsp;
