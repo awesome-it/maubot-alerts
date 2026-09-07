@@ -4,13 +4,21 @@ import asyncio
 
 from maubot import Plugin
 from mautrix.util.async_db import UpgradeTable
+from mautrix.util.config import BaseProxyConfig, ConfigUpdateHelper
 
 from .canary import AlertBotCanaryManager
 from .command import AlertBotCommandManager
 from .database import AlertBotDatabase, upgrade_table
 from .message import AlertBotMessageManager
 from .reaction import AlertBotReactionManager
+from .template import TemplateRenderer
 from .webhook import AlertBotWebhookManager
+
+
+class AlertBotConfig(BaseProxyConfig):
+    def do_update(self, helper: ConfigUpdateHelper) -> None:
+        helper.copy("templates.alert")
+        helper.copy("templates.alertgroup")
 
 
 class AlertBot(Plugin):
@@ -21,9 +29,14 @@ class AlertBot(Plugin):
     canary: AlertBotCanaryManager
     webhook: AlertBotWebhookManager
     commands: AlertBotCommandManager
+    templates: TemplateRenderer
 
     async def start(self) -> None:
         await super().start()
+        if self.config:
+            self.config.load_and_update()
+        self.templates = TemplateRenderer(self.config)
+        self.templates.validate()
         self.db = AlertBotDatabase(self, self.database)
         self.pinned_messages_lock = asyncio.Lock()
         self.messages = AlertBotMessageManager(self)
@@ -41,6 +54,10 @@ class AlertBot(Plugin):
     async def stop(self):
         await super().stop()
         await self.canary.cancel_canary_tasks()
+
+    @classmethod
+    def get_config_class(cls) -> type[BaseProxyConfig] | None:
+        return AlertBotConfig
 
     @classmethod
     def get_db_upgrade_table(cls) -> UpgradeTable:

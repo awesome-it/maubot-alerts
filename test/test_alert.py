@@ -1,5 +1,9 @@
-from alertbot import Alert
-from alertbot.alerts import AlertGroup
+from alertbot.alerts import Alert, AlertGroup
+from alertbot.template import TemplateRenderer
+
+
+def make_renderer() -> TemplateRenderer:
+    return TemplateRenderer()
 
 
 def make_group(status: str, last_actor: str | None = None) -> AlertGroup:
@@ -23,31 +27,31 @@ class TestAlertGroup:
     def test_firing_color(self):
         """Firing alert groups are red."""
         group = make_group("firing")
-        group.generate_message()
+        group.generate_message(make_renderer())
         assert "#d32f2f" in group.message
 
     def test_acknowledged_color(self):
         """Acknowledged alert groups are orange."""
         group = make_group("acknowledged")
-        group.generate_message()
+        group.generate_message(make_renderer())
         assert "#ed6c02" in group.message
 
     def test_resolved_color(self):
         """Resolved alert groups are green."""
         group = make_group("resolved")
-        group.generate_message()
+        group.generate_message(make_renderer())
         assert "#2e7d32" in group.message
 
     def test_with_actor(self):
         """last_actor is included in the title."""
         group = make_group("acknowledged", last_actor="@user:example.com")
-        group.generate_message()
+        group.generate_message(make_renderer())
         assert "by @user:example.com" in group.message
 
     def test_without_actor(self):
         """No actor annotation when last_actor is unset."""
         group = make_group("firing")
-        group.generate_message()
+        group.generate_message(make_renderer())
         assert "by " not in group.message
 
 
@@ -66,7 +70,7 @@ class TestAlert:
             },
         )
         alert.generate_unique_labels(common_labels={})
-        alert.generate_message()
+        alert.generate_message(make_renderer())
         assert "severity" in alert.message
         assert "critical" in alert.message
         assert "Test summary" in alert.message
