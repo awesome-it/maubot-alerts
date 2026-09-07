@@ -47,6 +47,7 @@ class AlertBotDatabase:
                 notification_reason=row["notification_reason"],
                 id=row["id"],
                 last_actor=row["last_actor"],
+                total_firing_alerts=row["total_firing_alerts"],
             )
         return None
 
@@ -66,8 +67,9 @@ class AlertBotDatabase:
                                      truncated_alerts,
                                      external_url,
                                      notification_reason,
-                                     last_actor)
-            VALUES ($1, $2, $3, $4, $5::jsonb, $6::jsonb, $7::jsonb, $8, $9, $10, $11)
+                                     last_actor,
+                                     total_firing_alerts)
+            VALUES ($1, $2, $3, $4, $5::jsonb, $6::jsonb, $7::jsonb, $8, $9, $10, $11, $12)
             ON CONFLICT (group_key)
                 DO UPDATE SET event_id            = EXCLUDED.event_id,
                               status              = EXCLUDED.status,
@@ -78,7 +80,8 @@ class AlertBotDatabase:
                               truncated_alerts    = EXCLUDED.truncated_alerts,
                               external_url        = EXCLUDED.external_url,
                               notification_reason = EXCLUDED.notification_reason,
-                              last_actor          = EXCLUDED.last_actor
+                              last_actor          = EXCLUDED.last_actor,
+                              total_firing_alerts = EXCLUDED.total_firing_alerts
             RETURNING id
             """,
             alertgroup.event_id,
@@ -92,6 +95,7 @@ class AlertBotDatabase:
             alertgroup.external_url,
             alertgroup.notification_reason,
             alertgroup.last_actor,
+            alertgroup.total_firing_alerts,
         )
         alertgroup.id = int(new_id)
 
@@ -298,3 +302,8 @@ async def upgrade_v7(conn: Connection) -> None:
 @upgrade_table.register(description="Clean up alerts without alertgroup")
 async def upgrade_v8(conn: Connection) -> None:
     await conn.execute("DELETE FROM alerts where alertgroup_id IS NULL")
+
+
+@upgrade_table.register(description="Add column total_firing_alerts to alertgroups")
+async def upgrade_v9(conn: Connection) -> None:
+    await conn.execute("ALTER TABLE alertgroups ADD COLUMN total_firing_alerts INT")

@@ -9,15 +9,15 @@
 {%- else -%}
 {%- set actor_annotation = "" -%}
 {%- endif -%}
-<h3>
+<h4>
 <span data-mx-color="{{ color }}">
 {%- if alertgroup.status == "firing" %}🔥 {% elif alertgroup.status == "acknowledged" %}
 👀 {% else %}✅ {% endif -%}
 {{ alertgroup.status | upper }}{{ actor_annotation }}:
 </span>
 <a href='{{ alertgroup.external_url }}'>{{ alertgroup.group_labels.get("alertname", "Alert") }}</a>&nbsp;
-(Total number of alerts: TODO)
-</h3>
+(Total firing alerts: {{ alertgroup.total_firing_alerts }})
+</h4>
 {%- if alertgroup.common_annotations.get("summary") %}
 <i>{{ alertgroup.common_annotations["summary"] }}</i><br/>
 {%- endif %}

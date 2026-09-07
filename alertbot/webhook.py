@@ -35,7 +35,6 @@ class AlertBotWebhookManager:
         # This grouping is done by route.group_by in alertmanager configuration
         alertgroup = AlertGroup.from_json(data_json)
         alertgroup.event_id = await self.bot.db.get_event_id_from_group_key(alertgroup.group_key)
-        await self.bot.db.upsert_alertgroup(alertgroup)
 
         alerts_json = data_json["alerts"]
         firing_json = [a for a in alerts_json if a.get("status") == "firing"]
@@ -46,6 +45,11 @@ class AlertBotWebhookManager:
             selected_json += (firing_json[1:] + resolved_json[1:])[:3]
         else:
             selected_json = alerts_json[:5]
+
+        if alertgroup.status == "firing":
+            alertgroup.total_firing_alerts = alertgroup.truncated_alerts + len(firing_json)
+        elif alertgroup.status == "resolved":
+            alertgroup.total_firing_alerts = 0
 
         for alert_json in selected_json:
             alert = Alert.from_json(alert_json)

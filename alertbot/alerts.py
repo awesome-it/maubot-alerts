@@ -55,6 +55,7 @@ class AlertGroup:
     notification_reason: str | None = None
     id: int | None = None
     last_actor: str | None = None
+    total_firing_alerts: int | None = None
     firing_alerts: list[Alert] = field(default_factory=list)
     resolved_alerts: list[Alert] = field(default_factory=list)
 
