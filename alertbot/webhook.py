@@ -55,13 +55,13 @@ class AlertBotWebhookManager:
             alert = Alert.from_json(alert_json)
             alert.alertgroup_id = alertgroup.id
             alert.generate_unique_labels(alertgroup.common_labels)
-            alert.generate_message()
+            alert.generate_message(self.bot.templates)
             alertgroup.add_alert(alert)
             await self.bot.db.upsert_alert(alert, None)
 
         events_to_pin = []
         events_to_unpin = []
-        alertgroup.generate_message()
+        alertgroup.generate_message(self.bot.templates)
         if alertgroup.status == "firing":
             if alertgroup.event_id is None:
                 self.bot.log.debug(f"Creating new alertgroup: {alertgroup}")

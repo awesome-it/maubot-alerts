@@ -5,12 +5,13 @@ license: MIT
 modules:
   - alertbot
 extra_files:
+  - base-config.yaml
   - alertbot/templates/alert.jinja
   - alertbot/templates/alertgroup.jinja
 main_class: AlertBot
 database: true
 database_type: asyncpg
 webapp: true
-config: false
+config: true
 dependencies: []
 soft_dependencies: []
