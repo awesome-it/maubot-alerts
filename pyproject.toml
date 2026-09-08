@@ -7,7 +7,7 @@ name = "maubot-alerts"
 version = "0.5.0"
 description = "A Maubot plugin for alerting via Matrix"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = ["maubot==0.6.0", "setuptools==83.*"]
 license = "AGPL-3.0-only"
 license-files = ["LICENSE"]
@@ -27,4 +27,4 @@ dev = [
 ]
 [tool.ruff]
 line-length = 110
-target-version = "py310"
+target-version = "py312"

@@ -24,7 +24,7 @@ class AlertBotCanaryManager:
             if not last_successful_post:
                 # TODO: fix database out of sync
                 return
-            if dt.datetime.now(dt.timezone.utc) - last_successful_post > interval:
+            if dt.datetime.now(dt.UTC) - last_successful_post > interval:
                 self.bot.log.error(f"CANARY IS DEAD in room {room_id}")
                 message = (
                     f"<h1><font color=red>CANARY IS DEAD. </font></h1>"

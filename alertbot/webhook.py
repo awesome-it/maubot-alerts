@@ -82,7 +82,7 @@ class AlertBotWebhookManager:
                 self.bot.log.warning(f"Received resolve for unknown alertgroup: {alertgroup}")
 
         await self.bot.messages.pin_unpin_messages(room_id, events_to_pin, events_to_unpin)
-        await self.bot.db.touch_canary(room_id, dt.datetime.now(dt.timezone.utc))
+        await self.bot.db.touch_canary(room_id, dt.datetime.now(dt.UTC))
 
     async def _call_and_handle_error(
         self,

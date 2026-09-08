@@ -44,7 +44,7 @@ class AlertBotCommandManager:
             await self.bot.db.upsert_canary(
                 room_id,
                 interval,
-                dt.datetime.fromtimestamp(0, dt.timezone.utc),
+                dt.datetime.fromtimestamp(0, dt.UTC),
             )
             await self.bot.canary.schedule_canary_tasks()
         elif name == "canary" and not enabled:
