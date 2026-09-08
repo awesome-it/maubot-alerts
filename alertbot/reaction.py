@@ -26,36 +26,37 @@ class AlertBotReactionManager:
 
     @event.on(EventType.REACTION)
     async def handle_reaction(self, evt: StateEvent):
-        if evt.sender != self.bot.client.mxid:
-            room_id = evt.room_id
-            related_event_id = evt.content.relates_to.event_id
-            reaction_key = evt.content.relates_to.key
-            alertgroup = await self.bot.db.get_alertgroup_from_event_id(related_event_id)
-            self.bot.log.debug(f"Received reaction {reaction_key} to alert: {alertgroup}")
-            if alertgroup and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿"]:
-                alertgroup.status = "acknowledged"
-                alertgroup.last_actor = evt.sender
-                alertgroup.generate_message(self.bot.templates)
-                await self.bot.messages.edit_message(room_id, related_event_id, html=alertgroup.message)
-                await self.react_to_message(room_id, related_event_id, reaction_key)
-                await self.bot.db.upsert_alertgroup(alertgroup)
-            elif alertgroup and reaction_key in ["✅", "✅️"]:
-                alertgroup.status = "manually resolved"
-                alertgroup.last_actor = evt.sender
-                alertgroup.generate_message(self.bot.templates)
-                await self.bot.messages.edit_message(room_id, related_event_id, html=alertgroup.message)
-                await self.react_to_message(room_id, related_event_id, reaction_key)
-                await self.bot.messages.pin_unpin_messages(room_id, to_unpin=[related_event_id])
-                await self.bot.db.delete_alertgroup(alertgroup)
-            elif (
-                alertgroup
-                and alertgroup.status == "acknowledged"
-                and reaction_key in ["👎", "👎️", "👎🏻", "👎🏽", "👎🏾", "👎🏿"]
-            ):
-                alertgroup.status = "firing"
-                alertgroup.last_actor = evt.sender
-                alertgroup.generate_message(self.bot.templates)
-                await self.bot.messages.edit_message(room_id, related_event_id, html=alertgroup.message)
-                await self.react_to_message(room_id, related_event_id, reaction_key)
-                await self.bot.messages.pin_unpin_messages(room_id, to_pin=[related_event_id])
-                await self.bot.db.upsert_alertgroup(alertgroup)
+        if evt.sender == self.bot.client.mxid:
+            return
+        room_id = evt.room_id
+        related_event_id = evt.content.relates_to.event_id
+        reaction_key = evt.content.relates_to.key
+        alertgroup = await self.bot.db.get_alertgroup_from_event_id(related_event_id)
+        self.bot.log.debug(f"Received reaction {reaction_key} to alert: {alertgroup}")
+        if alertgroup and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿"]:
+            alertgroup.status = "acknowledged"
+            alertgroup.last_actor = evt.sender
+            alertgroup.generate_message(self.bot.templates)
+            await self.bot.messages.edit_message(room_id, related_event_id, html=alertgroup.message)
+            await self.react_to_message(room_id, related_event_id, reaction_key)
+            await self.bot.db.upsert_alertgroup(alertgroup)
+        elif alertgroup and reaction_key in ["✅", "✅️"]:
+            alertgroup.status = "manually resolved"
+            alertgroup.last_actor = evt.sender
+            alertgroup.generate_message(self.bot.templates)
+            await self.bot.messages.edit_message(room_id, related_event_id, html=alertgroup.message)
+            await self.react_to_message(room_id, related_event_id, reaction_key)
+            await self.bot.messages.pin_unpin_messages(room_id, to_unpin=[related_event_id])
+            await self.bot.db.delete_alertgroup(alertgroup)
+        elif (
+            alertgroup
+            and alertgroup.status == "acknowledged"
+            and reaction_key in ["👎", "👎️", "👎🏻", "👎🏽", "👎🏾", "👎🏿"]
+        ):
+            alertgroup.status = "firing"
+            alertgroup.last_actor = evt.sender
+            alertgroup.generate_message(self.bot.templates)
+            await self.bot.messages.edit_message(room_id, related_event_id, html=alertgroup.message)
+            await self.react_to_message(room_id, related_event_id, reaction_key)
+            await self.bot.messages.pin_unpin_messages(room_id, to_pin=[related_event_id])
+            await self.bot.db.upsert_alertgroup(alertgroup)
