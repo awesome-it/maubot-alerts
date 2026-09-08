@@ -12,7 +12,7 @@ from mautrix.types import RoomID
 
 import alertbot
 
-from .alerts import Alert, AlertGroup
+from .alerts import AlertGroup, NotificationReason
 
 
 class AlertBotWebhookManager:
@@ -35,51 +35,64 @@ class AlertBotWebhookManager:
         # This grouping is done by route.group_by in alertmanager configuration
         alertgroup = AlertGroup.from_json(data_json)
         alertgroup.event_id = await self.bot.db.get_event_id_from_group_key(alertgroup.group_key)
-
-        alerts_json = data_json["alerts"]
-        firing_json = [a for a in alerts_json if a.get("status") == "firing"]
-        resolved_json = [a for a in alerts_json if a.get("status") == "resolved"]
-        if firing_json and resolved_json:
-            # Both types present: guarantee at least one of each, cap at 5 total.
-            selected_json = [firing_json[0], resolved_json[0]]
-            selected_json += (firing_json[1:] + resolved_json[1:])[:3]
-        else:
-            selected_json = alerts_json[:5]
-
-        if alertgroup.status == "firing":
-            alertgroup.total_firing_alerts = alertgroup.truncated_alerts + len(firing_json)
-        elif alertgroup.status == "resolved":
-            alertgroup.total_firing_alerts = 0
-
-        for alert_json in selected_json:
-            alert = Alert.from_json(alert_json)
-            alert.alertgroup_id = alertgroup.id
-            alert.generate_unique_labels(alertgroup.common_labels)
-            alert.generate_message(self.bot.templates)
-            alertgroup.add_alert(alert)
-            await self.bot.db.upsert_alert(alert, None)
+        alertgroup_id = await self.bot.db.upsert_alertgroup(alertgroup)
+        # TODO: remove alerts for known alertgroups
+        alertgroup.set_id(alertgroup_id)
+        for a in alertgroup.firing_alerts + alertgroup.resolved_alerts:
+            await self.bot.db.upsert_alert(a, None)
+            a.generate_message(self.bot.templates)
 
         events_to_pin = []
         events_to_unpin = []
         alertgroup.generate_message(self.bot.templates)
-        if alertgroup.status == "firing":
-            if alertgroup.event_id is None:
-                self.bot.log.debug(f"Creating new alertgroup: {alertgroup}")
+
+        match alertgroup.notification_reason:
+            case NotificationReason.FIRST_NOTIFICATION:
+                if alertgroup.event_id is None:
+                    self.bot.log.debug(f"Creating new alertgroup: {alertgroup}")
+                else:
+                    self.bot.log.warning(f"Received first notification for known alertgroup: {alertgroup}")
                 alertgroup.event_id = await self.bot.messages.send_message(room_id, html=alertgroup.message)
                 events_to_pin.append(alertgroup.event_id)
                 await self.bot.db.upsert_alertgroup(alertgroup)
-            else:
-                events_to_pin.append(alertgroup.event_id)
-                await self.bot.messages.edit_message(room_id, alertgroup.event_id, html=alertgroup.message)
-        elif alertgroup.status == "resolved":
-            if alertgroup.event_id is not None:
-                self.bot.log.debug(f"Resolved alertgroup: {alertgroup}")
-                await self.bot.messages.edit_message(room_id, alertgroup.event_id, html=alertgroup.message)
-                await self.bot.reactions.react_to_message(room_id, alertgroup.event_id, "✅️")
-                events_to_unpin.append(alertgroup.event_id)
-                await self.bot.db.delete_alertgroup(alertgroup)
-            else:
-                self.bot.log.warning(f"Received resolve for unknown alertgroup: {alertgroup}")
+            case (
+                NotificationReason.NEW_ALERTS_IN_GROUP
+                | NotificationReason.SOME_ALERTS_RESOLVED
+                | NotificationReason.REPEAT_INTERVAL_ELAPSED
+            ):
+                if alertgroup.event_id is None:
+                    self.bot.log.warning(
+                        f"Received {alertgroup.notification_reason} for unknown alertgroup: {alertgroup}"
+                    )
+                    alertgroup.event_id = await self.bot.messages.send_message(
+                        room_id, html=alertgroup.message
+                    )
+                    events_to_pin.append(alertgroup.event_id)
+                else:
+                    self.bot.log.debug(f"Received new alerts for alertgroup with id: {alertgroup.id}")
+                    events_to_pin.append(alertgroup.event_id)
+                    await self.bot.messages.edit_message(
+                        room_id, alertgroup.event_id, html=alertgroup.message
+                    )
+                await self.bot.db.upsert_alertgroup(alertgroup)
+            case NotificationReason.ALL_ALERTS_RESOLVED:
+                if alertgroup.event_id is not None:
+                    self.bot.log.debug(f"Resolved alertgroup: {alertgroup}")
+                    await self.bot.messages.edit_message(
+                        room_id, alertgroup.event_id, html=alertgroup.message
+                    )
+                    await self.bot.reactions.react_to_message(room_id, alertgroup.event_id, "✅️")
+                    events_to_unpin.append(alertgroup.event_id)
+                    await self.bot.db.delete_alertgroup(alertgroup)
+                else:
+                    self.bot.log.warning(f"Received resolve for unknown alertgroup: {alertgroup}")
+            case NotificationReason.UNKNOWN:
+                self.bot.log.error(
+                    (
+                        f"Received alertgroup notification without or with unknown notification_reason: {alertgroup}\n",
+                        "Update your alertmanager instance to at least v0.32.0",
+                    )
+                )
 
         await self.bot.messages.pin_unpin_messages(room_id, events_to_pin, events_to_unpin)
         await self.bot.db.touch_canary(room_id, dt.datetime.now(dt.UTC))

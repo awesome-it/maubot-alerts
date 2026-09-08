@@ -45,16 +45,48 @@ class AlertGroup:
 
     @classmethod
     def from_json(cls, json: dict[str, Any]) -> AlertGroup:
+        status = json["status"]
+        truncated_alerts = json.get("truncatedAlerts", 0)
+        common_labels = json.get("commonLabels", {})
+
+        alerts_json = json.get("alerts", [])
+        firing_json = [a for a in alerts_json if a.get("status") == "firing"]
+        resolved_json = [a for a in alerts_json if a.get("status") == "resolved"]
+        if firing_json and resolved_json:
+            # Both types present: guarantee at least one of each, cap at 5 total.
+            selected_json = [firing_json[0], resolved_json[0]]
+            selected_json += (firing_json[1:] + resolved_json[1:])[:3]
+        else:
+            selected_json = alerts_json[:5]
+
+        if status == "firing":
+            total_firing_alerts = truncated_alerts + len(firing_json)
+        else:
+            total_firing_alerts = 0
+
+        firing_alerts = []
+        resolved_alerts = []
+        for alert_json in selected_json:
+            alert = Alert.from_json(alert_json)
+            alert.generate_unique_labels(common_labels)
+            if alert.status == "resolved":
+                resolved_alerts.append(alert)
+            else:
+                firing_alerts.append(alert)
+
         return cls(
             group_key=json["groupKey"],
-            status=json["status"],
+            status=status,
             receiver=json["receiver"],
             group_labels=json["groupLabels"],
-            common_labels=json["commonLabels"],
+            common_labels=common_labels,
             common_annotations=json["commonAnnotations"],
-            truncated_alerts=json.get("truncatedAlerts", 0),
+            truncated_alerts=truncated_alerts,
             external_url=json.get("externalURL"),
             notification_reason=NotificationReason(json.get("notification_reason")),
+            total_firing_alerts=total_firing_alerts,
+            firing_alerts=firing_alerts,
+            resolved_alerts=resolved_alerts,
         )
 
     def generate_message(self, renderer: TemplateRenderer) -> None:
@@ -62,11 +94,10 @@ class AlertGroup:
         template = renderer.env.get_template("alertgroup.jinja")
         self.message = template.render(alertgroup=self)
 
-    def add_alert(self, alert: Alert) -> None:
-        if alert.status == "resolved":
-            self.resolved_alerts.append(alert)
-        else:
-            self.firing_alerts.append(alert)
+    def set_id(self, alertgroup_id):
+        self.id = alertgroup_id
+        for a in self.firing_alerts + self.resolved_alerts:
+            a.alertgroup_id = alertgroup_id
 
 
 @dataclass
