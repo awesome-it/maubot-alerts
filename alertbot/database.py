@@ -54,7 +54,7 @@ class AlertBotDatabase:
     async def upsert_alertgroup(
         self,
         alertgroup: AlertGroup,
-    ) -> None:
+    ) -> int:
         new_id = await self._db.fetchval(
             """
             INSERT INTO alertgroups (event_id,
@@ -97,7 +97,7 @@ class AlertBotDatabase:
             alertgroup.last_actor,
             alertgroup.total_firing_alerts,
         )
-        alertgroup.id = int(new_id)
+        return int(new_id)
 
     async def delete_alertgroup(self, alertgroup: AlertGroup) -> None:
         await self._db.execute("DELETE FROM alertgroups WHERE id = $1", alertgroup.id)
@@ -125,6 +125,20 @@ class AlertBotDatabase:
                 alertmanager_data=alertmanager_data,
             )
         return None
+
+    async def get_alerts_in_alertgroup(self, id: int) -> list[Alert]:
+        alert_rows = await self._db.fetch("SELECT * FROM alerts WHERE alertgroup_id = $1", id)
+        alerts = []
+        for row in alert_rows:
+            alertmanager_data = json.loads(row["data"])
+            alerts.append(
+                Alert(
+                    fingerprint=row["fingerprint"],
+                    status=row["status"],
+                    alertmanager_data=alertmanager_data,
+                )
+            )
+        return alerts
 
     async def upsert_alert(self, alert: Alert, event_id: str | None) -> None:
         # log.debug(f"upsert_alert: {alert}, event_id: {event_id}")

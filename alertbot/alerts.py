@@ -94,10 +94,18 @@ class AlertGroup:
         template = renderer.env.get_template("alertgroup.jinja")
         self.message = template.render(alertgroup=self)
 
-    def set_id(self, alertgroup_id):
+    def set_id(self, alertgroup_id: int):
         self.id = alertgroup_id
         for a in self.firing_alerts + self.resolved_alerts:
             a.alertgroup_id = alertgroup_id
+
+    def set_alerts(self, alerts: list[Alert]):
+        for alert in alerts:
+            alert.generate_unique_labels(self.common_labels)
+            if alert.status == "resolved":
+                self.resolved_alerts.append(alert)
+            else:
+                self.firing_alerts.append(alert)
 
 
 @dataclass

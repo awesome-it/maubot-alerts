@@ -33,6 +33,11 @@ class AlertBotReactionManager:
         reaction_key = evt.content.relates_to.key
         alertgroup = await self.bot.db.get_alertgroup_from_event_id(related_event_id)
         self.bot.log.debug(f"Received reaction {reaction_key} to alert: {alertgroup}")
+        if not alertgroup or not alertgroup.id:
+            return
+        alertgroup.set_alerts(await self.bot.db.get_alerts_in_alertgroup(alertgroup.id))
+        for a in alertgroup.firing_alerts + alertgroup.resolved_alerts:
+            a.generate_message(self.bot.templates)
         if alertgroup and reaction_key in ["👍", "👍️", "👍🏻", "👍🏽", "👍🏾", "👍🏿"]:
             alertgroup.status = "acknowledged"
             alertgroup.last_actor = evt.sender

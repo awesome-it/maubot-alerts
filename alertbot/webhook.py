@@ -35,9 +35,8 @@ class AlertBotWebhookManager:
         # This grouping is done by route.group_by in alertmanager configuration
         alertgroup = AlertGroup.from_json(data_json)
         alertgroup.event_id = await self.bot.db.get_event_id_from_group_key(alertgroup.group_key)
-        alertgroup_id = await self.bot.db.upsert_alertgroup(alertgroup)
+        alertgroup.set_id(await self.bot.db.upsert_alertgroup(alertgroup))
         # TODO: remove alerts for known alertgroups
-        alertgroup.set_id(alertgroup_id)
         for a in alertgroup.firing_alerts + alertgroup.resolved_alerts:
             await self.bot.db.upsert_alert(a, None)
             a.generate_message(self.bot.templates)
