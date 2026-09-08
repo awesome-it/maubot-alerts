@@ -6,20 +6,18 @@ This is a plugin for [maubot](https://mau.bot/) that receives alerts from
 ## Features
 
 - Receiving alerts from Prometheus Alertmanager by webhook
-- Message sending for each alert in an alert group to a Matrix room
-- Message editing for alerts when they have been resolved or acknowledged
+- Alert grouping: one message per alert group, listing the individual alerts with their unique labels
+- Message editing when the group changes (new alerts, resolved, acknowledged)
+- Display of total firing alert count and the notification reason with a timestamp
 - Alert acknowledgement by reacting with 👍 (and un-acknowledgement with 👎)
 - Manual alert resolution by reacting with ✅
+- Configurable message templates (Jinja) via the plugin config
 - Message pinning for firing alerts (optional, per room)
 - Canary: post a warning when no alert is received within a configured interval (optional, per room)
 
-### Possible future features
-
-- [ ] Alert grouping: send only one message per alert group, 
-      list the alerts in the message, ideally with their unique labels only
-- [ ] Message templating: currently the contents of alert messages are hardcoded, they should be made configurable
-- [ ] Authentication: currently there is no authentication for the webhook that receives the alerts.
-      The URL includes the room ID so you're already quite safe as long as you don't publicly list the room
+## Requirements
+- Alertmanager >= v0.32.0
+- maubot >= v0.6.0
 
 ## Installation
 
@@ -52,17 +50,25 @@ can send alerts to different rooms by creating multiple `webhook_configs` entrie
 
 ### Receiving alerts
 
-- When an alert starts **firing**, the bot posts a colored HTML message to the room:
+- The bot posts **one colored HTML message per alert group**
+- Grouping is controlled by `route.group_by` in your Alertmanager config, not the groups
+  you define in your prometheus / vmalert config
+- The color reflects the group status
   - 🔴 red = firing
   - 🟠 orange = acknowledged
   - 🟢 green = resolved / manually resolved
-
-  Each message links to the alert's Prometheus `generatorURL` and shows the alert name and
-  its description.
-- When an alert is **resolved** by Alertmanager (requires `send_resolved: true`), the bot
-  edits the original message to green and reacts to it with ✅.
-- There is one message per alert (keyed by the Alertmanager `fingerprint`); status changes
-  edit the existing message in place rather than posting a new one.
+- The message header shows the group name (linked to the Alertmanager `externalURL`), the
+  total firing alert count, and the notification reason with a timestamp. When you use
+  `max_alerts` in Alertmanager the total firing alert count might be higher than it actually
+  is due to Alertmanager not giving away if the truncated alerts were resolved or firing.
+- Below it, firing and resolved alerts are listed individually with a maximum of five,
+  each with its name linked to the `generatorURL`, unique labels and summary.
+- Follow-up webhooks for the same group **edit the existing message in place** rather than
+  posting a new one. Which action the bot takes is driven by the Alertmanager
+  `notification_reason` (first notification, new alerts, some/all resolved, repeat interval).
+  This requires Alertmanager **v0.32.0 or newer**.
+- When the group is fully resolved (requires `send_resolved: true`), the bot edits the
+  message to green and reacts with ✅.
 
 ### Interacting with alerts (reactions)
 
@@ -74,6 +80,32 @@ edited message.
 | 👍       | Acknowledge the alert (turns orange, annotated with your user) |
 | 👎       | Un-acknowledge an acknowledged alert (back to firing/red)      |
 | ✅        | Manually resolve the alert (turns green)                       |
+
+### Custom message templates
+
+Message rendering uses Jinja templates. The packaged defaults live in
+`alertbot/templates/` (`alert.jinja`, `alertgroup.jinja`). You can override either one
+through the plugin instance config in the maubot webinterface:
+
+```yaml
+templates:
+  alert: |
+    <b>{{ data['labels']['alertname'] }}</b><br/>
+    {{ data['annotations'].get('summary', '') }}
+  alertgroup: |
+    <h4>{{ alertgroup.status | upper }}: {{ alertgroup.group_labels.get("alertname", "Alert") }}</h4>
+```
+
+Leave a value `null` (the default) to use the packaged template. Config changes are picked
+up without restarting the plugin.
+
+Available context:
+
+- `alert` template: `data` (raw Alertmanager alert), `unique_labels`
+- `alertgroup` template: `alertgroup` (fields such as `status`, `group_labels`,
+  `common_annotations`, `total_firing_alerts`, `notification_reason`, `updated_at`,
+  `firing_alerts`, `resolved_alerts`, `last_actor`, `external_url`)
+- `label_color` filter: deterministic pill background/foreground color per label key
 
 ### Commands
 
@@ -130,7 +162,7 @@ mbc build --upload
 You can also build without the `--upload` option and upload the created `.mbp` file manually
 through the maubot webinterface.
 
-> IMPORTANT: maubot versions <0.5.2 don't update the webhook receivers on plugin updates.
+> **IMPORTANT:** maubot versions <0.5.2 don't update the webhook receivers on plugin updates.
 
 ### Deploy new version
 
