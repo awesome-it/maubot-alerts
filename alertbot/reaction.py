@@ -11,9 +11,9 @@ from alertbot.alerts import AlertGroup
 
 
 class ReactionAction(StrEnum):
-    ACKNOWLEDGE = "👍"
-    UNACKNOWLEDGE = "👎"
-    MANUALLY_RESOLVE = "✅"
+    ACKNOWLEDGE = "👍️"
+    UNACKNOWLEDGE = "👎️"
+    MANUALLY_RESOLVE = "✅️"
     INVALID = ""
 
     @classmethod
