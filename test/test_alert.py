@@ -1,6 +1,6 @@
 from ruamel.yaml.comments import CommentedMap
 
-from alertbot.alerts import Alert, AlertGroup
+from alertbot.alerts import Alert, AlertGroup, NotificationReason
 from alertbot.config import AlertBotConfig
 from alertbot.template import TemplateRenderer
 
@@ -158,3 +158,40 @@ class TestCustomTemplates:
         config.load_and_update()
         group.generate_message(renderer)
         assert group.message == "SECOND firing"
+
+
+class TestNotificationReason:
+    """Test notificationReason parsing into the enum."""
+
+    def _group_json(self, reason: str | None) -> dict:
+        data = {
+            "groupKey": "test-group",
+            "status": "firing",
+            "receiver": "team-x",
+            "groupLabels": {"alertname": "TestAlert"},
+            "commonLabels": {},
+            "commonAnnotations": {},
+        }
+        if reason is not None:
+            data["notification_reason"] = reason
+        return data
+
+    def test_known_reason_maps_to_member(self):
+        """Wire display string maps to the matching enum member."""
+        group = AlertGroup.from_json(self._group_json("all alerts resolved"))
+        assert group.notification_reason is NotificationReason.ALL_ALERTS_RESOLVED
+
+    def test_do_not_notify_reason(self):
+        """'none' maps to DO_NOT_NOTIFY."""
+        group = AlertGroup.from_json(self._group_json("none"))
+        assert group.notification_reason is NotificationReason.DO_NOT_NOTIFY
+
+    def test_unknown_reason_falls_back(self):
+        """Unknown upstream value falls back to UNKNOWN instead of raising."""
+        group = AlertGroup.from_json(self._group_json("something new upstream"))
+        assert group.notification_reason is NotificationReason.UNKNOWN
+
+    def test_missing_reason_falls_back(self):
+        """Absent notificationReason falls back to UNKNOWN."""
+        group = AlertGroup.from_json(self._group_json(None))
+        assert group.notification_reason is NotificationReason.UNKNOWN

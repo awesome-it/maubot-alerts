@@ -16,7 +16,10 @@
 {{ alertgroup.status | upper }}{{ actor_annotation }}:
 </span>
 <a href='{{ alertgroup.external_url }}'>{{ alertgroup.group_labels.get("alertname", "Alert") }}</a>&nbsp;
-(Total firing alerts: {{ alertgroup.total_firing_alerts }})
+〰 Total firing alerts: {{ alertgroup.total_firing_alerts }}&nbsp;
+{%- if alertgroup.notification_reason %}
+〰 Reason: {{ alertgroup.notification_reason }}{% if alertgroup.updated_at %} at {{ alertgroup.updated_at.strftime("%Y-%m-%d %H:%M:%S %Z") }}{% endif %}<br/>
+{%- endif %}
 </h4>
 {%- if alertgroup.common_annotations.get("summary") %}
 <i>{{ alertgroup.common_annotations["summary"] }}</i><br/>

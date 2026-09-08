@@ -8,7 +8,7 @@ from mautrix.util.async_db import Connection, Database, UpgradeTable
 
 import alertbot
 
-from .alerts import Alert, AlertGroup
+from .alerts import Alert, AlertGroup, NotificationReason
 
 
 class AlertBotDatabase:
@@ -44,7 +44,7 @@ class AlertBotDatabase:
                 truncated_alerts=row["truncated_alerts"],
                 event_id=row["event_id"],
                 external_url=row["external_url"],
-                notification_reason=row["notification_reason"],
+                notification_reason=NotificationReason(row["notification_reason"]),
                 id=row["id"],
                 last_actor=row["last_actor"],
                 total_firing_alerts=row["total_firing_alerts"],

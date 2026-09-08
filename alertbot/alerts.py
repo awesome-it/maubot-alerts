@@ -1,9 +1,26 @@
 from __future__ import annotations
 
+import datetime as dt
 from dataclasses import dataclass, field
+from enum import StrEnum
 from typing import Any
 
 from .template import TemplateRenderer
+
+
+class NotificationReason(StrEnum):
+    # Wire values from https://github.com/prometheus/alertmanager/blob/main/notify/notify.go#L309
+    DO_NOT_NOTIFY = "none"
+    FIRST_NOTIFICATION = "first notification"
+    NEW_ALERTS_IN_GROUP = "new alerts added"
+    SOME_ALERTS_RESOLVED = "some alerts resolved"
+    ALL_ALERTS_RESOLVED = "all alerts resolved"
+    REPEAT_INTERVAL_ELAPSED = "repeat interval elapsed"
+    UNKNOWN = "unknown"
+
+    @classmethod
+    def _missing_(cls, value: object) -> NotificationReason:
+        return cls.UNKNOWN
 
 
 @dataclass
@@ -18,10 +35,11 @@ class AlertGroup:
     event_id: str | None = None
     message: str | None = None
     external_url: str | None = None
-    notification_reason: str | None = None
+    notification_reason: NotificationReason = NotificationReason.UNKNOWN
     id: int | None = None
     last_actor: str | None = None
     total_firing_alerts: int | None = None
+    updated_at: dt.datetime | None = None
     firing_alerts: list[Alert] = field(default_factory=list)
     resolved_alerts: list[Alert] = field(default_factory=list)
 
@@ -36,10 +54,11 @@ class AlertGroup:
             common_annotations=json["commonAnnotations"],
             truncated_alerts=json.get("truncatedAlerts", 0),
             external_url=json.get("externalURL"),
-            notification_reason=json.get("notificationReason"),
+            notification_reason=NotificationReason(json.get("notification_reason")),
         )
 
     def generate_message(self, renderer: TemplateRenderer) -> None:
+        self.updated_at = dt.datetime.now(dt.UTC)
         template = renderer.env.get_template("alertgroup.jinja")
         self.message = template.render(alertgroup=self)
 
