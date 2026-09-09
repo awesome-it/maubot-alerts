@@ -116,3 +116,4 @@ class AlertBotWebhookManager:
                 f'Not allowed to send to "{room_id}" (Most likely the bot is not invited in the room): {e}'
             )
             return json_response({"error": str(e)}, status=403)
+        return json_response({"error": "internal server error"}, status=500)
