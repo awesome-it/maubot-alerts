@@ -1,0 +1,50 @@
+{%- set color = "#2e7d32" -%}
+{%- if alertgroup.status == "firing" -%}
+{%- set color = "#d32f2f" -%}
+{%- elif alertgroup.status == "acknowledged" -%}
+{%- set color = "#ed6c02" -%}
+{%- endif -%}
+{%- if alertgroup.last_actor -%}
+{%- set actor_annotation = " by " + alertgroup.last_actor -%}
+{%- else -%}
+{%- set actor_annotation = "" -%}
+{%- endif -%}
+<h4>
+<span data-mx-color="{{ color }}">
+{%- if alertgroup.status == "firing" %}🔥 {% elif alertgroup.status == "acknowledged" %}
+👀 {% else %}✅ {% endif -%}
+{{ alertgroup.status | upper }}{{ actor_annotation }}:
+</span>
+<a href='{{ alertgroup.external_url }}'>{{ alertgroup.group_labels.get("alertname", "Alert") }}</a>&nbsp;
+〰 Total firing alerts: {{ alertgroup.total_firing_alerts }}&nbsp;
+{%- if alertgroup.notification_reason %}
+〰 Reason: {{ alertgroup.notification_reason }}{% if alertgroup.updated_at %} at {{ alertgroup.updated_at.strftime("%Y-%m-%d %H:%M:%S %Z") }}{% endif %}<br/>
+{%- endif %}
+</h4>
+{%- if alertgroup.common_annotations.get("summary") %}
+<i>{{ alertgroup.common_annotations["summary"] }}</i><br/>
+{%- endif %}
+{%- if alertgroup.group_labels %}
+<b>Common Labels:</b>
+{% for key, value in alertgroup.group_labels.items() -%}
+{%- set c = key | label_color -%}
+<span data-mx-bg-color="{{ c.bg }}" data-mx-color="{{ c.fg }}">&nbsp;{{ key }}&nbsp;</span>&nbsp;{{- '' -}}
+<span data-mx-bg-color="#eaeaea" data-mx-color="#333333">&nbsp;{{ value }}&nbsp;</span>&#8195;
+{%- endfor %}<br/>
+{%- endif %}
+{%- if alertgroup.firing_alerts %}
+<b>🔥 Firing Alerts:</b>
+<ul>
+{%- for alert in alertgroup.firing_alerts %}
+<li>{{ alert.message }}</li>
+{%- endfor %}
+</ul>
+{%- endif %}
+{%- if alertgroup.resolved_alerts %}
+<b>✅ Resolved Alerts:</b>
+<ul>
+{%- for alert in alertgroup.resolved_alerts %}
+<li>{{ alert.message }}</li>
+{%- endfor %}
+</ul>
+{%- endif %}

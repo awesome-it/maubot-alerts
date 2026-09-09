@@ -1,6 +1,7 @@
 {
   "receiver": "grafana_oncall",
   "status": "resolved",
+  "notification_reason": "all alerts resolved",
   "alerts": [
     {
       "status": "resolved",

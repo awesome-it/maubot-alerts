@@ -1,6 +1,26 @@
 {
   "receiver": "grafana_oncall",
   "status": "firing",
+  "notification_reason": "first notification",
+  "groupLabels": {
+    "alertname": "RecordingRulesNoData",
+    "customer": "awesome",
+    "instance": "monitoring.example.org",
+    "job": "prometheus.scrape.victoriametrics"
+  },
+  "commonLabels": {
+    "alertgroup": "vmalert",
+    "alertname": "RecordingRulesNoData",
+    "customer": "awesome",
+    "instance": "monitoring.example.org",
+    "job": "prometheus.scrape.victoriametrics",
+    "severity": "info"
+  },
+  "commonAnnotations": {},
+  "externalURL": "https://alertmanager.example.org",
+  "version": "4",
+  "groupKey": "{}:{alertname=\"RecordingRulesNoData\", customer=\"awesome\", instance=\"monitoring.example.org\", job=\"prometheus.scrape.victoriametrics\"}",
+  "truncatedAlerts": 0,
   "alerts": [
     {
       "status": "firing",
@@ -1382,24 +1402,5 @@
       "generatorURL": "https://monitoring.example.org/explore?orgId=1&left=[\"now-1h\",\"now\",\"VictoriaMetrics\",{\"expr\":%22sum%28vmalert_recording_rules_last_evaluation_samples%29+without%28id%29+%5Cu003c+1%22 },{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
       "fingerprint": "e86be7606cafa259"
     }
-  ],
-  "groupLabels": {
-    "alertname": "RecordingRulesNoData",
-    "customer": "awesome",
-    "instance": "monitoring.example.org",
-    "job": "prometheus.scrape.victoriametrics"
-  },
-  "commonLabels": {
-    "alertgroup": "vmalert",
-    "alertname": "RecordingRulesNoData",
-    "customer": "awesome",
-    "instance": "monitoring.example.org",
-    "job": "prometheus.scrape.victoriametrics",
-    "severity": "info"
-  },
-  "commonAnnotations": {},
-  "externalURL": "https://alertmanager.example.org",
-  "version": "4",
-  "groupKey": "{}:{alertname=\"RecordingRulesNoData\", customer=\"awesome\", instance=\"monitoring.example.org\", job=\"prometheus.scrape.victoriametrics\"}",
-  "truncatedAlerts": 0
+  ]
 }

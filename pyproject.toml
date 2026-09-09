@@ -4,16 +4,19 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "maubot-alerts"
-version = "0.3.0"
+version = "0.6.0"
 description = "A Maubot plugin for alerting via Matrix"
 readme = "README.md"
-requires-python = ">=3.10"
-dependencies = ["maubot==0.6.0", "setuptools==81.*"]
+requires-python = ">=3.12"
+dependencies = ["maubot==0.6.0", "setuptools==83.*"]
 license = "AGPL-3.0-only"
 license-files = ["LICENSE"]
 
 [tool.setuptools]
 packages = ["alertbot"]
+
+[tool.setuptools.package-data]
+alertbot = ["templates/*.jinja"]
 
 [dependency-groups]
 dev = [
@@ -24,4 +27,4 @@ dev = [
 ]
 [tool.ruff]
 line-length = 110
-target-version = "py310"
+target-version = "py312"
