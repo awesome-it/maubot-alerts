@@ -50,6 +50,7 @@ class AlertBotWebhookManager:
                 if alertgroup.event_id is None:
                     self.bot.log.debug(f"Creating new alertgroup: {alertgroup}")
                 else:
+                    events_to_unpin.append(alertgroup.event_id)
                     self.bot.log.warning(f"Received first notification for known alertgroup: {alertgroup}")
                 alertgroup.event_id = await self.bot.messages.send_message(room_id, html=alertgroup.message)
                 events_to_pin.append(alertgroup.event_id)
