@@ -87,10 +87,8 @@ class AlertBotWebhookManager:
                     self.bot.log.warning(f"Received resolve for unknown alertgroup: {alertgroup}")
             case NotificationReason.UNKNOWN:
                 self.bot.log.error(
-                    (
-                        f"Received alertgroup notification without or with unknown notification_reason: {alertgroup}\n",
-                        "Update your alertmanager instance to at least v0.32.0",
-                    )
+                    f"Received alertgroup notification without or with unknown notification_reason: {alertgroup}\n"
+                    "Update your alertmanager instance to at least v0.32.0",
                 )
 
         await self.bot.messages.pin_unpin_messages(room_id, events_to_pin, events_to_unpin)
