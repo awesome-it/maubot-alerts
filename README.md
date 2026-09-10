@@ -101,7 +101,7 @@ up without restarting the plugin.
 
 Available context:
 
-- `alert` template: `data` (raw Alertmanager alert), `unique_labels`
+- `alert` template: `data` (raw Alertmanager alert), `unique_labels`, `common_labels`
 - `alertgroup` template: `alertgroup` (fields such as `status`, `group_labels`,
   `common_annotations`, `total_firing_alerts`, `notification_reason`, `updated_at`,
   `firing_alerts`, `resolved_alerts`, `last_actor`, `external_url`)
@@ -161,6 +161,49 @@ mbc build --upload
 
 You can also build without the `--upload` option and upload the created `.mbp` file manually
 through the maubot webinterface.
+
+### Build & upload via Makefile
+
+A `Makefile` wraps `mbc build` and the maubot upload API so both the production plugin and a
+side-by-side test plugin (`de.awesome-it.maubot-alerts-test`) can be built and uploaded with
+a single command. Unlike `mbc build --upload`, it always rebuilds from source (no stale
+`.mbp`) and it produces a distinct module name for the test build so both plugins can be
+loaded on the same maubot instance without clashing on Python's `alertbot` module name.
+
+| Target                   | What it does                                                                |
+|--------------------------|-----------------------------------------------------------------------------|
+| `make build`             | rebuild `de.awesome-it.maubot-alerts-v<VER>.mbp`                            |
+| `make upload`            | POST the prod `.mbp` to maubot                                              |
+| `make build-upload`      | `build` + `upload`                                                          |
+| `make build-test`        | rebuild `de.awesome-it.maubot-alerts-test-v<VER>.mbp` (module `alertbot_test`) |
+| `make upload-test`       | POST the test `.mbp` to maubot                                              |
+| `make build-upload-test` | `build-test` + `upload-test`                                                |
+| `make clean`             | remove `*.mbp` and the `.build-test/` scratch dir                           |
+
+The test build copies sources into `.build-test/`, renames `alertbot/` → `alertbot_test/`,
+rewrites absolute imports, patches `maubot.yaml`, then runs `mbc build` there. The scratch
+directory is removed on completion (successful or failed).
+
+**Required environment variables:**
+
+| Variable       | Default                                     | Notes                                                   |
+|----------------|---------------------------------------------|---------------------------------------------------------|
+| `MAUBOT_URL`   | `https://maubot.local.awesome-it.de`        | maubot admin base URL                                   |
+| `MAUBOT_TOKEN` | *(unset)*                                   | admin access token, required for any `upload*` target   |
+| `MBC`          | `mbc`                                       | override the `mbc` binary path                          |
+| `CURL`         | `curl`                                      | override the `curl` binary path                         |
+
+Get `MAUBOT_TOKEN` from `~/.config/maubot-cli.json` after `mbc login`, or from the
+`accessToken` in your browser's `localStorage` on the maubot admin UI.
+
+```bash
+export MAUBOT_TOKEN=...     # once per shell
+make build-upload           # prod build + upload
+make build-upload-test      # test build + upload (side-by-side plugin)
+```
+
+Uploads use `POST /_matrix/maubot/v1/plugins/upload?allow_override=true` and follow 3xx
+redirects. `make` fails with the HTTP status if the server returns non-2xx.
 
 > **IMPORTANT:** maubot versions <0.5.2 don't update the webhook receivers on plugin updates.
 

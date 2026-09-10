@@ -22,17 +22,25 @@ def _load_template_source(name: str) -> str:
 
 @cache
 def label_color(key: str) -> dict[str, str]:
-    # Deterministic pill color from label key. md5 (not builtin hash(), which is
-    # per-process salted) spreads keys across the full hue spectrum. Fixed
-    # saturation/lightness keep pills readable; fg is black/white by luminance.
+    # Deterministic pill palette from label key. md5 (not builtin hash(), which
+    # is per-process salted) spreads keys across the full hue spectrum. Same
+    # hue is reused at three lightness stops so the trio always feels coherent:
+    # bg (mid), bg_light (near-white tint), fg (near-black tint). Picking fg as
+    # a dark same-hue shade guarantees enough contrast against both bg and
+    # bg_light without falling back to plain black/white.
     digest = hashlib.md5(key.encode("utf-8")).digest()
     hue = digest[0] / 255.0
-    r, g, b = colorsys.hls_to_rgb(hue, 0.45, 0.65)
-    bg = f"#{round(r * 255):02x}{round(g * 255):02x}{round(b * 255):02x}"
-    # Relative luminance (sRGB coefficients) picks a readable text color.
-    luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
-    fg = "#000000" if luminance > 0.6 else "#ffffff"
-    return {"bg": bg, "fg": fg}
+    saturation = 0.65
+
+    def _hex(lightness: float) -> str:
+        r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
+        return f"#{round(r * 255):02x}{round(g * 255):02x}{round(b * 255):02x}"
+
+    return {
+        "bg": _hex(0.45),
+        "bg_light": _hex(0.92),
+        "fg": _hex(0.18),
+    }
 
 
 class TemplateRenderer:

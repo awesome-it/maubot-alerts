@@ -117,6 +117,7 @@ class Alert:
     message: str | None = None
     alertgroup_id: int | None = None
     unique_labels: dict[str, str] | None = None
+    common_labels: dict[str, str] | None = None
 
     @classmethod
     def from_json(cls, json: dict[str, Any]) -> Alert:
@@ -124,8 +125,13 @@ class Alert:
 
     def generate_message(self, renderer: TemplateRenderer) -> None:
         template = renderer.env.get_template("alert.jinja")
-        self.message = template.render(unique_labels=self.unique_labels, data=self.alertmanager_data)
+        self.message = template.render(
+            unique_labels=self.unique_labels,
+            common_labels=self.common_labels,
+            data=self.alertmanager_data,
+        )
 
     def generate_unique_labels(self, common_labels: dict[str, str]) -> None:
         all_labels = self.alertmanager_data["labels"]
         self.unique_labels = {k: v for k, v in all_labels.items() if k not in common_labels}
+        self.common_labels = dict(common_labels)

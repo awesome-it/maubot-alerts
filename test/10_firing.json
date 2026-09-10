@@ -38,7 +38,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Component Saturation Max SLOs",
         "description": "Recording rule \"slo:max:hard:gitlab_sli:gitlab_component_saturation:ratio\" from group \"GitLab Component Saturation Max SLOs\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule slo:max:hard:gitlab_sli:gitlab_component_saturation:ratio ({ $labels.group }}) produces no data"
+        "summary": "Recording rule slo:max:hard:gitlab_sli:gitlab_component_saturation:ratio ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -61,7 +61,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Component Saturation Max SLOs",
         "description": "Recording rule \"slo:max:soft:gitlab_sli:gitlab_component_saturation:ratio\" from group \"GitLab Component Saturation Max SLOs\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule slo:max:soft:gitlab_sli:gitlab_component_saturation:ratio ({ $labels.group }}) produces no data"
+        "summary": "Recording rule slo:max:soft:gitlab_sli:gitlab_component_saturation:ratio ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -84,7 +84,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab",
         "description": "Recording rule \"instance:puma_utilization:ratio\" from group \"GitLab\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule instance:puma_utilization:ratio ({ $labels.group }}) produces no data"
+        "summary": "Recording rule instance:puma_utilization:ratio ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -107,7 +107,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab",
         "description": "Recording rule \"job_route_method_code:gitlab_workhorse_http_request_duration_seconds_count:rate5m\" from group \"GitLab\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule job_route_method_code:gitlab_workhorse_http_request_duration_seconds_count:rate5m ({ $labels.group }}) produces no data"
+        "summary": "Recording rule job_route_method_code:gitlab_workhorse_http_request_duration_seconds_count:rate5m ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -130,7 +130,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:gitaly_apdex:ratio_avg_over_time_5m\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:gitaly_apdex:ratio_avg_over_time_5m ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:gitaly_apdex:ratio_avg_over_time_5m ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -153,7 +153,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:node_cpu_utilization:avg\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:node_cpu_utilization:avg ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:node_cpu_utilization:avg ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -176,7 +176,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:node_cpus:count\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:node_cpus:count ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:node_cpus:count ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -199,7 +199,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:node_memory_total_bytes:max\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:node_memory_total_bytes:max ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:node_memory_total_bytes:max ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -222,7 +222,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:node_memory_utilization:avg\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:node_memory_utilization:avg ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:node_memory_utilization:avg ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -245,7 +245,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:node_service_app_server_workers:sum\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:node_service_app_server_workers:sum ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:node_service_app_server_workers:sum ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -268,7 +268,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:node_service_process:count\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:node_service_process:count ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:node_service_process:count ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -291,7 +291,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:node_service_process_proportional_memory_bytes:avg\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:node_service_process_proportional_memory_bytes:avg ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:node_service_process_proportional_memory_bytes:avg ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -314,7 +314,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:node_service_process_resident_memory_bytes:avg\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:node_service_process_resident_memory_bytes:avg ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:node_service_process_resident_memory_bytes:avg ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -337,7 +337,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:node_service_process_unique_memory_bytes:avg\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:node_service_process_unique_memory_bytes:avg ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:node_service_process_unique_memory_bytes:avg ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -360,7 +360,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:ops:rate5m\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:ops:rate5m ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:ops:rate5m ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -383,7 +383,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=GitLab Usage Ping",
         "description": "Recording rule \"gitlab_usage_ping:sql_duration_apdex:ratio_rate5m\" from group \"GitLab Usage Ping\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule gitlab_usage_ping:sql_duration_apdex:ratio_rate5m ({ $labels.group }}) produces no data"
+        "summary": "Recording rule gitlab_usage_ping:sql_duration_apdex:ratio_rate5m ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -406,7 +406,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=HostAvailability",
         "description": "Recording rule \"host_absent:total\" from group \"HostAvailability\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule host_absent:total ({ $labels.group }}) produces no data"
+        "summary": "Recording rule host_absent:total ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -429,7 +429,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_memory_cache",
         "description": "Recording rule \"node_namespace_pod_container:container_memory_cache\" from group \"k8s.rules.container_memory_cache\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule node_namespace_pod_container:container_memory_cache ({ $labels.group }}) produces no data"
+        "summary": "Recording rule node_namespace_pod_container:container_memory_cache ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -452,7 +452,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
         "description": "Recording rule \"cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -475,7 +475,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
         "description": "Recording rule \"cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -498,7 +498,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
         "description": "Recording rule \"cluster:namespace:pod_memory:active:kube_pod_container_resource_limits\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster:namespace:pod_memory:active:kube_pod_container_resource_limits ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster:namespace:pod_memory:active:kube_pod_container_resource_limits ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -521,7 +521,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
         "description": "Recording rule \"cluster:namespace:pod_memory:active:kube_pod_container_resource_requests\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster:namespace:pod_memory:active:kube_pod_container_resource_requests ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster:namespace:pod_memory:active:kube_pod_container_resource_requests ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -544,7 +544,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
         "description": "Recording rule \"namespace_cpu:kube_pod_container_resource_limits:sum\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule namespace_cpu:kube_pod_container_resource_limits:sum ({ $labels.group }}) produces no data"
+        "summary": "Recording rule namespace_cpu:kube_pod_container_resource_limits:sum ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -567,7 +567,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
         "description": "Recording rule \"namespace_cpu:kube_pod_container_resource_requests:sum\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule namespace_cpu:kube_pod_container_resource_requests:sum ({ $labels.group }}) produces no data"
+        "summary": "Recording rule namespace_cpu:kube_pod_container_resource_requests:sum ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -590,7 +590,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
         "description": "Recording rule \"namespace_memory:kube_pod_container_resource_limits:sum\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule namespace_memory:kube_pod_container_resource_limits:sum ({ $labels.group }}) produces no data"
+        "summary": "Recording rule namespace_memory:kube_pod_container_resource_limits:sum ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -613,7 +613,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=k8s.rules.container_resource",
         "description": "Recording rule \"namespace_memory:kube_pod_container_resource_requests:sum\" from group \"k8s.rules.container_resource\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule namespace_memory:kube_pod_container_resource_requests:sum ({ $labels.group }}) produces no data"
+        "summary": "Recording rule namespace_memory:kube_pod_container_resource_requests:sum ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -636,7 +636,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
         "description": "Recording rule \"apiserver_request:availability30d\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule apiserver_request:availability30d ({ $labels.group }}) produces no data"
+        "summary": "Recording rule apiserver_request:availability30d ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T12:23:30+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -659,7 +659,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
         "description": "Recording rule \"cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -682,7 +682,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
         "description": "Recording rule \"cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -705,7 +705,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
         "description": "Recording rule \"cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -728,7 +728,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
         "description": "Recording rule \"cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -751,7 +751,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
         "description": "Recording rule \"code:apiserver_request_total:increase30d\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule code:apiserver_request_total:increase30d ({ $labels.group }}) produces no data"
+        "summary": "Recording rule code:apiserver_request_total:increase30d ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -774,7 +774,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
         "description": "Recording rule \"code_resource:apiserver_request_total:rate5m\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule code_resource:apiserver_request_total:rate5m ({ $labels.group }}) produces no data"
+        "summary": "Recording rule code_resource:apiserver_request_total:rate5m ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -797,7 +797,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
         "description": "Recording rule \"code_verb:apiserver_request_total:increase1h\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule code_verb:apiserver_request_total:increase1h ({ $labels.group }}) produces no data"
+        "summary": "Recording rule code_verb:apiserver_request_total:increase1h ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -820,7 +820,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-availability.rules",
         "description": "Recording rule \"code_verb:apiserver_request_total:increase30d\" from group \"kube-apiserver-availability.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule code_verb:apiserver_request_total:increase30d ({ $labels.group }}) produces no data"
+        "summary": "Recording rule code_verb:apiserver_request_total:increase30d ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -843,7 +843,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
         "description": "Recording rule \"apiserver_request:burnrate1d\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule apiserver_request:burnrate1d ({ $labels.group }}) produces no data"
+        "summary": "Recording rule apiserver_request:burnrate1d ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T12:23:30+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -866,7 +866,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
         "description": "Recording rule \"apiserver_request:burnrate1h\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule apiserver_request:burnrate1h ({ $labels.group }}) produces no data"
+        "summary": "Recording rule apiserver_request:burnrate1h ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T12:23:30+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -889,7 +889,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
         "description": "Recording rule \"apiserver_request:burnrate2h\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule apiserver_request:burnrate2h ({ $labels.group }}) produces no data"
+        "summary": "Recording rule apiserver_request:burnrate2h ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T12:23:30+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -912,7 +912,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
         "description": "Recording rule \"apiserver_request:burnrate30m\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule apiserver_request:burnrate30m ({ $labels.group }}) produces no data"
+        "summary": "Recording rule apiserver_request:burnrate30m ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T12:23:30+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -935,7 +935,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
         "description": "Recording rule \"apiserver_request:burnrate3d\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule apiserver_request:burnrate3d ({ $labels.group }}) produces no data"
+        "summary": "Recording rule apiserver_request:burnrate3d ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T12:23:30+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -958,7 +958,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
         "description": "Recording rule \"apiserver_request:burnrate5m\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule apiserver_request:burnrate5m ({ $labels.group }}) produces no data"
+        "summary": "Recording rule apiserver_request:burnrate5m ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T12:23:30+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -981,7 +981,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-burnrate.rules",
         "description": "Recording rule \"apiserver_request:burnrate6h\" from group \"kube-apiserver-burnrate.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule apiserver_request:burnrate6h ({ $labels.group }}) produces no data"
+        "summary": "Recording rule apiserver_request:burnrate6h ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T12:23:30+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1004,7 +1004,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-apiserver-histogram.rules",
         "description": "Recording rule \"cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile\" from group \"kube-apiserver-histogram.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1027,7 +1027,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
         "description": "Recording rule \"cluster:node_cpu:ratio\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster:node_cpu:ratio ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster:node_cpu:ratio ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1050,7 +1050,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
         "description": "Recording rule \"cluster:node_cpu:sum_rate5m\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster:node_cpu:sum_rate5m ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster:node_cpu:sum_rate5m ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1073,7 +1073,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
         "description": "Recording rule \"instance:node_cpu:rate:sum\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule instance:node_cpu:rate:sum ({ $labels.group }}) produces no data"
+        "summary": "Recording rule instance:node_cpu:rate:sum ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1096,7 +1096,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
         "description": "Recording rule \"instance:node_cpu:ratio\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule instance:node_cpu:ratio ({ $labels.group }}) produces no data"
+        "summary": "Recording rule instance:node_cpu:ratio ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1119,7 +1119,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
         "description": "Recording rule \"instance:node_network_receive_bytes:rate:sum\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule instance:node_network_receive_bytes:rate:sum ({ $labels.group }}) produces no data"
+        "summary": "Recording rule instance:node_network_receive_bytes:rate:sum ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1142,7 +1142,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=kube-prometheus-node-recording.rules",
         "description": "Recording rule \"instance:node_network_transmit_bytes:rate:sum\" from group \"kube-prometheus-node-recording.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule instance:node_network_transmit_bytes:rate:sum ({ $labels.group }}) produces no data"
+        "summary": "Recording rule instance:node_network_transmit_bytes:rate:sum ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1165,7 +1165,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=node.rules",
         "description": "Recording rule \":node_memory_MemAvailable_bytes:sum\" from group \"node.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule :node_memory_MemAvailable_bytes:sum ({ $labels.group }}) produces no data"
+        "summary": "Recording rule :node_memory_MemAvailable_bytes:sum ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1188,7 +1188,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=node.rules",
         "description": "Recording rule \"cluster:node_cpu:ratio_rate5m\" from group \"node.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule cluster:node_cpu:ratio_rate5m ({ $labels.group }}) produces no data"
+        "summary": "Recording rule cluster:node_cpu:ratio_rate5m ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1211,7 +1211,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=node.rules",
         "description": "Recording rule \"node:node_cpu_utilization:ratio_rate5m\" from group \"node.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule node:node_cpu_utilization:ratio_rate5m ({ $labels.group }}) produces no data"
+        "summary": "Recording rule node:node_cpu_utilization:ratio_rate5m ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1234,7 +1234,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=node.rules",
         "description": "Recording rule \"node:node_num_cpu:sum\" from group \"node.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule node:node_num_cpu:sum ({ $labels.group }}) produces no data"
+        "summary": "Recording rule node:node_num_cpu:sum ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1257,7 +1257,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=node.rules",
         "description": "Recording rule \"node_namespace_pod:kube_pod_info:\" from group \"node.rules\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule node_namespace_pod:kube_pod_info: ({ $labels.group }}) produces no data"
+        "summary": "Recording rule node_namespace_pod:kube_pod_info: ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1280,7 +1280,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
         "description": "Recording rule \"synapse_federation_client_sent\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule synapse_federation_client_sent ({ $labels.group }}) produces no data"
+        "summary": "Recording rule synapse_federation_client_sent ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1303,7 +1303,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
         "description": "Recording rule \"synapse_federation_server_received\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule synapse_federation_server_received ({ $labels.group }}) produces no data"
+        "summary": "Recording rule synapse_federation_server_received ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1326,7 +1326,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
         "description": "Recording rule \"synapse_federation_transaction_queue_pending\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule synapse_federation_transaction_queue_pending ({ $labels.group }}) produces no data"
+        "summary": "Recording rule synapse_federation_transaction_queue_pending ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1349,7 +1349,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
         "description": "Recording rule \"synapse_storage_events_persisted_by_event_type\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule synapse_storage_events_persisted_by_event_type ({ $labels.group }}) produces no data"
+        "summary": "Recording rule synapse_storage_events_persisted_by_event_type ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1372,7 +1372,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
         "description": "Recording rule \"synapse_storage_events_persisted_by_origin\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule synapse_storage_events_persisted_by_origin ({ $labels.group }}) produces no data"
+        "summary": "Recording rule synapse_storage_events_persisted_by_origin ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
@@ -1395,7 +1395,7 @@
       "annotations": {
         "dashboard": "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group=synapse",
         "description": "Recording rule \"synapse_storage_events_persisted_by_source_type\" from group \"synapse\" produces 0 samples over the last 30min. It might be caused by a misconfiguration or incorrect query expression.",
-        "summary": "Recording rule synapse_storage_events_persisted_by_source_type ({ $labels.group }}) produces no data"
+        "summary": "Recording rule synapse_storage_events_persisted_by_source_type ({{ $labels.group }}) produces no data"
       },
       "startsAt": "2025-09-04T13:28:00+02:00",
       "endsAt": "0001-01-01T00:00:00Z",
