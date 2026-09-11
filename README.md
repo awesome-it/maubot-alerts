@@ -101,7 +101,7 @@ up without restarting the plugin.
 
 Available context:
 
-- `alert` template: `data` (raw Alertmanager alert), `unique_labels`, `common_labels`
+- `alert` template: `data` (raw Alertmanager alert), `labels` (all labels of the alert, same as `data['labels']`), `unique_labels` (labels not in the group's common labels), `common_labels` (the group's common labels)
 - `alertgroup` template: `alertgroup` (fields such as `status`, `group_labels`,
   `common_annotations`, `total_firing_alerts`, `notification_reason`, `updated_at`,
   `firing_alerts`, `resolved_alerts`, `last_actor`, `external_url`)

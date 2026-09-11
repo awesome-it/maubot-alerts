@@ -36,7 +36,7 @@ def make_group(status: str, last_actor: str | None = None) -> AlertGroup:
         status=status,
         receiver="team-x",
         group_labels={"alertname": "TestAlert"},
-        common_labels={},
+        group_labels={},
         common_annotations={"summary": "Test summary"},
         truncated_alerts=0,
         external_url="http://example.com",
@@ -93,7 +93,7 @@ class TestAlert:
                 "generatorURL": "http://example.com",
             },
         )
-        alert.generate_unique_labels(common_labels={})
+        alert.generate_unique_labels(group_labels={})
         alert.generate_message(make_renderer())
         assert "severity" in alert.message
         assert "critical" in alert.message
@@ -112,7 +112,7 @@ class TestCustomTemplates:
             status="firing",
             alertmanager_data={"labels": {"alertname": "TestAlert"}, "annotations": {}},
         )
-        alert.generate_unique_labels(common_labels={})
+        alert.generate_unique_labels(group_labels={})
         alert.generate_message(TemplateRenderer(config))
         assert alert.message == "CUSTOM TestAlert"
 

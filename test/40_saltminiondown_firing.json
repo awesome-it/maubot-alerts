@@ -1,0 +1,52 @@
+{
+  "version": "4",
+  "receiver": "maubot_alerts",
+  "status": "firing",
+  "notification_reason": "first notification",
+  "groupKey": "{}:{alertname=\"SaltMinionDown\", customer=\"awesome\", instance=\"he-lv-salt\", job=\"prometheus.scrape.exportd\"}",
+  "truncatedAlerts": 0,
+  "externalURL": "https://alertmanager.awesome-it.de",
+  "groupLabels": {
+    "alertname": "SaltMinionDown",
+    "customer": "awesome",
+    "instance": "he-lv-salt",
+    "job": "prometheus.scrape.exportd"
+  },
+  "commonLabels": {
+    "alertgroup": "salt",
+    "alertname": "SaltMinionDown",
+    "customer": "awesome",
+    "domain": "lab.awesome-it.de",
+    "instance": "he-lv-salt",
+    "job": "prometheus.scrape.exportd",
+    "name": "ka-ld-office-1",
+    "severity": "critical"
+  },
+  "commonAnnotations": {
+    "description": "The host \"he-lv-salt\" has lost connection to one or more minions.",
+    "summary": "Host \"he-lv-salt\" lost connection to one or more minions"
+  },
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertgroup": "salt",
+        "alertname": "SaltMinionDown",
+        "customer": "awesome",
+        "domain": "lab.awesome-it.de",
+        "instance": "he-lv-salt",
+        "job": "prometheus.scrape.exportd",
+        "name": "ka-ld-office-1",
+        "severity": "critical"
+      },
+      "annotations": {
+        "description": "The host \"he-lv-salt\" has lost connection to one or more minions.",
+        "summary": "Host \"he-lv-salt\" lost connection to one or more minions"
+      },
+      "startsAt": "2026-09-11T08:05:00.000+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.awesome-it.de/explore?orgId=1&left=[\"now-1h\",\"now\",\"metrics.awesome-it.de\",{\"expr\":%22awesome_salt_minion_up+%3D%3D+0%22},{\"mode\":\"Metrics\"},{\"ui\":[true,true,true,\"none\"]}]",
+      "fingerprint": "738d083183e8f3c3"
+    }
+  ]
+}

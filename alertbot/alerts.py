@@ -66,9 +66,10 @@ class AlertGroup:
 
         firing_alerts = []
         resolved_alerts = []
+        group_labels = json["groupLabels"]
         for alert_json in selected_json:
             alert = Alert.from_json(alert_json)
-            alert.generate_unique_labels(common_labels)
+            alert.generate_unique_labels(group_labels)
             if alert.status == "resolved":
                 resolved_alerts.append(alert)
             else:
@@ -78,7 +79,7 @@ class AlertGroup:
             group_key=json["groupKey"],
             status=status,
             receiver=json["receiver"],
-            group_labels=json["groupLabels"],
+            group_labels=group_labels,
             common_labels=common_labels,
             common_annotations=json["commonAnnotations"],
             truncated_alerts=truncated_alerts,
@@ -101,7 +102,7 @@ class AlertGroup:
 
     def set_alerts(self, alerts: list[Alert]):
         for alert in alerts:
-            alert.generate_unique_labels(self.common_labels)
+            alert.generate_unique_labels(self.group_labels)
             if alert.status == "resolved":
                 self.resolved_alerts.append(alert)
             else:
@@ -126,12 +127,13 @@ class Alert:
     def generate_message(self, renderer: TemplateRenderer) -> None:
         template = renderer.env.get_template("alert.jinja")
         self.message = template.render(
+            labels=self.alertmanager_data["labels"],
             unique_labels=self.unique_labels,
             common_labels=self.common_labels,
             data=self.alertmanager_data,
         )
 
-    def generate_unique_labels(self, common_labels: dict[str, str]) -> None:
+    def generate_unique_labels(self, group_labels: dict[str, str]) -> None:
         all_labels = self.alertmanager_data["labels"]
-        self.unique_labels = {k: v for k, v in all_labels.items() if k not in common_labels}
-        self.common_labels = dict(common_labels)
+        self.unique_labels = {k: v for k, v in all_labels.items() if k not in group_labels}
+        self.common_labels = dict(group_labels)

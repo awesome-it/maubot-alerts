@@ -11,7 +11,7 @@
     <blockquote>
     {% for key, value in unique_labels.items() -%}
         {%- set c = key | label_color -%}
-        <code><b><span data-mx-color="{{ c.bg }}">{{ key }}</span></b>: {{ value }}</code>&nbsp;
+        <code><b><span data-mx-color="{{ c.bg }}">{{ key }}</span></b>: {{ value }}</code>{% if not loop.last %}, {% endif %}
     {%- endfor %}
     </blockquote>
 {%- endif -%}
