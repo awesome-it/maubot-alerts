@@ -39,18 +39,26 @@
     </blockquote>
 {%- endif %}
 {%- if alertgroup.firing_alerts %}
-    <b>🔥 Firing Alerts ({{ alertgroup.firing_alerts|length }}):</b>
     <ul>
-        {%- for alert in alertgroup.firing_alerts %}
-            <li>{{ alert.message }}</li>
-        {%- endfor %}
+        <li>
+            <b>Firing Alerts ({{ alertgroup.firing_alerts|length }}):</b>
+            <ul>
+                {%- for alert in alertgroup.firing_alerts %}
+                    <li>{{ alert.message }}</li>
+                {%- endfor %}
+            </ul>
+        </li>
     </ul>
 {%- endif %}
 {%- if alertgroup.resolved_alerts %}
-    <b>✅ Resolved Alerts ({{ alertgroup.resolved_alerts|length }}):</b>
     <ul>
-        {%- for alert in alertgroup.resolved_alerts %}
-            <li>{{ alert.message }}</li>
-        {%- endfor %}
+        <li>
+            <b>Resolved Alerts ({{ alertgroup.resolved_alerts|length }}):</b>
+            <ul>
+                {%- for alert in alertgroup.resolved_alerts %}
+                    <li>{{ alert.message }}</li>
+                {%- endfor %}
+            </ul>
+        </li>
     </ul>
 {%- endif %}
