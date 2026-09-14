@@ -1,64 +1,65 @@
-{%- set color_title = "#2e7d32" -%}
-{%- set color_secondary = "#999999" -%}
+{%- set color = "#2e7d32" -%}
+{%- set icon = "✅" -%}
+{%- set label = "RESOLVED" -%}
 {%- if alertgroup.status == "firing" -%}
-    {%- set color_title = "#d32f2f" -%}
+    {%- set color = "#d32f2f" -%}
+    {%- set icon = "🔥" -%}
+    {%- set label = "FIRING" -%}
 {%- elif alertgroup.status == "acknowledged" -%}
-    {%- set color_title = "#ed6c02" -%}
+    {%- set color = "#ed6c02" -%}
+    {%- set icon = "👍️" -%}
+    {%- set label = "ACKNOWLEDGED" -%}
 {%- endif -%}
 {%- if alertgroup.last_actor -%}
-    {%- set actor_annotation = " by " + alertgroup.last_actor -%}
+    {%- set actor_annotation = " by " ~ alertgroup.last_actor -%}
 {%- else -%}
     {%- set actor_annotation = "" -%}
 {%- endif -%}
-{% set grafana_alerts_url = "https://monitoring.awesome-it.de/"
-                            ~ "alerting/groups?groupBy=alertname,instance"
-                            ~ "&alertState=active"
-                            ~ "&queryString=alertname%3D"
-                            ~ alertgroup.group_labels.get("alertname", "Alert") %}
-<strong>
-<span data-mx-color="{{ color_title }}">
-{%- if alertgroup.status == "firing" %}🔥 {% elif alertgroup.status == "acknowledged" %}👍️ {% else %}✅ {% endif -%}
-    {{ alertgroup.status | upper }}{{ actor_annotation }}:
-</span>
-    <a href='{{ grafana_alerts_url }}'>{{ alertgroup.group_labels.get("alertname", "Alert") }}</a>&nbsp;
-    Total firing alerts ({{ alertgroup.total_firing_alerts }}):
-</strong>
-{%- if alertgroup.notification_reason %}
-    &nbsp;<span data-mx-color="{{ color_secondary }}">{{ alertgroup.notification_reason }}{% if alertgroup.updated_at %} at {{ alertgroup.updated_at.strftime("%Y-%m-%d %H:%M:%S %Z") }}{% endif %}</span>
-    <br/>
+{%- set alertgroup_name = alertgroup.group_labels.get("alertname", "Alert") -%}
+{%- set grafana_alerts_url = "https://monitoring.awesome-it.de/alerting/groups?groupBy=alertname,instance&alertState=active&queryString=alertname%3D" ~ alertgroup_name -%}
+{%- set firing_shown = alertgroup.firing_alerts | length -%}
+{%- set resolved_shown = alertgroup.resolved_alerts | length -%}
+{%- set total_shown = firing_shown + resolved_shown -%}
+{%- set firing_total = alertgroup.total_firing_alerts or firing_shown -%}
+{%- set grand_total = alertgroup.total_alerts | default(none) -%}
+{%- if grand_total is none -%}
+    {%- set grand_total = firing_total + resolved_shown -%}
+{%- endif -%}
+{%- set is_single = total_shown == 1 and alertgroup.truncated_alerts == 0 and grand_total == 1 -%}
+{%- if is_single -%}
+    {%- set the_alert = (alertgroup.firing_alerts + alertgroup.resolved_alerts)[0] -%}
+    {%- set adata = the_alert.alertmanager_data -%}
+    {%- set alert_desc = adata['annotations'].get('description') or adata['annotations'].get('summary', '') -%}
+    {%- set alert_name = adata['labels'].get('alertname', alertgroup_name) -%}
+{% if adata.get('labels') %}<details><summary>{% endif %}<strong><span data-mx-color="{{ color }}">{{ icon }} {{ label }}{{ actor_annotation }}:</span> <a href='{{ grafana_alerts_url }}'>{{ alert_name }}</a></strong>: {{ alert_desc }} (<a href='{{ adata['generatorURL'] }}'>Source</a>){% if adata.get('labels') %}</summary>{% endif %}
+{%- if adata.get('labels') %}
+{% for key, value in adata['labels'].items() -%}
+    {%- set c = key | label_color -%}
+    <code><b><span data-mx-color="{{ c.bg }}">{{ key | e }}</span></b>: {{ value | e }}</code>{% if not loop.last %}, {% endif %}
+{%- endfor %}
+</details>
 {%- endif %}
-{%- if alertgroup.common_annotations.get("summary") %}
-    {{ alertgroup.common_annotations["summary"] }}<br />
-{%- endif %}
+{%- else -%}
+    {%- set group_desc = alertgroup.common_annotations.get("description") or alertgroup.common_annotations.get("summary", "") -%}
+{% if alertgroup.group_labels %}<details><summary>{% endif %}<strong><span data-mx-color="{{ color }}">{{ icon }} {{ label }}{{ actor_annotation }}:</span> <a href='{{ grafana_alerts_url }}'>{{ alertgroup_name }}</a></strong>{% if alertgroup.status != "resolved" %} ({{ firing_total }}/{{ grand_total }}){% endif %}:{% if group_desc %} {{ group_desc }}{% endif %}{% if alertgroup.group_labels %}</summary>{% endif %}
 {%- if alertgroup.group_labels %}
-    <blockquote>
-    {% for key, value in alertgroup.group_labels.items() -%}
-        {%- set c = key | label_color -%}
-        <code><b><span data-mx-color="{{ c.bg }}">{{ key }}</span></b>: {{ value }}</code>{% if not loop.last %}, {% endif %}
-    {%- endfor %}
-    </blockquote>
+{% for key, value in alertgroup.group_labels.items() -%}
+    {%- set c = key | label_color -%}
+    <code><b><span data-mx-color="{{ c.bg }}">{{ key | e }}</span></b>: {{ value | e }}</code>{% if not loop.last %}, {% endif %}
+{%- endfor %}
+</details>
 {%- endif %}
-{%- if alertgroup.firing_alerts %}
-    <ul>
-        <li>
-            <b>Firing Alerts ({{ alertgroup.firing_alerts|length }}):</b>
-            <ul>
-                {%- for alert in alertgroup.firing_alerts %}
-                    <li>{{ alert.message }}</li>
-                {%- endfor %}
-            </ul>
-        </li>
-    </ul>
+{%- if alertgroup.firing_alerts or alertgroup.resolved_alerts %}
+<blockquote>
+{%- for alert in alertgroup.firing_alerts %}
+    <div>{{ alert.message }}</div>
+{%- endfor %}
+{%- for alert in alertgroup.resolved_alerts %}
+    <div>{{ alert.message }}</div>
+{%- endfor %}
+{%- if grand_total > total_shown or alertgroup.truncated_alerts > 0 %}
+<div>Showing {{ total_shown }}/{{ grand_total }} alerts. See more alerts in <a href='{{ grafana_alerts_url }}'>Grafana</a>.</div>
 {%- endif %}
-{%- if alertgroup.resolved_alerts %}
-    <ul>
-        <li>
-            <b>Resolved Alerts ({{ alertgroup.resolved_alerts|length }}):</b>
-            <ul>
-                {%- for alert in alertgroup.resolved_alerts %}
-                    <li>{{ alert.message }}</li>
-                {%- endfor %}
-            </ul>
-        </li>
-    </ul>
+</blockquote>
 {%- endif %}
+{%- endif -%}

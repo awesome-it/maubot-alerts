@@ -36,7 +36,7 @@ def make_group(status: str, last_actor: str | None = None) -> AlertGroup:
         status=status,
         receiver="team-x",
         group_labels={"alertname": "TestAlert"},
-        group_labels={},
+        common_labels={},
         common_annotations={"summary": "Test summary"},
         truncated_alerts=0,
         external_url="http://example.com",
@@ -82,8 +82,8 @@ class TestAlertGroup:
 class TestAlert:
     """Test the per-alert message rendering."""
 
-    def test_message_contains_labels_and_summary(self):
-        """Unique labels, summary and generator URL are rendered."""
+    def test_message_contains_summary_and_generator_url(self):
+        """Alert description and generator URL are rendered."""
         alert = Alert(
             fingerprint="test-123",
             status="firing",
@@ -95,8 +95,6 @@ class TestAlert:
         )
         alert.generate_unique_labels(group_labels={})
         alert.generate_message(make_renderer())
-        assert "severity" in alert.message
-        assert "critical" in alert.message
         assert "Test summary" in alert.message
         assert "http://example.com" in alert.message
 

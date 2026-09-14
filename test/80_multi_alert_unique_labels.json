@@ -1,0 +1,85 @@
+{
+  "version": "4",
+  "receiver": "maubot_alerts",
+  "status": "firing",
+  "notification_reason": "first notification",
+  "groupKey": "{}:{alertname=\"NodeDiskFull\", customer=\"awesome\"}",
+  "truncatedAlerts": 0,
+  "externalURL": "https://alertmanager.awesome-it.de",
+  "groupLabels": {
+    "alertname": "NodeDiskFull",
+    "customer": "awesome"
+  },
+  "commonLabels": {
+    "alertname": "NodeDiskFull",
+    "customer": "awesome",
+    "job": "node_exporter",
+    "severity": "critical"
+  },
+  "commonAnnotations": {
+    "description": "One or more nodes have filesystems above 95% usage.",
+    "summary": "Node disk full across cluster"
+  },
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "NodeDiskFull",
+        "customer": "awesome",
+        "instance": "he-lv-app-01",
+        "job": "node_exporter",
+        "mountpoint": "/",
+        "device": "sda1",
+        "severity": "critical"
+      },
+      "annotations": {
+        "description": "Filesystem / on he-lv-app-01 (sda1) is 97% full.",
+        "summary": "Disk full on he-lv-app-01:/"
+      },
+      "startsAt": "2026-09-11T08:00:00.000+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.awesome-it.de/explore?orgId=1&node=he-lv-app-01",
+      "fingerprint": "eeee000000000001"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "NodeDiskFull",
+        "customer": "awesome",
+        "instance": "he-lv-app-02",
+        "job": "node_exporter",
+        "mountpoint": "/var/log",
+        "device": "sdb1",
+        "severity": "critical"
+      },
+      "annotations": {
+        "description": "Filesystem /var/log on he-lv-app-02 (sdb1) is 99% full.",
+        "summary": "Disk full on he-lv-app-02:/var/log"
+      },
+      "startsAt": "2026-09-11T08:02:00.000+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.awesome-it.de/explore?orgId=1&node=he-lv-app-02",
+      "fingerprint": "eeee000000000002"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "NodeDiskFull",
+        "customer": "awesome",
+        "instance": "he-lv-worker-01",
+        "job": "node_exporter",
+        "mountpoint": "/data",
+        "device": "nvme0n1p2",
+        "severity": "critical"
+      },
+      "annotations": {
+        "description": "Filesystem /data on he-lv-worker-01 (nvme0n1p2) is 96% full.",
+        "summary": "Disk full on he-lv-worker-01:/data"
+      },
+      "startsAt": "2026-09-11T08:04:00.000+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.awesome-it.de/explore?orgId=1&node=he-lv-worker-01",
+      "fingerprint": "eeee000000000003"
+    }
+  ]
+}

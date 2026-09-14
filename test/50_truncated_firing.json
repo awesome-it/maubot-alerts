@@ -1,0 +1,109 @@
+{
+  "version": "4",
+  "receiver": "maubot_alerts",
+  "status": "firing",
+  "notification_reason": "first notification",
+  "groupKey": "{}:{alertname=\"HighMemoryUsage\", customer=\"awesome\"}",
+  "truncatedAlerts": 15,
+  "externalURL": "https://alertmanager.awesome-it.de",
+  "groupLabels": {
+    "alertname": "HighMemoryUsage",
+    "customer": "awesome"
+  },
+  "commonLabels": {
+    "alertname": "HighMemoryUsage",
+    "customer": "awesome",
+    "severity": "warning"
+  },
+  "commonAnnotations": {
+    "description": "Memory usage above 90% on multiple hosts.",
+    "summary": "High memory usage across cluster"
+  },
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "HighMemoryUsage",
+        "customer": "awesome",
+        "instance": "he-lv-web-01",
+        "severity": "warning"
+      },
+      "annotations": {
+        "description": "Memory usage above 90% on he-lv-web-01.",
+        "summary": "High memory usage on he-lv-web-01"
+      },
+      "startsAt": "2026-09-11T08:00:00.000+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.awesome-it.de/explore?orgId=1&panel=1",
+      "fingerprint": "aaaa000000000001"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "HighMemoryUsage",
+        "customer": "awesome",
+        "instance": "he-lv-web-02",
+        "severity": "warning"
+      },
+      "annotations": {
+        "description": "Memory usage above 90% on he-lv-web-02.",
+        "summary": "High memory usage on he-lv-web-02"
+      },
+      "startsAt": "2026-09-11T08:01:00.000+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.awesome-it.de/explore?orgId=1&panel=2",
+      "fingerprint": "aaaa000000000002"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "HighMemoryUsage",
+        "customer": "awesome",
+        "instance": "he-lv-web-03",
+        "severity": "warning"
+      },
+      "annotations": {
+        "description": "Memory usage above 90% on he-lv-web-03.",
+        "summary": "High memory usage on he-lv-web-03"
+      },
+      "startsAt": "2026-09-11T08:02:00.000+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.awesome-it.de/explore?orgId=1&panel=3",
+      "fingerprint": "aaaa000000000003"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "HighMemoryUsage",
+        "customer": "awesome",
+        "instance": "he-lv-db-01",
+        "severity": "warning"
+      },
+      "annotations": {
+        "description": "Memory usage above 90% on he-lv-db-01.",
+        "summary": "High memory usage on he-lv-db-01"
+      },
+      "startsAt": "2026-09-11T08:03:00.000+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.awesome-it.de/explore?orgId=1&panel=4",
+      "fingerprint": "aaaa000000000004"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "HighMemoryUsage",
+        "customer": "awesome",
+        "instance": "he-lv-db-02",
+        "severity": "warning"
+      },
+      "annotations": {
+        "description": "Memory usage above 90% on he-lv-db-02.",
+        "summary": "High memory usage on he-lv-db-02"
+      },
+      "startsAt": "2026-09-11T08:04:00.000+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.awesome-it.de/explore?orgId=1&panel=5",
+      "fingerprint": "aaaa000000000005"
+    }
+  ]
+}

@@ -236,6 +236,37 @@ curl 'https://maubot.example.org/plugin/<plugin_instance_id>/prom-alerts/<room_i
 --json @./test/<filename>.json
 ```
 
+#### Example
+
+Get access token via `mcb login`:
+
+```bash
+source .venv/bin/active
+mbc login \
+    -a maubot \
+    -s https://maubot.local.awesome-it.de \
+    -u admin \
+    -p "$(gopass awesome/infrastructure/cluster/k8s-prod/awe-matrix/maubot/users/admin)"
+export MAUBOT_LOGIN=$(jq -r '.servers[.aliases.maubot]' ~/.config/maubot-cli.json)
+```
+
+Build and upload to test instance `awe-alerts-test` and replay every fixture in `test/` to the `alerts-test` channel:
+
+```bash
+export URL='https://maubot.local.awesome-it.de/plugin/awe-alerts-test/prom-alerts/!yll2MWo_YRGTpwvpOfJfw-ogynMBfQgxKeMyNJWoI2U'
+
+make build-upload-test && \
+for f in test/[0-9][0-9]_*.json; do
+  echo "-- $f --"
+  curl -sS -o /dev/null -w '%{http_code}\n' \
+    -H 'Content-Type: application/json' \
+    --data @"$f" \
+    "$URL"
+done
+```
+
+Each fixture in `test/` covers a distinct scenario (single firing / single resolved / multi-alert firing / partial + full resolve / truncated / no customer+instance labels / missing description / empty annotations / notification-reason variants). Sending them in numeric order gives a full walk-through of the bot's rendering.
+
 ### Important Notes
 
 > **Note:** Python module names in maubot (such as 'alertbot') must be unique across all maubot plugins.

@@ -1,0 +1,42 @@
+{
+  "version": "4",
+  "receiver": "maubot_alerts",
+  "status": "firing",
+  "notification_reason": "first notification",
+  "groupKey": "{}:{alertname=\"DiskSpaceLow\", customer=\"awesome\", instance=\"he-lv-db-01\"}",
+  "truncatedAlerts": 0,
+  "externalURL": "https://alertmanager.awesome-it.de",
+  "groupLabels": {
+    "alertname": "DiskSpaceLow",
+    "customer": "awesome",
+    "instance": "he-lv-db-01"
+  },
+  "commonLabels": {
+    "alertname": "DiskSpaceLow",
+    "customer": "awesome",
+    "instance": "he-lv-db-01",
+    "severity": "warning"
+  },
+  "commonAnnotations": {
+    "summary": "Disk space below 10% on he-lv-db-01"
+  },
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "DiskSpaceLow",
+        "customer": "awesome",
+        "instance": "he-lv-db-01",
+        "mountpoint": "/var/lib/postgresql",
+        "severity": "warning"
+      },
+      "annotations": {
+        "summary": "Disk space below 10% on he-lv-db-01 (/var/lib/postgresql)"
+      },
+      "startsAt": "2026-09-11T08:00:00.000+02:00",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://monitoring.awesome-it.de/explore?orgId=1&panel=disk",
+      "fingerprint": "cccc000000000001"
+    }
+  ]
+}

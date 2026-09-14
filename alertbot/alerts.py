@@ -42,6 +42,7 @@ class AlertGroup:
     updated_at: dt.datetime | None = None
     firing_alerts: list[Alert] = field(default_factory=list)
     resolved_alerts: list[Alert] = field(default_factory=list)
+    total_alerts: int | None = None
 
     @classmethod
     def from_json(cls, json: dict[str, Any]) -> AlertGroup:
@@ -86,6 +87,7 @@ class AlertGroup:
             external_url=json.get("externalURL"),
             notification_reason=NotificationReason(json.get("notification_reason")),
             total_firing_alerts=total_firing_alerts,
+            total_alerts=len(alerts_json) + truncated_alerts,
             firing_alerts=firing_alerts,
             resolved_alerts=resolved_alerts,
         )

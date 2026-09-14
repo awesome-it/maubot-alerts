@@ -27,7 +27,7 @@ UPLOAD_URL := $(MAUBOT_URL)/_matrix/maubot/v1/plugins/upload?allow_override=true
 
 help:
 	@echo "Targets:"
-	@echo "  build              build $(PROD_MBP)"
+	@echo "  build              build $(PROD_MBP)"222222222222222222222222222222222222222222222
 	@echo "  build-test         build $(TEST_MBP) (id temporarily swapped in maubot.yaml)"
 	@echo "  upload             POST $(PROD_MBP) to $(MAUBOT_URL) via curl"
 	@echo "  upload-test        POST $(TEST_MBP) to $(MAUBOT_URL) via curl"

@@ -1,17 +1,15 @@
-{%- set color_secondary = "#999999" -%}
 {%- set common = common_labels or {} -%}
 {%- if common.get('customer') and common.get('instance') -%}
     {%- set link_text = common['customer'] ~ '/' ~ common['instance'] -%}
 {%- else -%}
-    {%- set link_text = data['labels']['alertname'] -%}
+    {%- set link_text = data['labels'].get('alertname', 'Alert') -%}
 {%- endif -%}
-<b><a href='{{ data['generatorURL'] }}'>{{ link_text }}</a></b>&nbsp;
-<i>{{ data['annotations']['summary'] }}</i><br/>
-{%- if unique_labels and unique_labels | length > 0 -%}
-    <blockquote>
-    {% for key, value in unique_labels.items() -%}
-        {%- set c = key | label_color -%}
-        <code><b><span data-mx-color="{{ c.bg }}">{{ key }}</span></b>: {{ value }}</code>{% if not loop.last %}, {% endif %}
-    {%- endfor %}
-    </blockquote>
-{%- endif -%}
+{%- set desc = data['annotations'].get('description') or data['annotations'].get('summary', '') -%}
+{% if data.get('labels') %}<details><summary>{% endif %}<a href='{{ data['generatorURL'] }}'>{{ link_text }}</a>: {{ desc }}{% if data.get('labels') %}</summary>{% endif %}
+{%- if data.get('labels') %}
+{% for key, value in data['labels'].items() -%}
+    {%- set c = key | label_color -%}
+    <code><b><span data-mx-color="{{ c.bg }}">{{ key | e }}</span></b>: {{ value | e }}</code>{% if not loop.last %}, {% endif %}
+{%- endfor %}
+</details>
+{%- endif %}
